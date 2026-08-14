@@ -1,0 +1,56 @@
+<div class="sidebar-main">
+
+<div class="comm-shell">
+  
+  <aside class="channels col-rule" data-endpoint="GET /api/community/channels">
+    <p class="channels-title">Community</p>
+    <p class="chan-cat">General</p>
+    <a class="chan" href="#"><span class="hash">#</span> welcome</a>
+    <a class="chan" href="#"><span class="hash">#</span> announcements <svg class="lock"><use href="#i-lock"></use></svg></a>
+    <a class="chan" href="#"><span class="hash">#</span> introductions</a>
+    <a class="chan" href="#"><span class="hash">#</span> weekly-question</a>
+    <p class="chan-cat">Training</p>
+    <a class="chan active" href="#"><span class="hash">#</span> ecqc <span class="badge-n">14</span></a>
+    <a class="chan" href="#"><span class="hash">#</span> muc</a>
+    <a class="chan" href="#"><span class="hash">#</span> after-action-reports</a>
+    <p class="chan-cat">Gear</p>
+    <a class="chan" href="#"><span class="hash">#</span> gear-talk</a>
+    <a class="chan" href="#"><span class="hash">#</span> edc</a>
+    <p class="chan-cat">VIP</p>
+    <a class="chan" href="#"><span class="hash">#</span> vip-lounge <svg class="lock"><use href="#i-lock"></use></svg></a>
+  </aside>
+
+  
+  <main class="feed-wrap col-rule">
+    <div class="feed-head">
+      <h2><span class="hash">#</span> ecqc</h2>
+      <p>Extreme Close Quarter Concepts discussion. After-action reports, drill questions, and breakdowns.</p>
+    </div>
+    <div class="feed" id="feed" data-endpoint="GET /api/community/channels/:id/messages"></div>
+    <div class="composer" data-endpoint="POST /api/community/channels/:id/messages">
+      <div class="composer-box">
+        <input type="text" placeholder="Message #ecqc" />
+        <button class="send"><svg><use href="#i-send"></use></svg></button>
+      </div>
+    </div>
+  </main>
+
+  
+  <aside class="members" data-endpoint="GET /api/community/channels/:id/members">
+    <h4>Online — 6</h4>
+    <div id="online"></div>
+    <h4 style="margin-top:1.4rem;">Offline — 2</h4>
+    <div id="offline"></div>
+  </aside>
+</div>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-thumb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></symbol>
+</svg>

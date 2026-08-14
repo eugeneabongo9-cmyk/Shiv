@@ -1,0 +1,91 @@
+<div class="sidebar-main">
+
+<main class="live">
+  <div class="container">
+    
+    <div class="live-head">
+      <div>
+        <p class="eyebrow">Broadcasts</p>
+        <h1>Live</h1>
+      </div>
+      <span class="live-now-pill"><span class="live-dot"></span> On air now</span>
+    </div>
+
+    
+    <section class="live-stage" data-endpoint="GET /api/live/now">
+      <div class="live-player">
+        <div class="media-ph">
+          <div class="live-badge-overlay">
+            <span class="live-tag"><span class="live-dot"></span> Live</span>
+            <span class="live-viewers"><svg><use href="#i-users"></use></svg> 142</span>
+          </div>
+          <div class="media-ph-inner">
+            <div class="play-badge"><svg><use href="#i-play"></use></svg></div>
+            <span class="media-ph-label">[ Livestream — Weapon Retention in the Clinch ]</span>
+          </div>
+        </div>
+        <div class="live-info">
+          <h2>Weapon Retention in the Entangled Clinch</h2>
+          <div class="live-host">
+            <span class="avatar">CD</span>
+            <div>
+              <div class="h-name">Craig Douglas</div>
+              <div class="h-role">Lead Instructor · ShivWorks</div>
+            </div>
+          </div>
+          <p class="desc">Breaking down in-fight weapon access and retention under live, resisting pressure. We'll run the clinch entries, the retention positions, and the decision points where the gun comes into play — then take your questions live.</p>
+          <div class="live-actions">
+            <a class="btn btn-primary" href="#"><svg><use href="#i-radio"></use></svg> Join the stream</a>
+            <button class="btn btn-secondary"><svg><use href="#i-bell"></use></svg> Notify me of replays</button>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="live-chat" data-endpoint="GET /api/live/:id/chat">
+        <div class="live-chat-head"><span>Live chat</span><span>142 watching</span></div>
+        <div class="live-chat-feed" id="lc-feed"></div>
+        <div class="live-chat-composer" data-endpoint="POST /api/live/:id/chat">
+          <div class="live-chat-box">
+            <input type="text" placeholder="Say something…" />
+            <button class="send"><svg><use href="#i-send"></use></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section style="margin-bottom:2.6rem;">
+      <div class="row-header"><h2>Upcoming sessions</h2><a class="ghost-link" href="#">Subscribe to calendar <svg><use href="#i-arrow"></use></svg></a></div>
+      <div class="sched-list" id="sched-list" data-endpoint="GET /api/live/schedule"></div>
+    </section>
+
+    
+    <section>
+      <div class="row-header"><h2>Recent replays</h2><a class="ghost-link" href="library.html">Full library <svg><use href="#i-arrow"></use></svg></a></div>
+      <div class="replay-grid" id="replay-grid" data-endpoint="GET /api/live/replays"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-legal" style="border-top:0;padding-top:2.5rem;">
+      <span>© 2026 ShivWorks · The Network</span>
+      <span>theshivworksnetwork.com · shivworks.com</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-radio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+</svg>

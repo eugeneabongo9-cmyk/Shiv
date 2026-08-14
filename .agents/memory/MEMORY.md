@@ -1,0 +1,2 @@
+- [ESLint Svelte/TS setup quirks](eslint-setup-quirks.md) — no-undef must be off for TS/Svelte; prettier must use scoped globs not `.`
+- [GitHub Actions runner provisioning failure](github-actions-runner.md) — CI install job fails with runner_id=0 on every branch; account-level billing/quota issue, not code.

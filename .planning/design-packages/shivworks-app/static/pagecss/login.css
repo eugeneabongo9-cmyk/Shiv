@@ -1,0 +1,94 @@
+body { min-height: 100vh; }
+
+  .auth-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+  @media (max-width: 860px) { .auth-shell { grid-template-columns: 1fr; } }
+
+  /* ---- left: branded hero ---- */
+  .auth-hero {
+    position: relative;
+    padding: 3rem 3.4rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-right: 1px solid var(--color-border);
+    background:
+      radial-gradient(120% 90% at 0% 0%, rgba(188,19,19,0.10), transparent 55%),
+      var(--color-bg-alt, #131313);
+    overflow: hidden;
+  }
+  @media (max-width: 860px) { .auth-hero { display: none; } }
+  .auth-hero::after {
+    /* faint grid texture */
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 38px 38px;
+    mask-image: radial-gradient(120% 100% at 0% 0%, #000, transparent 70%);
+  }
+  .auth-hero > * { position: relative; z-index: 1; }
+  .hero-brand { display: flex; align-items: center; gap: 0.7rem; }
+  .hero-brand img { width: 2.4rem; height: 2.4rem; object-fit: contain; }
+  .hero-brand .hb-name { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; font-size: 1.02rem; text-transform: uppercase; }
+  .hero-copy { max-width: 27rem; }
+  .hero-copy .eyebrow { margin-bottom: 1rem; }
+  .hero-copy h1 { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(2rem, 3.4vw, 2.9rem); line-height: 1.04; letter-spacing: -0.01em; }
+  .hero-copy p { color: var(--color-fg-muted); font-size: 1rem; line-height: 1.6; margin-top: 1rem; }
+  .hero-points { list-style: none; padding: 0; margin: 1.8rem 0 0; display: flex; flex-direction: column; gap: 0.85rem; }
+  .hero-points li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.92rem; color: var(--color-fg-secondary); }
+  .hero-points .hp-ico { width: 1.6rem; height: 1.6rem; flex: 0 0 auto; border-radius: 5px; display: grid; place-items: center; border: 1px solid var(--color-accent-border); background: var(--color-accent-soft); color: var(--color-accent); }
+  .hero-points .hp-ico svg { width: 0.9rem; height: 0.9rem; }
+  .hero-foot { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-fg-faint); }
+
+  /* ---- right: auth column ---- */
+  .auth-pane { display: grid; place-items: center; padding: 2.5rem 1.5rem; }
+  .auth-wrap { width: min(420px, 100%); }
+  .auth-wrap .mobile-brand { display: none; align-items: center; gap: 0.6rem; justify-content: center; margin-bottom: 1.6rem; }
+  .auth-wrap .mobile-brand img { width: 2rem; height: 2rem; }
+  .auth-wrap .mobile-brand span { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: 0.95rem; }
+  @media (max-width: 860px) { .auth-wrap .mobile-brand { display: flex; } }
+
+  .auth-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); border: 1px solid var(--color-accent-border); background: var(--color-accent-soft); border-radius: 999px; padding: 0.4rem 0.8rem; }
+  .auth-tag svg { width: 0.9rem; height: 0.9rem; }
+  .auth-head h2 { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 1.55rem; margin-top: 0.9rem; }
+  .auth-head .sub { color: var(--color-fg-muted); font-size: 0.88rem; line-height: 1.55; margin-top: 0.45rem; }
+
+  /* =========================================================
+     CLERK MOUNT SLOT
+     In the live SvelteKit app, Clerk renders here via
+     clerk.mountSignIn(node, {...}) — see ClerkMount.svelte.
+     • Element id below mirrors the host div the app binds to.
+     • The .clerk-fallback block is a static visual stand-in so
+       this mockup reads as complete; the real widget replaces it.
+     • Appearance tokens (red primary, dark card) already match
+       the authAppearance variables in ClerkMount.svelte.
+     ========================================================= -->
+  .clerk-slot { margin-top: 1.6rem; position: relative; }
+
+  /* static stand-in styled to match Clerk's <SignIn /> appearance */
+  .clerk-fallback { display: flex; flex-direction: column; gap: 0.9rem; }
+  .clerk-fallback .cf-social { display: flex; flex-direction: column; gap: 0.6rem; }
+  .clerk-fallback .cf-oauth { display: flex; align-items: center; justify-content: center; gap: 0.6rem; width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--color-border-strong); background: rgba(255,255,255,0.04); color: var(--color-fg-primary); font-size: 0.9rem; font-weight: 600; }
+  .clerk-fallback .cf-oauth:hover { border-color: var(--color-accent-border); background: rgba(255,255,255,0.06); }
+  .clerk-fallback .cf-oauth svg { width: 1.05rem; height: 1.05rem; }
+  .clerk-fallback .cf-divider { display: flex; align-items: center; gap: 0.8rem; color: var(--color-fg-faint); font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .clerk-fallback .cf-divider::before, .clerk-fallback .cf-divider::after { content: ""; flex: 1; height: 1px; background: var(--color-border); }
+  .clerk-fallback .cf-fld label { display: block; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-fg-muted); margin-bottom: 0.4rem; }
+  .clerk-fallback .cf-fld input { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--color-border-strong); border-radius: 6px; color: var(--color-fg-primary); font-family: var(--font-body); font-size: 0.92rem; padding: 0.7rem 0.8rem; }
+  .clerk-fallback .cf-fld input:focus { outline: 0; border-color: var(--color-accent-border); background: rgba(255,255,255,0.05); }
+  .clerk-fallback .cf-row { display: flex; align-items: center; justify-content: space-between; }
+  .clerk-fallback .cf-forgot { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-fg-muted); }
+  .clerk-fallback .cf-forgot:hover { color: #fff; }
+  .clerk-fallback .cf-submit { width: 100%; justify-content: center; margin-top: 0.2rem; background: linear-gradient(180deg, #bc1313, #8b0e0e); color: #fff; font-weight: 700; }
+
+  /* "not configured" state — mirrors ClerkMount.svelte mount-error */
+  .clerk-notice { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--color-border); background: rgba(255,255,255,0.02); font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-fg-faint); display: flex; align-items: center; gap: 0.55rem; }
+  .clerk-notice svg { width: 0.85rem; height: 0.85rem; color: var(--color-accent); flex: 0 0 auto; }
+
+  .auth-altfoot { margin-top: 1.4rem; text-align: center; font-size: 0.85rem; color: var(--color-fg-muted); }
+  .auth-altfoot a { color: var(--color-fg-primary); font-weight: 600; }
+  .auth-altfoot a:hover { color: var(--color-accent); }
+  .auth-legal { margin-top: 1.6rem; text-align: center; font-size: 0.72rem; line-height: 1.5; color: var(--color-fg-faint); }
+  .auth-legal a { color: var(--color-fg-muted); text-decoration: underline; text-underline-offset: 2px; }

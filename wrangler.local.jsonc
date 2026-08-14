@@ -1,0 +1,58 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Local-development platform config. Opt in with SHIVWORKS_LOCAL_DEV=1 (see
+	// package.json -> "dev:local"); nothing here affects a normal `pnpm dev`,
+	// `pnpm build`, or any deploy.
+	//
+	// Why this file exists at all: the SvelteKit Cloudflare adapter injects
+	// wrangler `vars` into platform.env during local dev, and resolveRuntimeEnv()
+	// lets platform.env OVERWRITE process.env. So anything declared in
+	// wrangler.jsonc cannot be changed from a shell variable or .env — including
+	// ENVIRONMENT and PUBLIC_SITE_URL. Two consequences locally:
+	//
+	//   1. ENVIRONMENT=production engages the production guard in hooks.server.ts,
+	//      which 503s every request unless WC_WEBHOOK_SECRET is supplied.
+	//   2. PUBLIC_SITE_URL + CLERK_AUTHORIZED_PARTIES feed Clerk's authorizedParties
+	//      allowlist (see resolveAuthorizedParties in src/lib/server/clerk.ts). With
+	//      only production hostnames in that list, a localhost session is rejected
+	//      and every member route bounces to /login.
+	//
+	// Same pattern the repo already uses for Replit (see svelte.config.js).
+	"name": "shivworks-network-local",
+	"compatibility_date": "2026-03-20",
+	"compatibility_flags": ["nodejs_compat"],
+	"pages_build_output_dir": ".svelte-kit/cloudflare",
+	"vars": {
+		// Stands the production guard down. No WC_WEBHOOK_SECRET needed locally.
+		"ENVIRONMENT": "development",
+		// Makes localhost the canonical origin, so Clerk authorizes the local session.
+		"PUBLIC_SITE_URL": "http://localhost:5173",
+		"PUBLIC_SHIVWORKS_MAIN_SITE": "https://shivworks.com",
+		"PUBLIC_SHIVWORKS_STORE_URL": "https://shivworkspg.com",
+		"PUBLIC_SHIVWORKS_MEMBERSHIP_URL": "https://shivworkspg.com/theshivworksnetwork/",
+		"PUBLIC_SUPPORT_EMAIL": "network@shivworks.com",
+		// Both loopback spellings plus the Vite preview port, so a session survives
+		// switching between them. Clerk keys themselves stay in .env — never here.
+		"CLERK_AUTHORIZED_PARTIES": "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173",
+		"CLOUDFLARE_ACCOUNT_ID": "ce810d489150aad89d66eabff9a0288e"
+	},
+	// Same binding names as production so code paths are identical. With --local
+	// wrangler resolves these against .wrangler/state/, never the remote database:
+	// apply schema with
+	//   pnpm exec wrangler d1 migrations apply shivworks-network-db --local
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "shivworks-network-db",
+			"database_id": "77c0198a-378e-4eb7-aa56-801dc0fa6c3d",
+			"preview_database_id": "34989672-f824-405d-aed9-1efd4497fb7a"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "KV",
+			"id": "a6e45e2190b9435f91ac645ebf2b0ea2",
+			"preview_id": "a6e45e2190b9435f91ac645ebf2b0ea2"
+		}
+	]
+}

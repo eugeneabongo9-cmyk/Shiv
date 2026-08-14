@@ -1,0 +1,47 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+  "name": "shivworks-network",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [5173, 4173, 3000],
+  "portsAttributes": {
+    "5173": {
+      "label": "vite dev",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "4173": {
+      "label": "vite preview / playwright",
+      "onAutoForward": "silent"
+    },
+    "3000": {
+      "label": "node adapter (start:replit)",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "svelte.svelte-vscode",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-playwright.playwright",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[svelte]": {
+          "editor.defaultFormatter": "svelte.svelte-vscode"
+        },
+        "eslint.validate": ["javascript", "typescript", "svelte"],
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "remoteUser": "node"
+}

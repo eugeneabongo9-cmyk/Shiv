@@ -1,0 +1,86 @@
+<div class="sidebar-main">
+
+<main class="live">
+  <div class="container">
+    <div class="fp">
+      <div class="fp-head section-heading" style="margin-bottom:0;max-width:none;">
+        <p class="eyebrow">Network</p>
+        <h1>Find Partners</h1>
+        <p class="lede">Members who opted into the partner finder. Filter by location, background, and rank to find people to train with near you. Your card appears here only while <strong style="color:var(--color-fg-secondary);">"Show me in the partner finder"</strong> is on in your Training Profile.</p>
+      </div>
+
+      <div class="fp-layout">
+        
+        <aside class="fp-filters" id="fp-filters" data-endpoint="GET /api/partners/filters">
+          <h2><svg><use href="#i-filter"></use></svg> Filters</h2>
+
+          <div class="fp-fgroup">
+            <p class="fl">Location</p>
+            <div class="fp-field"><svg><use href="#i-pin"></use></svg><input type="text" id="loc-input" placeholder="City or state" /></div>
+          </div>
+
+          <div class="fp-fgroup">
+            <p class="fl">Background</p>
+            <label class="fp-opt"><input type="checkbox" data-facet="bg" value="law_enforcement"><span class="bx"><svg><use href="#i-check"></use></svg></span> Law Enforcement <span class="ct">21</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="bg" value="military"><span class="bx"><svg><use href="#i-check"></use></svg></span> Military <span class="ct">18</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="bg" value="medical"><span class="bx"><svg><use href="#i-check"></use></svg></span> Medical <span class="ct">7</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="bg" value="civilian"><span class="bx"><svg><use href="#i-check"></use></svg></span> Civilian <span class="ct">44</span></label>
+          </div>
+
+          <div class="fp-fgroup">
+            <p class="fl">Rank</p>
+            <label class="fp-opt"><input type="checkbox" data-facet="rank" value="Collective"><span class="bx"><svg><use href="#i-check"></use></svg></span> Collective <span class="ct">5</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="rank" value="Pressure Tested"><span class="bx"><svg><use href="#i-check"></use></svg></span> Pressure Tested <span class="ct">12</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="rank" value="Trained Practitioner"><span class="bx"><svg><use href="#i-check"></use></svg></span> Trained Practitioner <span class="ct">28</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="rank" value="Practitioner"><span class="bx"><svg><use href="#i-check"></use></svg></span> Practitioner <span class="ct">34</span></label>
+          </div>
+
+          <div class="fp-fgroup">
+            <p class="fl">Alumni</p>
+            <label class="fp-opt"><input type="checkbox" data-facet="alum" value="ecqc"><span class="bx"><svg><use href="#i-check"></use></svg></span> ECQC alumni <span class="ct">31</span></label>
+            <label class="fp-opt"><input type="checkbox" data-facet="alum" value="muc"><span class="bx"><svg><use href="#i-check"></use></svg></span> MUC alumni <span class="ct">26</span></label>
+          </div>
+
+          <button class="btn btn-secondary fp-clear" id="fp-clear">Clear filters</button>
+        </aside>
+
+        
+        <section>
+          <div class="fp-resbar">
+            <button class="btn btn-secondary fp-mobile-filter" id="fp-toggle"><svg><use href="#i-filter"></use></svg> Filters</button>
+            <p class="fp-count"><b id="fp-n">8</b> members found · within 250 mi of Austin, TX</p>
+            <div class="fp-sort">Sort
+              <select id="fp-sort">
+                <option value="distance">Nearest</option>
+                <option value="rank">Highest rank</option>
+                <option value="recent">Recently active</option>
+              </select>
+            </div>
+          </div>
+          <div class="fp-grid" id="fp-grid" data-endpoint="GET /api/partners?state=&background=&rank="></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-legal" style="border-top:0;padding-top:2.5rem;">
+      <span>© 2026 ShivWorks · The Network</span>
+      <span>theshivworksnetwork.com · shivworks.com</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+</svg>

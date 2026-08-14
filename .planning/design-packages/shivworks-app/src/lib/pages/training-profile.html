@@ -1,0 +1,120 @@
+<div class="sidebar-main">
+<main class="tp">
+  <div class="container">
+    <div class="section-heading" style="margin-bottom:1.6rem;">
+      <p class="eyebrow">Training profile</p>
+      <h1>Tell the network who you are.</h1>
+      <p>These fields populate your dossier, surface credibility chips on your member card, and power the Training Partner Finder. Required fields take less than a minute.</p>
+    </div>
+
+    <div class="tp-grid">
+      
+      <aside class="tp-rail">
+        <div class="panel tp-card-id" data-endpoint="GET /api/me">
+          <div class="tp-avatar">MR</div>
+          <div>
+            <h2>Marcus Reyes</h2>
+            <p style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-fg-muted);margin-top:0.3rem;">Bronze · Trained Practitioner</p>
+          </div>
+          <div class="chips">
+            <span class="tag accent">ECQC Alumni</span>
+            <span class="tag accent">MUC Alumni</span>
+            <span class="tag">Austin, TX</span>
+          </div>
+        </div>
+        <div class="panel tp-completion" data-endpoint="GET /api/me/profile/completion">
+          <div class="row"><span>Profile completion</span><span>85%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:85%"></div></div>
+          <p style="font-size:0.8rem;color:var(--color-fg-muted);line-height:1.5;margin-top:0.8rem;">Add your carry setup and other courses to reach 100% and earn <strong style="color:var(--color-accent)">+20 TP</strong>.</p>
+        </div>
+      </aside>
+
+      
+      <form class="tp-form" onsubmit="return false;" data-endpoint="GET,POST /api/me/profile">
+        
+        <div class="panel form-section">
+          <div class="form-section-head">
+            <p class="eyebrow">Location</p>
+            <h2>Used for the Training Partner Finder.</h2>
+          </div>
+          <div class="field-row two">
+            <label class="field"><span>City</span><input type="text" value="Austin" /></label>
+            <label class="field"><span>State</span><input type="text" maxlength="2" value="TX" placeholder="TX" /></label>
+          </div>
+        </div>
+
+        
+        <div class="panel form-section">
+          <div class="form-section-head">
+            <p class="eyebrow">Background</p>
+            <h2>Select all that apply.</h2>
+          </div>
+          <div class="choice-grid">
+            <label class="choice"><input type="checkbox" checked /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Civilian</label>
+            <label class="choice"><input type="checkbox" /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Law Enforcement</label>
+            <label class="choice"><input type="checkbox" checked /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Military</label>
+            <label class="choice"><input type="checkbox" /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Medical</label>
+            <label class="choice"><input type="checkbox" /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Other</label>
+          </div>
+        </div>
+
+        
+        <div class="panel form-section">
+          <div class="form-section-head">
+            <p class="eyebrow">ShivWorks history</p>
+            <h2>Alumni status &amp; experience.</h2>
+          </div>
+          <div class="choice-grid">
+            <label class="choice"><input type="checkbox" checked /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> ECQC Alumni</label>
+            <label class="choice"><input type="checkbox" checked /><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> MUC Alumni</label>
+          </div>
+          <label class="field"><span>Other ShivWorks courses completed (optional)</span><textarea rows="2" placeholder="e.g. Armed Movement in Structures, Vehicle Combatives…"></textarea></label>
+          <label class="field"><span>Primary carry setup (optional)</span><input type="text" placeholder="e.g. Glock 19 AIWB, Tenicor, Clinch Pick" /></label>
+        </div>
+
+        
+        <div class="panel form-section">
+          <div class="form-section-head">
+            <p class="eyebrow">Intent</p>
+            <h2>Training goal.</h2>
+            <p>One sentence. This appears at the top of your dossier.</p>
+          </div>
+          <label class="field"><input type="text" value="Build a reliable open-hand default and entangled-clinch base before it ever reaches the gun." /></label>
+        </div>
+
+        
+        <div class="panel form-section">
+          <div class="form-section-head">
+            <p class="eyebrow">Visibility</p>
+            <h2>Control where you appear.</h2>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <span class="sw"></span>
+            <span class="tl"><strong>Show me in the Training Partner Finder</strong><small>Other members can find you by state, background, and ECQC status. You stay opted in by default — toggle off if you need operational security.</small></span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" />
+            <span class="sw"></span>
+            <span class="tl"><strong>Show me on the Leaderboard</strong><small>Off by default. Your first name and last initial appear ranked by Training Points. You can toggle this off any time.</small></span>
+          </label>
+        </div>
+
+        <div class="settings-actions">
+          <button class="btn btn-primary" type="submit">Save profile</button>
+          <a class="ghost-link" href="dashboard.html">Back to dashboard</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-legal" style="border-top:0;padding-top:2.5rem;">
+      <span>© 2026 ShivWorks · The Network</span>
+      <span>theshivworksnetwork.com · shivworks.com</span>
+    </div>
+  </div>
+</footer>
+</div>

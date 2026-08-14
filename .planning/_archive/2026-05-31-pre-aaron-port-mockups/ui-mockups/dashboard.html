@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Dashboard mockup · ShivWorks Network</title>
+		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet" />
+		<style>
+			:root {
+				--font-display: 'Space Grotesk', sans-serif; --font-body: 'Space Grotesk', sans-serif; --font-mono: 'Space Mono', ui-monospace, monospace;
+				--color-bg: #060606; --color-fg-primary: #f4ede1; --color-fg-secondary: #d4c4a6; --color-fg-muted: #938778;
+				--color-accent: #d1b27a; --color-accent-strong: #9b673c; --color-accent-soft: rgba(209,178,122,0.12);
+				--color-border: rgba(209,178,122,0.18); --color-border-strong: rgba(209,178,122,0.38);
+				--color-rule: rgba(255,255,255,0.07);
+				--surface: linear-gradient(180deg, rgba(16,16,17,0.96), rgba(8,8,9,0.98));
+				--surface-elevated: linear-gradient(180deg, rgba(26,20,14,0.98), rgba(10,10,10,0.98));
+				--shadow-card: 0 28px 84px rgba(0,0,0,0.42); --container-max: 1200px;
+			}
+			* { box-sizing: border-box; }
+			body { margin: 0; font-family: var(--font-body);
+				background: radial-gradient(circle at top left, rgba(209,178,122,0.16), transparent 20%),
+					radial-gradient(circle at 86% 12%, rgba(155,103,60,0.18), transparent 16%), var(--color-bg);
+				color: var(--color-fg-primary); min-height: 100vh;
+			}
+			body::before { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: 0.12;
+				background: repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 116px),
+					repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 92px);
+				mix-blend-mode: soft-light;
+			}
+			.container { max-width: var(--container-max); margin: 0 auto; padding: 0 2rem; }
+			.mockup-banner { background: rgba(209,178,122,0.06); border-bottom: 1px dashed var(--color-border);
+				padding: 0.65rem 2rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-fg-muted);
+				letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+			}
+			.mockup-banner b { color: var(--color-accent); }
+			.nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem;
+				border-bottom: 1px solid var(--color-rule); max-width: var(--container-max); margin: 0 auto;
+			}
+			.nav-brand { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.85rem; }
+			.nav-brand span { color: var(--color-accent); }
+			.nav-actions { display: flex; gap: 1.25rem; align-items: center; }
+			.nav-link { color: var(--color-fg-secondary); font-size: 0.9rem; text-decoration: none; }
+			.nav-link.active { color: var(--color-fg-primary); border-bottom: 1px solid var(--color-accent); padding-bottom: 0.15rem; }
+			.eyebrow { font-size: 0.75rem; font-weight: 500; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.18em; margin: 0 0 1rem; }
+			.btn-primary { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.85rem 1.35rem; background: var(--color-accent); color: #1a120a; border-radius: 1rem; font-weight: 700; text-decoration: none; }
+			.btn-secondary { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.85rem 1.35rem; border: 1px solid var(--color-border-strong); color: var(--color-fg-primary); border-radius: 1rem; text-decoration: none; font-weight: 500; }
+			.btn-tertiary { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--color-accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; border-bottom: 1px solid transparent; }
+			.btn-tertiary:hover { border-color: var(--color-accent); }
+			.panel { background: var(--surface); border: 1px solid var(--color-border); border-radius: 1.25rem; box-shadow: var(--shadow-card); }
+
+			/* dashboard layout */
+			.dash-shell { padding: 3rem 0 5rem; }
+			.dash-grid { display: grid; gap: 1.5rem; }
+
+			.cohort-hero { padding: 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; background: var(--surface-elevated); }
+			.cohort-hero h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+			.cohort-hero p { color: var(--color-fg-secondary); margin: 0; max-width: 36rem; line-height: 1.5; }
+			.cohort-progress-pill {
+				font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent);
+				background: rgba(209,178,122,0.1); padding: 0.5rem 1rem; border-radius: 999px;
+				letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
+			}
+
+			.profile-cta { padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+				border-left: 3px solid var(--color-accent); background: var(--surface);
+			}
+			.profile-cta-icon { width: 2.5rem; height: 2.5rem; border-radius: 999px; background: var(--color-accent-soft); display: grid; place-items: center; color: var(--color-accent); font-family: var(--font-mono); font-weight: 700; flex-shrink: 0; }
+			.profile-cta-text { flex: 1; min-width: 12rem; }
+			.profile-cta-text strong { font-family: var(--font-display); display: block; font-size: 1.05rem; margin-bottom: 0.2rem; }
+			.profile-cta-text span { color: var(--color-fg-muted); font-size: 0.9rem; }
+
+			.dash-cols { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; }
+			.dash-card { padding: 2rem; display: grid; gap: 1rem; }
+			.dash-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+			.dash-card-head h2 { font-family: var(--font-display); font-size: 1.2rem; margin: 0; letter-spacing: -0.01em; }
+			.dash-card-head .meta { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-fg-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+			.next-up { display: grid; gap: 1rem; }
+			.next-up-item { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center;
+				padding: 1rem 1.25rem; border: 1px solid var(--color-border); border-radius: 1rem;
+				background: rgba(255,255,255,0.015);
+			}
+			.next-up-icon { width: 2rem; height: 2rem; border-radius: 999px; background: var(--color-accent-soft); display: grid; place-items: center; color: var(--color-accent); font-family: var(--font-mono); font-size: 0.85rem; }
+			.next-up-text strong { display: block; font-family: var(--font-display); margin-bottom: 0.15rem; }
+			.next-up-text span { color: var(--color-fg-muted); font-size: 0.85rem; }
+			.next-up-date { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-fg-secondary); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+
+			.live-today { display: grid; gap: 0.75rem; }
+			.live-row { display: flex; align-items: center; gap: 0.85rem; padding: 0.85rem 0; border-bottom: 1px solid var(--color-rule); font-size: 0.95rem; }
+			.live-row:last-child { border-bottom: 0; }
+			.live-dot { width: 0.55rem; height: 0.55rem; border-radius: 999px; background: #6ec98a; box-shadow: 0 0 0 3px rgba(110,201,138,0.18); flex-shrink: 0; }
+			.live-label { flex: 1; }
+			.live-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-fg-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+			.updates-empty { padding: 3rem 2rem; text-align: center; }
+			.updates-empty p { color: var(--color-fg-muted); margin: 0.5rem 0; line-height: 1.5; }
+			.updates-empty strong { display: block; font-family: var(--font-display); font-size: 1.1rem; color: var(--color-fg-secondary); margin-bottom: 0.5rem; }
+
+			footer { border-top: 1px solid var(--color-rule); padding: 2rem 0; color: var(--color-fg-muted); font-size: 0.8rem; text-align: center; font-family: var(--font-mono); margin-top: 3rem; }
+
+			@media (max-width: 900px) {
+				.cohort-hero { grid-template-columns: 1fr; }
+				.dash-cols { grid-template-columns: 1fr; }
+			}
+			@media (max-width: 560px) { .container { padding: 0 1.25rem; } .nav { padding: 1rem 1.25rem; } .nav-actions { gap: 0.75rem; } }
+		</style>
+	</head>
+	<body>
+		<div class="mockup-banner">Mockup · <b>dashboard</b> · v0 · audit at .planning/ui-audits/dashboard.md</div>
+
+		<nav class="nav">
+			<div class="nav-brand">ShivWorks <span>Network</span></div>
+			<div class="nav-actions">
+				<a class="nav-link active" href="#">Dashboard</a>
+				<a class="nav-link" href="#">Library</a>
+				<a class="nav-link" href="#">Community</a>
+				<a class="nav-link" href="#">Find partners</a>
+				<a class="nav-link" href="#">Account</a>
+			</div>
+		</nav>
+
+		<section class="dash-shell">
+			<div class="container dash-grid">
+
+				<!-- Cohort hero -->
+				<div class="panel cohort-hero">
+					<div>
+						<p class="eyebrow">Cohort 1 · Filming week</p>
+						<h1>Week 1 of 8. First module releases Dec 15.</h1>
+						<p>
+							Craig is on set this week. The full cohort schedule is below — modules drop weekly,
+							live sessions begin week 5. Set up your training profile while you wait.
+						</p>
+					</div>
+					<span class="cohort-progress-pill">Week 1 / 8</span>
+				</div>
+
+				<!-- Profile completion CTA (only when incomplete) -->
+				<div class="panel profile-cta">
+					<div class="profile-cta-icon">✓</div>
+					<div class="profile-cta-text">
+						<strong>Finish your training profile (2 minutes)</strong>
+						<span>Unlocks the partner finder and powers recommendations as modules drop.</span>
+					</div>
+					<a class="btn-primary" href="#">Set up profile →</a>
+				</div>
+
+				<!-- Two-column area -->
+				<div class="dash-cols">
+
+					<!-- Next up — left col -->
+					<div class="panel dash-card">
+						<div class="dash-card-head">
+							<h2>What's coming next</h2>
+							<span class="meta">Real dates · not aspirational</span>
+						</div>
+						<div class="next-up">
+							<div class="next-up-item">
+								<div class="next-up-icon">01</div>
+								<div class="next-up-text">
+									<strong>Module 01 — Origin Story</strong>
+									<span>Craig opens the cohort · ~45 min</span>
+								</div>
+								<span class="next-up-date">Dec 15</span>
+							</div>
+							<div class="next-up-item">
+								<div class="next-up-icon">02</div>
+								<div class="next-up-text">
+									<strong>Module 02 — Foundations of force</strong>
+									<span>The framework before the techniques · ~60 min</span>
+								</div>
+								<span class="next-up-date">Dec 22</span>
+							</div>
+							<div class="next-up-item">
+								<div class="next-up-icon">L1</div>
+								<div class="next-up-text">
+									<strong>First live session</strong>
+									<span>Members-only Q&A with Craig</span>
+								</div>
+								<span class="next-up-date">Week 5</span>
+							</div>
+						</div>
+						<a class="btn-tertiary" href="#">See the full roadmap →</a>
+					</div>
+
+					<!-- Live today — right col -->
+					<div class="panel dash-card">
+						<div class="dash-card-head">
+							<h2>Live for you today</h2>
+							<span class="meta">What works now</span>
+						</div>
+						<div class="live-today">
+							<div class="live-row">
+								<span class="live-dot"></span>
+								<span class="live-label">Member account + sign-in</span>
+								<span class="live-meta">/account</span>
+							</div>
+							<div class="live-row">
+								<span class="live-dot"></span>
+								<span class="live-label">Partner finder</span>
+								<span class="live-meta">/find-partners</span>
+							</div>
+							<div class="live-row">
+								<span class="live-dot"></span>
+								<span class="live-label">Community discussion</span>
+								<span class="live-meta">/community</span>
+							</div>
+							<div class="live-row">
+								<span class="live-dot"></span>
+								<span class="live-label">Curriculum roadmap</span>
+								<span class="live-meta">/library</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Updates feed (empty state) -->
+				<div class="panel updates-empty">
+					<strong>No updates yet — the first one drops with Module 01.</strong>
+					<p>
+						This feed will carry behind-the-scenes filming notes, schedule changes, and any cohort
+						announcements between now and launch. Watch this space.
+					</p>
+				</div>
+
+			</div>
+		</section>
+
+		<footer>© 2026 ShivWorks · dashboard mockup · v0</footer>
+	</body>
+</html>

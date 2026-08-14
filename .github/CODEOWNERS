@@ -1,0 +1,47 @@
+# CODEOWNERS — ShivWorks Network
+# Format: <path-or-glob>  <owner-or-team>  [<owner-or-team> ...]
+# Last matching pattern wins (per GitHub spec).
+# Owners listed here are auto-requested for review when matching files change
+# and are required for branch-protection approval per SOP §3.
+#
+# Replace placeholder handles (@TBD-*) with real GitHub usernames before
+# branch protection is enabled.
+
+# Global fallback — everything needs at least one of these reviewers.
+*                                       @TBD-alex @TBD-aaron-or-max
+
+# Authentication surface — auth changes need extra scrutiny.
+/src/lib/server/clerk.ts                @TBD-alex @TBD-max-stern
+/src/lib/server/guards.ts               @TBD-alex @TBD-max-stern
+/src/lib/server/session-security.ts     @TBD-alex @TBD-max-stern
+/src/routes/api/clerk/webhook/          @TBD-alex @TBD-max-stern
+/src/routes/login/                      @TBD-alex
+/src/routes/signup/                     @TBD-alex
+/src/routes/settings/                   @TBD-alex
+
+# Payments surface — revenue-critical.
+/src/routes/api/stripe/                 @TBD-alex @TBD-aaron-or-max
+/src/routes/checkout/                   @TBD-alex @TBD-aaron-or-max
+
+# Database + migrations — irreversible.
+/migrations/                            @TBD-alex @TBD-max-stern
+/src/lib/server/db/                     @TBD-alex
+/src/lib/server/d1-compat.ts            @TBD-alex
+
+# Infrastructure + secrets.
+/wrangler.jsonc                         @TBD-alex @TBD-max-stern
+/wrangler.replit.jsonc                  @TBD-alex
+/.env.example                           @TBD-alex @TBD-max-stern
+/.replit                                @TBD-alex
+/replit.nix                             @TBD-alex
+
+# CI/CD.
+/.github/                               @TBD-max-stern @TBD-alex
+/scripts/                               @TBD-max-stern @TBD-alex
+
+# Engineering standards + governance.
+/.planning/                             @TBD-max-stern
+/eslint.config.js                       @TBD-max-stern
+/.prettierrc.json                       @TBD-max-stern
+/CODEOWNERS                             @TBD-max-stern
+/CONTRIBUTING.md                        @TBD-max-stern

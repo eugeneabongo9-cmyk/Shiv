@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Macks Studios LLC — AI-Augmented Engagement Summary · ShivWorks Network</title>
+<style>
+  @page { size: Letter; margin: 0.5in; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #24292f;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .header { text-align: center; margin-bottom: 28px; }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .title { font-size: 32px; font-weight: 300; margin: 8px 0 0; }
+  .subtitle { color: #57606a; font-size: 13px; margin-top: 6px; }
+  .divider { border: none; border-top: 1px solid #d0d7de; margin: 16px auto 0; width: 80px; }
+  .intro { margin: 24px 0 28px; color: #424a53; }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 8px 0 32px;
+  }
+  .tier {
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 20px 18px;
+    background: #f6f8fa;
+  }
+  .tier .label {
+    color: #57606a;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .tier .price { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .tier .price.struck { color: #8c959f; text-decoration: line-through; font-weight: 400; }
+  .tier .desc { color: #57606a; font-size: 12px; line-height: 1.5; }
+  .tier.ai { background: #ddf4ff; border-color: #54aeff; }
+  .tier.ai .price { color: #0969da; }
+  .tier.billed { background: #dafbe1; border-color: #1a7f37; }
+  .tier.billed .price { color: #1a7f37; }
+
+  h2 {
+    font-size: 17px;
+    margin: 32px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #d0d7de;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; }
+  th, td {
+    text-align: left;
+    padding: 9px 8px;
+    border-bottom: 1px solid #d0d7de;
+    font-size: 13px;
+    vertical-align: top;
+  }
+  th {
+    color: #57606a;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    border-bottom: 2px solid #24292f;
+  }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.struck { color: #8c959f; text-decoration: line-through; }
+  td.ai { color: #0969da; font-weight: 600; }
+  td.billed { color: #1a7f37; font-weight: 600; }
+  tr.subtotal td { font-weight: 600; background: #f6f8fa; }
+  tr.total td { font-weight: 700; font-size: 14px; border-top: 2px solid #24292f; }
+
+  .methodology {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: #f6f8fa;
+    border-left: 3px solid #54aeff;
+    border-radius: 4px;
+    color: #424a53;
+    font-size: 12px;
+  }
+  .methodology p { margin: 0 0 8px; }
+  .methodology p:last-child { margin-bottom: 0; }
+  .methodology strong { color: #24292f; }
+
+  .footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #d0d7de;
+    display: flex;
+    justify-content: space-between;
+    color: #8c959f;
+    font-size: 12px;
+  }
+  .footer .brand { color: #24292f; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .stamp {
+    position: absolute;
+    top: 50px; right: 50px;
+    border: 3px solid #1a7f37;
+    color: #1a7f37;
+    padding: 6px 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transform: rotate(-8deg);
+    opacity: 0.35;
+    font-size: 16px;
+  }
+
+  @media print {
+    body { padding: 0; }
+    .tier-grid { break-inside: avoid; }
+    table { break-inside: auto; }
+    tr { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="stamp">NO BALANCE DUE</div>
+
+  <div class="header">
+    <div class="logo">MACKS STUDIOS</div>
+    <h1 class="title">AI-Augmented Engagement Summary</h1>
+    <div class="subtitle">ShivWorks Network · Production-Readiness Pass · 2026-05-26</div>
+    <hr class="divider" />
+  </div>
+
+  <p class="intro">
+    This engagement was delivered using an AI-augmented workflow — Claude (Anthropic's coding agent) operating
+    under Max Stern's direction. The hours and outputs are real, but execution velocity was an order of
+    magnitude above unassisted senior-engineer pace. This summary documents three rate tiers so the value
+    delivered is transparent at any reading depth: the standard rate Macks Studios charges human-only
+    engagements, an AI-augmented rate reflecting the velocity multiplier, and the actual amount billed
+    to Outerfields ($0 — pro bono).
+  </p>
+
+  <div class="tier-grid">
+    <div class="tier">
+      <div class="label">Standard rate</div>
+      <div class="price">$4,627.50</div>
+      <div class="desc">35.5 hrs at blended Jr/Mid/Sr rates. The figure a comparable human-only engagement would carry.</div>
+    </div>
+    <div class="tier ai">
+      <div class="label">AI-augmented rate</div>
+      <div class="price">$462.75</div>
+      <div class="desc">1/10 of standard rate. Reflects the velocity multiplier of supervised AI work — same outputs, ~10× faster.</div>
+    </div>
+    <div class="tier billed">
+      <div class="label">Billed to Outerfields</div>
+      <div class="price">$0.00</div>
+      <div class="desc">Pro-bono contribution to the ShivWorks Network launch.</div>
+    </div>
+  </div>
+
+  <h2>Per-PR breakdown</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Invoice</th>
+        <th>Deliverable</th>
+        <th>Hrs</th>
+        <th>Standard</th>
+        <th>AI-augmented</th>
+        <th>Billed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>—</td>
+        <td>Bootstrap (ledger system + sync script)</td>
+        <td class="num">1.5</td>
+        <td class="num struck">$167.50</td>
+        <td class="num ai">$16.75</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-001</td>
+        <td>Lint + Format baseline</td>
+        <td class="num">3.5</td>
+        <td class="num struck">$437.50</td>
+        <td class="num ai">$43.75</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-002</td>
+        <td>Pre-commit hooks</td>
+        <td class="num">1.5</td>
+        <td class="num struck">$157.50</td>
+        <td class="num ai">$15.75</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-008</td>
+        <td>Governance (CODEOWNERS + Dependabot + CONTRIBUTING)</td>
+        <td class="num">2.0</td>
+        <td class="num struck">$210.00</td>
+        <td class="num ai">$21.00</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-004</td>
+        <td>Sentry SDK wiring (no-op pending DSN)</td>
+        <td class="num">4.0</td>
+        <td class="num struck">$500.00</td>
+        <td class="num ai">$50.00</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-005</td>
+        <td>Error boundaries + handleError taxonomy</td>
+        <td class="num">5.0</td>
+        <td class="num struck">$650.00</td>
+        <td class="num ai">$65.00</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-006</td>
+        <td>CI pipeline + PR template</td>
+        <td class="num">4.0</td>
+        <td class="num struck">$480.00</td>
+        <td class="num ai">$48.00</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-003a</td>
+        <td>Public-route smoke tests (Playwright)</td>
+        <td class="num">3.0</td>
+        <td class="num struck">$375.00</td>
+        <td class="num ai">$37.50</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr class="subtotal">
+        <td colspan="2">Subtotal — shipped through 2026-05-26</td>
+        <td class="num">24.5</td>
+        <td class="num struck">$2,977.50</td>
+        <td class="num ai">$297.75</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-003b</td>
+        <td>Auth-gated smoke tests (waiting on Clerk users)</td>
+        <td class="num">3.0</td>
+        <td class="num struck">$375.00</td>
+        <td class="num ai">$37.50</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr>
+        <td>INV-007</td>
+        <td>Security hardening (webhooks, validation, headers)</td>
+        <td class="num">8.0</td>
+        <td class="num struck">$1,275.00</td>
+        <td class="num ai">$127.50</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr class="subtotal">
+        <td colspan="2">Subtotal — remaining (forecast)</td>
+        <td class="num">11.0</td>
+        <td class="num struck">$1,650.00</td>
+        <td class="num ai">$165.00</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+      <tr class="total">
+        <td colspan="2">Engagement total</td>
+        <td class="num">35.5</td>
+        <td class="num struck">$4,627.50</td>
+        <td class="num ai">$462.75</td>
+        <td class="num billed">$0.00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Why three tiers?</h2>
+
+  <div class="methodology">
+    <p>
+      <strong>Standard rate ($4,627.50)</strong> — what a comparable engagement carries when delivered by
+      human engineers at blended Jr/Mid/Sr rates ($85 / $125 / $175 per hour). This is the figure used
+      across the ledger, invoices, and value-sheet for value-translation purposes. It represents the
+      <em>market price of the outputs</em>, independent of how they were produced.
+    </p>
+    <p>
+      <strong>AI-augmented rate ($462.75)</strong> — what this engagement reasonably costs when an
+      AI-augmented workflow is the delivery method. The 1/10 multiplier reflects observed velocity:
+      same outputs, smaller calendar window, lower opportunity cost. This is the rate Macks Studios
+      would charge for similar AI-augmented work going forward, when not delivered pro bono.
+    </p>
+    <p>
+      <strong>Billed to Outerfields ($0.00)</strong> — the actual amount invoiced for this engagement.
+      Pro bono. The two figures above remain in the document so the engineering value is visible and
+      the work is reusable as a reference for future paid engagements.
+    </p>
+  </div>
+
+  <h2>What "AI-augmented" actually means here</h2>
+
+  <ul>
+    <li><strong>Specification authoring</strong> — Claude drafts the spec; Max reviews and corrects.</li>
+    <li><strong>Implementation</strong> — Claude writes code against the spec; Max approves diffs, catches scope creep, surfaces real-world deviations.</li>
+    <li><strong>Verification</strong> — Tests run locally and in CI. Failures get fixed before commits land. Same standard as any human engagement.</li>
+    <li><strong>Documentation</strong> — Every PR ships a ledger entry. No "AI wrote this and ran" — every decision has a written rationale.</li>
+    <li><strong>Direction</strong> — Max sets goals, makes priority calls, decides scope cuts, and is responsible for the output. The AI accelerates; the engineer accountable for what ships is Max Stern.</li>
+  </ul>
+
+  <p style="font-size: 12px; color: #57606a;">
+    The AI tooling cost (API usage, Claude Code subscription) is absorbed by Macks Studios. Not a
+    line item on this or any future invoice.
+  </p>
+
+  <div class="footer">
+    <div>
+      <div class="brand">Macks Studios LLC</div>
+      Remote-first · USA<br />
+      Engineering services
+    </div>
+    <div style="text-align: right;">
+      dev.mxcks@gmail.com<br />
+      maxstern.org
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Quick load smoke — ~1 minute. Catches gross regressions before running the full test.
+# Usage:
+#   pnpm load:smoke
+#   LOAD_TARGET=https://network.shivworks.com pnpm load:smoke
+
+config:
+  target: '{{ $processEnvironment.LOAD_TARGET || "http://localhost:4173" }}'
+  phases:
+    - { name: 'Smoke', duration: 60, arrivalRate: 10 }
+  defaults:
+    headers:
+      User-Agent: 'shivworks-artillery-smoke'
+  http:
+    timeout: 10
+  ensure:
+    p95: 1000
+    maxErrorRate: 2
+
+scenarios:
+  - name: 'Public routes'
+    flow:
+      - get: { url: '/' }
+      - think: 1
+      - get: { url: '/sitemap.xml' }
+      - get: { url: '/api/members' }
+      - get: { url: '/library' }

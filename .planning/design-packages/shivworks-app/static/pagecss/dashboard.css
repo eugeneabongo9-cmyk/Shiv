@@ -1,0 +1,110 @@
+.dash { padding: 2.4rem 0 4rem; }
+  .dash-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .dash-header h1 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900; text-transform: uppercase; margin-top: 0.4rem; }
+  .profile-chips { display: flex; gap: 0.5rem; align-items: center; }
+
+  .dash-section { margin-bottom: 2.6rem; }
+
+  /* resume card */
+  .resume-card { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 0; overflow: hidden; padding: 0; }
+  .resume-card .media-ph { aspect-ratio: auto; border: 0; border-right: 1px solid var(--color-border); border-radius: 0; min-height: 280px; }
+  .resume-body { padding: 2rem 2.2rem; display: flex; flex-direction: column; justify-content: center; gap: 0.7rem; }
+  .resume-body h2 { font-size: 1.7rem; text-transform: uppercase; }
+  .resume-module { color: var(--color-fg-secondary); font-size: 1rem; }
+  .resume-pct { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--color-fg-muted); text-transform: uppercase; }
+
+  /* training status */
+  .stat-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .stat-tile { display: flex; flex-direction: column; gap: 0.5rem; }
+  .stat-tile-icon { width: 2.2rem; height: 2.2rem; border-radius: 5px; display: grid; place-items: center; border: 1px solid var(--color-border-strong); color: var(--color-accent); }
+  .stat-tile-icon svg { width: 1.1rem; height: 1.1rem; }
+  .stat-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-fg-muted); }
+  .stat-value { font-family: var(--font-display); font-weight: 800; font-size: 1.9rem; line-height: 1; }
+  .stat-value.text { font-size: 1.25rem; }
+  .rank-progress { grid-column: 1 / -1; margin-top: 0.4rem; }
+  .rank-progress-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-fg-muted); margin-bottom: 0.5rem; }
+
+  /* whats new */
+  .whatsnew-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 1.1rem; }
+  .wn-card { display: flex; flex-direction: column; gap: 0.7rem; padding: 0; overflow: hidden; }
+  .wn-card .media-ph { border: 0; border-radius: 0; border-bottom: 1px solid var(--color-border); }
+  .wn-body { padding: 1.1rem 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+  .wn-card h3 { font-size: 1.08rem; line-height: 1.2; }
+  .wn-card p { color: var(--color-fg-muted); font-size: 0.9rem; line-height: 1.5; }
+  .wn-meta { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-fg-faint); margin-top: auto; }
+
+  /* course row */
+  .course-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  /* .course-card + .course-card-body/-top live globally in shivworks.css (COMPONENT: course-card) */
+  .mini-progress { margin-top: 0.3rem; }
+
+  /* split cta */
+  .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .promo-card { display: flex; align-items: center; gap: 1.3rem; padding: 1.6rem 1.8rem; }
+  .promo-icon { width: 3rem; height: 3rem; flex: 0 0 auto; border-radius: 6px; display: grid; place-items: center; border: 1px solid var(--color-accent-border); background: var(--color-accent-soft); color: var(--color-accent); }
+  .promo-icon svg { width: 1.4rem; height: 1.4rem; }
+  .promo-card h3 { font-size: 1.15rem; }
+  .promo-card p { color: var(--color-fg-muted); font-size: 0.9rem; margin: 0.3rem 0 0.7rem; line-height: 1.5; }
+  .live-dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--color-accent); box-shadow: 0 0 0 4px rgba(188,19,19,0.18); }
+
+  @media (max-width: 880px) {
+    .resume-card { grid-template-columns: 1fr; }
+    .resume-card .media-ph { border-right: 0; border-bottom: 1px solid var(--color-border); min-height: 200px; }
+    .stat-tiles { grid-template-columns: repeat(2, 1fr); }
+    .whatsnew-grid { grid-template-columns: 1fr; }
+    .course-row { grid-template-columns: repeat(2, 1fr); }
+    .split-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .dash { padding: 1.6rem 0 3rem; }
+    .dash-header { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+    .resume-body { padding: 1.4rem 1.3rem; }
+    .resume-body h2 { font-size: 1.4rem; }
+    .stat-tiles { gap: 0.7rem; padding: 1.2rem; }
+    .stat-value { font-size: 1.6rem; }
+    .stat-value.text { font-size: 1.1rem; }
+    .course-row { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .promo-card { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  }
+
+
+
+  #swl-preloader {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--color-bg, #0b0b0b);
+    transition: opacity 0.7s ease;
+    font-family: var(--font-mono, monospace);
+  }
+  #swl-preloader.swl-hidden { opacity: 0; pointer-events: none; }
+  .swl-word { width: min(560px, 80vw); height: 120px; }
+  .swl-word svg { width: 100%; height: 100%; }
+  .swl-ghost  { fill: transparent; stroke: rgba(255,255,255,0.10); stroke-width: 0.6px; }
+  .swl-bright {
+    fill: transparent; stroke: url(#swlTextGradient); stroke-width: 1.1px;
+    filter: drop-shadow(0 0 10px rgba(188,19,19,0.45));
+  }
+  .swl-word text {
+    font-family: var(--font-display, 'Archivo', sans-serif);
+    font-weight: 900; font-size: 58px; letter-spacing: 2px;
+  }
+  .swl-track {
+    width: 260px; height: 3px; margin-top: 22px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--color-border, rgba(255,255,255,0.08));
+    border-radius: 999px; overflow: hidden;
+  }
+  #swl-bar {
+    height: 100%; width: 0%;
+    background: var(--color-accent, #bc1313);
+    box-shadow: 0 0 10px var(--color-accent, #bc1313);
+    transition: width 0.25s ease-out;
+  }
+  .swl-status {
+    margin-top: 12px; font-size: 0.62rem; letter-spacing: 0.28em;
+    text-transform: uppercase; color: rgba(188,19,19,0.6);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #swl-preloader { transition: none; }
+    #swl-bar { transition: none; }
+  }

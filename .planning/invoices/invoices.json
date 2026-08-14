@@ -1,0 +1,523 @@
+{
+  "defaults": {
+    "DATE": "2026-05-26",
+    "CLIENT_NAME": "Outerfields — ShivWorks Network",
+    "CLIENT_EMAIL": "aaron@outerfields.example",
+    "REPO_REF": "createsomethingtoday/shivworks-network",
+    "SUPPORT_EMAIL": "dev.mxcks@gmail.com",
+    "COMPANY_ADDRESS_LINE_1": "Macks Studios LLC",
+    "COMPANY_ADDRESS_LINE_2": "Remote-first · USA",
+    "COMPANY_COUNTRY": "United States",
+    "COMPANY_WEBSITE": "maxstern.org",
+    "STATUS_STAMP": "ESTIMATE",
+    "TAX_NOTE": "No sales tax applied to professional services. 1099-reportable. Net 14."
+  },
+  "invoices": [
+    {
+      "INVOICE_ID": "INV-001",
+      "PR_TITLE": "Lint + Format baseline",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "chore/eslint-prettier-baseline",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 01 §1, §2",
+      "FILES_ADDED": ["eslint.config.js", ".prettierrc.json", ".prettierignore", ".editorconfig"],
+      "FILES_CHANGED": ["package.json", "pnpm-lock.yaml"],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "ESLint flat config + Svelte + TS plugins",
+          "HOURS": 1.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Install eslint + typescript-eslint + eslint-plugin-svelte. Author flat config with required rules at error/warn levels. Add lint / lint:fix scripts."
+        },
+        {
+          "NAME": "Prettier + EditorConfig",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Install prettier + prettier-plugin-svelte. Author .prettierrc.json matching repo conventions (tabs, single quotes, 100 width). .prettierignore + .editorconfig. format / format:check scripts."
+        },
+        {
+          "NAME": "One-time codebase reformat + lint fixes",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Run prettier --write across repo. Resolve lint findings to zero. Commit as separate atomic commit for clean blame."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-002",
+      "PR_TITLE": "Pre-commit hooks (simple-git-hooks + lint-staged)",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "chore/pre-commit",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 01 §3",
+      "FILES_ADDED": [],
+      "FILES_CHANGED": ["package.json", "pnpm-lock.yaml"],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "Install + wire simple-git-hooks",
+          "HOURS": 0.75,
+          "RATE": 85,
+          "ROLE": "junior dev",
+          "SUMMARY": "Add simple-git-hooks + lint-staged devDeps. Configure pre-commit to run lint-staged. prepare script for fresh checkouts."
+        },
+        {
+          "NAME": "lint-staged matrix + smoke test",
+          "HOURS": 0.75,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Per-glob: eslint --fix + prettier --write. Verify with a dirty staged commit that fails until fixed. Document override path for emergency hotfix."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-003",
+      "PR_TITLE": "Smoke tests (Playwright, public + auth-gated)",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "test/playwright-smoke",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 01 §5",
+      "FILES_ADDED": [
+        "playwright.config.ts",
+        "tests/smoke/public.spec.ts",
+        "tests/smoke/auth-gated.spec.ts",
+        "tests/smoke/global-setup.ts",
+        ".auth/.gitkeep"
+      ],
+      "FILES_CHANGED": ["package.json", ".gitignore"],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "Playwright install + config",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Install @playwright/test + chromium. Config with webServer pointing at pnpm preview, retries in CI, single chromium project."
+        },
+        {
+          "NAME": "Public route specs",
+          "HOURS": 1.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "/, /login, /signup, /welcome, /checkout, /sitemap.xml — assert 200 + visible content + no Error: leakage."
+        },
+        {
+          "NAME": "Clerk testing-token global setup",
+          "HOURS": 1.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "global-setup.ts signs in via Clerk testing tokens API. Persists storageState per role (member, vip, admin)."
+        },
+        {
+          "NAME": "Auth-gated specs",
+          "HOURS": 1.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "/dashboard, /library, /community, /settings, /vip-calls — assert correct role lands on each, 403 boundary renders for VIP-only routes when member-tier user hits them."
+        },
+        {
+          "NAME": "CI smoke job wiring + secrets doc",
+          "HOURS": 0.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Document required GitHub secrets (CLERK_TEST_*, E2E_*_EMAIL, E2E_*_PASSWORD). Smoke job in ci.yml depends on build artifact."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-004",
+      "PR_TITLE": "Sentry SDK wiring (client + server + sourcemaps)",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "feat/sentry",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 03 §1",
+      "FILES_ADDED": ["src/hooks.client.ts", "src/lib/server/log.ts"],
+      "FILES_CHANGED": [
+        "src/hooks.server.ts",
+        "vite.config.ts",
+        "package.json",
+        "pnpm-lock.yaml",
+        ".env.example"
+      ],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "Install @sentry/sveltekit + @sentry/vite-plugin",
+          "HOURS": 0.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Add deps. Document PUBLIC_SENTRY_DSN, PUBLIC_SENTRY_ENV, SENTRY_AUTH_TOKEN in .env.example. DSN-absent must be a no-op."
+        },
+        {
+          "NAME": "Client init + handleError",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "hooks.client.ts with conditional Sentry.init. Replay on error, traces sample 10%. handleErrorWithSentry export."
+        },
+        {
+          "NAME": "Server init + handleError + sequence wrap",
+          "HOURS": 1.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Wrap existing handle with sentryHandle() via sequence. handleError tags route, status, clerkUserId. PII scrubbing."
+        },
+        {
+          "NAME": "logError helper + console.error migration",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "src/lib/server/log.ts helper. Migrate 11 console.error call sites to logError with scope tags."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-005",
+      "PR_TITLE": "Error boundaries + handleError taxonomy",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "feat/error-boundaries",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 03 §2, §3, §5",
+      "FILES_ADDED": [
+        "src/routes/+error.svelte",
+        "src/routes/dashboard/+error.svelte",
+        "src/routes/checkout/+error.svelte",
+        "src/routes/library/+error.svelte",
+        "src/routes/community/+error.svelte",
+        "src/routes/vip-calls/+error.svelte",
+        "src/routes/admin/+error.svelte",
+        "src/lib/errors/codes.ts",
+        "src/lib/errors/classify.ts",
+        "src/lib/errors/classify.test.ts"
+      ],
+      "FILES_CHANGED": ["src/hooks.server.ts", "src/app.d.ts"],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "Error code taxonomy module",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "src/lib/errors/codes.ts enum + classify() function mapping unknown exceptions to taxonomy. Unit tested."
+        },
+        {
+          "NAME": "Root + 7 section +error.svelte",
+          "HOURS": 2.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "One boundary per major section. Reads $page.error.code, renders contextual fallback UI + Sentry event ID + section-appropriate CTA. Admin variant shows stack."
+        },
+        {
+          "NAME": "Server handleError + silent-swallow fix",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Export handleError per spec. Replace hooks.server.ts member-hydrate console.error with logError so incidents become visible."
+        },
+        {
+          "NAME": "Checkout boundary copy + manual QA",
+          "HOURS": 0.5,
+          "RATE": 175,
+          "ROLE": "senior dev",
+          "SUMMARY": "Revenue-path copy: 'Your payment was not charged' messaging. Walk Stripe test failure paths end-to-end."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-006",
+      "PR_TITLE": "CI pipeline (.github/workflows/ci.yml)",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "ci/baseline-pipeline",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 01 §6",
+      "FILES_ADDED": [".github/workflows/ci.yml", ".github/PULL_REQUEST_TEMPLATE.md"],
+      "FILES_CHANGED": ["package.json"],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "Pipeline authoring (parallel jobs)",
+          "HOURS": 2.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Jobs: install (cached) → check, lint, format, unit, build (parallel) → smoke (depends on build). Concurrency-cancel for PRs."
+        },
+        {
+          "NAME": "pnpm cache + Playwright cache",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Hash pnpm-lock.yaml for pnpm store cache. Hash @playwright/test version for browser cache. Cold-cache vs hot-cache benchmark."
+        },
+        {
+          "NAME": "Vitest coverage upload + thresholds",
+          "HOURS": 0.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Coverage thresholds in vitest.config.ts. lcov uploaded as workflow artifact for now (Codecov optional later)."
+        },
+        {
+          "NAME": "PR template + docs",
+          "HOURS": 0.5,
+          "RATE": 85,
+          "ROLE": "junior dev",
+          "SUMMARY": ".github/PULL_REQUEST_TEMPLATE.md matching SOP §4. README CI badge."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-007",
+      "PR_TITLE": "Security hardening (webhooks, validation, rate limit, headers)",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "sec/hardening-pass-1",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 02 §2, §5, §6, §7",
+      "FILES_ADDED": [
+        "migrations/0009_processed_webhook_events.sql",
+        "src/lib/server/webhook-idempotency.ts",
+        "src/lib/server/webhook-idempotency.test.ts",
+        "src/lib/server/rate-limit.ts",
+        "src/lib/server/rate-limit.test.ts",
+        "src/lib/server/security-headers.ts",
+        "src/lib/server/validate.ts"
+      ],
+      "FILES_CHANGED": [
+        "src/hooks.server.ts",
+        "src/routes/api/stripe/webhook/+server.ts",
+        "src/routes/api/clerk/webhook/+server.ts",
+        "src/routes/api/webhooks/stream/+server.ts",
+        "src/routes/api/vip-calls/request/+server.ts",
+        "src/routes/api/events/[id]/rsvp/+server.ts",
+        "src/routes/api/library/episodes/[episodeId]/progress/+server.ts",
+        "src/lib/server/guards.ts",
+        "package.json",
+        "pnpm-lock.yaml"
+      ],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "processed_webhook_events table + helper",
+          "HOURS": 2.0,
+          "RATE": 175,
+          "ROLE": "senior dev",
+          "SUMMARY": "Migration 0009. Idempotency helper used by Stripe, Clerk, Stream webhooks. Atomic D1 batch wrapping. Replay-test fixtures."
+        },
+        {
+          "NAME": "zod validation across mutation endpoints",
+          "HOURS": 2.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Install zod. validate() helper. Apply to 4+ POST endpoints. 400 response shape per error taxonomy."
+        },
+        {
+          "NAME": "Rate limiter (D1-backed token bucket)",
+          "HOURS": 1.5,
+          "RATE": 175,
+          "ROLE": "senior dev",
+          "SUMMARY": "Per-user keyed token bucket on D1. Apply to vip-calls request (5/day), RSVP (30/min), progress (300/min)."
+        },
+        {
+          "NAME": "Security headers in hooks.server.ts",
+          "HOURS": 1.5,
+          "RATE": 175,
+          "ROLE": "senior dev",
+          "SUMMARY": "HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, nonce-based CSP. Verify Clerk + Stripe + Stream still load. Target securityheaders.com grade A."
+        },
+        {
+          "NAME": "requireAdmin redirect-loop fix",
+          "HOURS": 0.5,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Non-admin on /admin → error(403) routed to admin +error.svelte, not infinite redirect."
+        },
+        {
+          "NAME": "Security review pass + threat model doc",
+          "HOURS": 0.5,
+          "RATE": 175,
+          "ROLE": "senior dev",
+          "SUMMARY": "Re-read spec 02 against the implementation. Flag follow-ups for INV-007b (audit log, secrets rotation tooling, gitleaks)."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-008",
+      "PR_TITLE": "Governance (CODEOWNERS, Dependabot, contributing)",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/createsomethingtoday/shivworks-network/pulls",
+      "BRANCH": "chore/governance",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "spec 01 §7, sop 00",
+      "FILES_ADDED": [".github/CODEOWNERS", ".github/dependabot.yml", "CONTRIBUTING.md"],
+      "FILES_CHANGED": ["README.md"],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "CODEOWNERS authoring",
+          "HOURS": 0.5,
+          "RATE": 85,
+          "ROLE": "junior dev",
+          "SUMMARY": "Owners for src/lib/server/, migrations/, .github/workflows/, wrangler*.jsonc. Placeholder handles for Alex + Aaron + Max."
+        },
+        {
+          "NAME": "Dependabot config",
+          "HOURS": 0.5,
+          "RATE": 85,
+          "ROLE": "junior dev",
+          "SUMMARY": "npm weekly, github-actions weekly, grouped minor/patch updates."
+        },
+        {
+          "NAME": "CONTRIBUTING.md",
+          "HOURS": 1.0,
+          "RATE": 125,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Distill SOP 00 into a contributor-facing doc. Link to .planning/sops/ for full procedure."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-010",
+      "PR_TITLE": "Video pipeline reliability — uploads finish without a babysitter",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/hectorr-st/shivworks-network/pulls",
+      "BRANCH": "feat/stream-pipeline-reliability",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": "sop section-admin, sop section-library",
+      "FILES_ADDED": [],
+      "FILES_CHANGED": [
+        "src/routes/admin/+page.svelte",
+        "src/routes/library/[slug]/+page.svelte",
+        "src/routes/api/admin/media/uploads/sync/server.test.ts",
+        ".env.example",
+        ".planning/ROLLOUT.md"
+      ],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "Post-upload status polling with backoff",
+          "HOURS": 2.0,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Replace the single post-upload sync call with a backoff poll (~2 min) that hands off to the Cloudflare Stream webhook. Removes the silent stall that leaves an uploaded episode permanently \"processing\"."
+        },
+        {
+          "NAME": "Ingest state, failure reason and retry in the admin media list",
+          "HOURS": 1.5,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Surface per-asset ingest status (pending_upload / processing / ready / failed) with the Cloudflare failure reason and a retry control, so a stuck asset is visible instead of silent."
+        },
+        {
+          "NAME": "Human-readable playback errors",
+          "HOURS": 1.0,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Map the playback endpoint 409 codes (media still processing, no media asset, missing provider asset id) to distinct member-facing copy, replacing the single generic error box."
+        },
+        {
+          "NAME": "Stream configuration warning banner",
+          "HOURS": 0.75,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Render getStreamConfigStatus().missingKeys in the admin panel so an absent CLOUDFLARE_STREAM_WEBHOOK_SECRET or account/token is visible to an admin rather than failing silently in logs."
+        },
+        {
+          "NAME": "Post-upload publish prompt",
+          "HOURS": 0.25,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "State the next required action after an upload completes — an uploaded episode is created hidden and needs an explicit publish before members can see it."
+        },
+        {
+          "NAME": "Test coverage for polling and error mapping",
+          "HOURS": 1.5,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Extend the uploads/sync server tests to cover the polling path and terminal states; add unit coverage for the playback error-code mapping."
+        }
+      ]
+    },
+    {
+      "INVOICE_ID": "INV-011",
+      "PR_TITLE": "Member UI parity — app shell plus six member surfaces",
+      "PR_REF": "PR #(pending)",
+      "PR_URL": "https://github.com/hectorr-st/shivworks-network/pulls",
+      "BRANCH": "ui/member-parity",
+      "COMMIT_RANGE": "TBD",
+      "SPEC_REFS": ".planning/UI-ENGINE.md, .planning/ui-registry.json",
+      "FILES_ADDED": [],
+      "FILES_CHANGED": [
+        "src/lib/components/Sidebar.svelte",
+        "src/lib/components/Nav.svelte",
+        "src/lib/components/Footer.svelte",
+        "src/app.html",
+        "src/routes/updates/+page.svelte",
+        "src/routes/dashboard/+page.svelte",
+        "src/routes/library/+page.svelte",
+        "src/routes/library/[slug]/+page.svelte",
+        "src/routes/community/+page.svelte"
+      ],
+      "FILES_DELETED": [],
+      "LINE_ITEMS": [
+        {
+          "NAME": "App shell parity — sidebar, nav, footer",
+          "HOURS": 2.5,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Bring the shared page frame in line with the approved design handoff: app-sidebar structure, brand mark, footer legal row. Drop the unused Space Grotesk font request from app.html — the design system already loads Archivo/Inter/JetBrains Mono via app.css."
+        },
+        {
+          "NAME": "Updates surface",
+          "HOURS": 1.5,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Port the built Updates page onto the existing server loader (listRecentUpdates) rather than the seed repository it was prototyped against. No change to the data contract."
+        },
+        {
+          "NAME": "Dashboard surface",
+          "HOURS": 2.5,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Close the measured gap against the approved design: course-card structure, mini-progress, play badge, live indicator and media placeholder labelling."
+        },
+        {
+          "NAME": "Library surface",
+          "HOURS": 2.0,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Rebuild the library index against the approved design. Largest structural gap of the six — the shipped page is currently a 31-line shell."
+        },
+        {
+          "NAME": "Course player surface",
+          "HOURS": 2.5,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Port the course/episode surface while preserving playback token refresh, episode gating and progress reporting. Highest regression risk of the set, so it is sequenced late."
+        },
+        {
+          "NAME": "Community surface",
+          "HOURS": 1.0,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Port the community surface and its honest empty state."
+        },
+        {
+          "NAME": "Landing surface",
+          "HOURS": 1.0,
+          "RATE": 50,
+          "ROLE": "mid-level dev",
+          "SUMMARY": "Port the public landing page. Substituted for /welcome, which has no design in the approved handoff — pending owner confirmation."
+        }
+      ]
+    }
+  ]
+}

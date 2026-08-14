@@ -1,0 +1,85 @@
+<div class="auth-shell">
+
+  
+  <aside class="auth-hero">
+    <div class="hero-brand">
+      <img src="assets/cobra-logo.png" alt="ShivWorks Network" />
+      <span class="hb-name">The ShivWorks Network</span>
+    </div>
+
+    <div class="hero-copy">
+      <p class="eyebrow">Member access</p>
+      <h1>Train with intent.</h1>
+      <p>Your home for ShivWorks curriculum, live sessions, and the community working the same problems you are.</p>
+      <ul class="hero-points">
+        <li><span class="hp-ico"><svg><use href="#i-play"></use></svg></span> Full course library &amp; module tracking</li>
+        <li><span class="hp-ico"><svg><use href="#i-bolt"></use></svg></span> Live calls and event replays</li>
+        <li><span class="hp-ico"><svg><use href="#i-users"></use></svg></span> Members-only community &amp; partner finder</li>
+      </ul>
+    </div>
+
+    <div class="hero-foot">ShivWorks Network · Members area</div>
+  </aside>
+
+  
+  <main class="auth-pane">
+    <div class="auth-wrap">
+      <div class="mobile-brand">
+        <img src="assets/cobra-logo.png" alt="" />
+        <span>ShivWorks Network</span>
+      </div>
+
+      <div class="auth-head">
+        <span class="auth-tag"><svg><use href="#i-shield"></use></svg> Secure sign-in</span>
+        <h2>Sign in</h2>
+        <p class="sub">Welcome back. Sign in to pick up your training where you left off.</p>
+      </div>
+
+      
+      <div id="clerk-signin" class="clerk-slot" data-clerk-mode="signIn" data-clerk-redirect="/dashboard">
+
+        
+        <form class="clerk-fallback" onsubmit="return false">
+          <div class="cf-social">
+            <button type="button" class="cf-oauth"><svg><use href="#i-google"></use></svg> Continue with Google</button>
+            <button type="button" class="cf-oauth"><svg><use href="#i-apple"></use></svg> Continue with Apple</button>
+          </div>
+
+          <div class="cf-divider">or</div>
+
+          <div class="cf-fld"><label>Email address</label><input type="email" placeholder="you@example.com" /></div>
+          <div class="cf-fld">
+            <div class="cf-row"><label>Password</label><a class="cf-forgot" href="#">Forgot?</a></div>
+            <input type="password" placeholder="••••••••" />
+          </div>
+
+          <button type="submit" class="btn cf-submit">Continue</button>
+        </form>
+
+        
+        <div class="clerk-notice" hidden>
+          <svg><use href="#i-info"></use></svg>
+          Auth not configured — add the Clerk public key to this environment.
+        </div>
+      </div>
+
+      <div class="auth-altfoot">New to the Network? <a href="signup.html">Create an account →</a></div>
+
+      <p class="auth-legal">
+        By continuing you agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.<br />
+        Staff? <a href="admin-login.html">Admin sign-in</a>.
+      </p>
+    </div>
+  </main>
+</div>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-google" viewBox="0 0 24 24" fill="currentColor"><path d="M21.35 11.1h-9.18v2.92h5.27c-.23 1.4-1.66 4.1-5.27 4.1-3.17 0-5.76-2.62-5.76-5.86s2.59-5.86 5.76-5.86c1.81 0 3.02.77 3.71 1.44l2.53-2.44C16.6 3.3 14.6 2.4 12.17 2.4 6.98 2.4 2.8 6.58 2.8 11.77s4.18 9.37 9.37 9.37c5.41 0 8.99-3.8 8.99-9.16 0-.62-.07-1.08-.16-1.55z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24" fill="currentColor"><path d="M16.36 12.78c.02 2.5 2.19 3.33 2.21 3.34-.02.06-.35 1.2-1.15 2.37-.69 1.02-1.41 2.03-2.55 2.05-1.11.02-1.47-.66-2.74-.66-1.28 0-1.67.64-2.72.68-1.09.04-1.93-1.1-2.63-2.11-1.42-2.07-2.51-5.85-1.05-8.41.72-1.27 2.02-2.07 3.43-2.09 1.07-.02 2.08.72 2.74.72.65 0 1.88-.89 3.17-.76.54.02 2.05.22 3.02 1.64-.08.05-1.8 1.05-1.78 3.14M14.3 4.6c.58-.7.97-1.68.86-2.65-.84.03-1.85.56-2.45 1.26-.54.62-1.01 1.61-.88 2.56.93.07 1.89-.47 2.47-1.17"/></symbol>
+</svg>

@@ -1,0 +1,80 @@
+config:
+  target: "{{ $processEnvironment.TARGET_URL }}"
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: "Warm-up"
+    - duration: 60
+      arrivalRate: 20
+      name: "Sustained load"
+    - duration: 30
+      arrivalRate: 5
+      name: "Cool-down"
+  defaults:
+    headers:
+      Accept: "application/json"
+  plugins:
+    expect: {}
+
+scenarios:
+  - name: "Public pages"
+    weight: 40
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/login"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/signup"
+          expect:
+            - statusCode: 200
+
+  - name: "Unauthenticated API — 401 checks"
+    weight: 30
+    flow:
+      - get:
+          url: "/api/library/episodes/nonexistent/playback"
+          expect:
+            - statusCode:
+                - 401
+                - 403
+                - 404
+      - post:
+          url: "/api/vip-calls/request"
+          json: {}
+          expect:
+            - statusCode:
+                - 401
+                - 403
+
+  - name: "Auth-gated pages redirect"
+    weight: 30
+    flow:
+      - get:
+          url: "/dashboard"
+          followRedirect: false
+          expect:
+            - statusCode:
+                - 302
+                - 303
+                - 200
+      - get:
+          url: "/library"
+          followRedirect: false
+          expect:
+            - statusCode:
+                - 302
+                - 303
+                - 200
+      - get:
+          url: "/settings"
+          followRedirect: false
+          expect:
+            - statusCode:
+                - 302
+                - 303
+                - 200

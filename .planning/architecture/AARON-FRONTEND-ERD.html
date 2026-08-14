@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Aaron's Frontend ERD — Routes → Data → Libs</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  // Mermaid 11 + ELK layout for true orthogonal edge routing (uniform arm lengths from each node).
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    layout: 'elk',
+    flowchart: { htmlLabels: true, nodeSpacing: 60, rankSpacing: 90 },
+    look: 'classic'
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Post-render: rewrite every orthogonal corner in every edge path to a
+  // quadratic-Bezier arc of radius CORNER_R. SVG paths have no border-radius
+  // primitive, so we parse the path's "d" attribute, walk its line-segments,
+  // and inject Q commands at every 90-degree joint.
+  // ─────────────────────────────────────────────────────────────────────────
+  const CORNER_R = 15;
+
+  function roundOrthogonalPath(d, r) {
+    if (!d) return d;
+    const tokens = d.match(/[MLHVZmlhvz][^MLHVZmlhvz]*/g) || [];
+    const pts = [];
+    let cx = 0, cy = 0;
+    for (const tok of tokens) {
+      const cmd = tok[0];
+      const nums = (tok.slice(1).trim().match(/-?\d+(\.\d+)?/g) || []).map(Number);
+      if (cmd === 'M' || cmd === 'L') { cx = nums[0]; cy = nums[1]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'm' || cmd === 'l') { cx += nums[0]; cy += nums[1]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'H') { cx = nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'h') { cx += nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'V') { cy = nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'v') { cy += nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'Z' || cmd === 'z') { /* skip */ }
+      else { return d; /* unsupported (curves etc.) — leave path untouched */ }
+    }
+    if (pts.length < 3) return d;
+    let out = `M${pts[0].x},${pts[0].y}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const a = pts[i-1], b = pts[i], c = pts[i+1];
+      const dx1 = b.x - a.x, dy1 = b.y - a.y;
+      const dx2 = c.x - b.x, dy2 = c.y - b.y;
+      const isCorner = (dy1 === 0 && dx2 === 0) || (dx1 === 0 && dy2 === 0);
+      if (!isCorner) { out += ` L${b.x},${b.y}`; continue; }
+      const len1 = Math.hypot(dx1, dy1);
+      const len2 = Math.hypot(dx2, dy2);
+      const rr = Math.min(r, len1 / 2, len2 / 2);
+      const sx = b.x - Math.sign(dx1) * rr;
+      const sy = b.y - Math.sign(dy1) * rr;
+      const ex = b.x + Math.sign(dx2) * rr;
+      const ey = b.y + Math.sign(dy2) * rr;
+      out += ` L${sx.toFixed(2)},${sy.toFixed(2)} Q${b.x},${b.y} ${ex.toFixed(2)},${ey.toFixed(2)}`;
+    }
+    const last = pts[pts.length - 1];
+    out += ` L${last.x},${last.y}`;
+    return out;
+  }
+
+  function roundAllEdges() {
+    document.querySelectorAll('.mermaid svg').forEach(svg => {
+      // Mermaid 11 emits edge paths under .edge or with class .flowchart-link.
+      // ELK-rendered edges land in <g class="edges"> → <path>.
+      svg.querySelectorAll('.edgePath path, path.flowchart-link, g.edges path, g.edgePaths path').forEach(p => {
+        const rd = roundOrthogonalPath(p.getAttribute('d'), CORNER_R);
+        if (rd) p.setAttribute('d', rd);
+      });
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    await mermaid.run({ querySelector: '.mermaid' });
+    // Give the ELK layout one paint frame to settle, then round corners.
+    requestAnimationFrame(() => requestAnimationFrame(roundAllEdges));
+  });
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body { font: 14px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif; background:#0e1116; color:#d6dbe1; max-width:1400px; margin:0 auto; padding:32px 40px 80px; }
+  h1 { font-size:28px; margin:0 0 4px; color:#fff; letter-spacing:-.01em; }
+  h2 { font-size:18px; margin:36px 0 12px; color:#fff; border-bottom:1px solid #2a313c; padding-bottom:6px; }
+  h3 { font-size:14px; margin:20px 0 8px; color:#9aa4b2; text-transform:uppercase; letter-spacing:.06em; }
+  .meta { color:#8892a0; font-size:13px; margin-bottom:24px; }
+  .mermaid { background:#161b22; border:1px solid #2a313c; border-radius:8px; padding:24px; margin:12px 0; text-align:center; overflow-x:auto; }
+  .mermaid svg .edgePath path,
+  .mermaid svg .flowchart-link,
+  .mermaid svg path.path {
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-width: 1.6px;
+    rx: 5;
+    ry: 5;
+  }
+  .legend { display:grid; grid-template-columns:repeat(2,1fr); gap:8px 24px; margin:12px 0 20px; }
+  .legend div { font-size:13px; color:#9aa4b2; }
+  .swatch { display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:middle; margin-right:8px; border:1px solid rgba(255,255,255,.1); }
+  .footer { margin-top:48px; padding-top:16px; border-top:1px solid #2a313c; color:#6e7681; font-size:12px; }
+  p { color:#b1b9c5; }
+</style>
+</head>
+<body>
+
+<h1>Aaron's Frontend ERD</h1>
+<div class="meta"><b>Source:</b> aaron-outerfields/shivworks-demo @ main &nbsp;·&nbsp; <b>Mapped:</b> 2026-05-31 &nbsp;·&nbsp; routes → server libs → D1 tables → launch decision</div>
+
+<h3>Legend</h3>
+<div class="legend">
+  <div><span class="swatch" style="background:#1f6f3f"></span>🟢 Built &amp; recommended for launch</div>
+  <div><span class="swatch" style="background:#7a5d11"></span>🟡 Built but placeholder at launch (post-launch real ship)</div>
+  <div><span class="swatch" style="background:#5a2727"></span>🔴 Built but deferred — too risky for launch</div>
+  <div><span class="swatch" style="background:#2a313c"></span>⚪ Shared route (exists in both repos — three-way merge)</div>
+  <div><span class="swatch" style="background:#1a3a52"></span>📦 Backend resource (table, lib, migration)</div>
+</div>
+
+<h2>1. Full ERD — every route, every dependency</h2>
+<p>This shows each route in Aaron's repo, the server libraries it imports, the D1 tables those libraries read/write, and which migration introduces each table.</p>
+<div class="mermaid">
+graph LR
+  classDef ship fill:#1f6f3f,stroke:#7ce38b,color:#fff
+  classDef placeholder fill:#7a5d11,stroke:#e3b341,color:#fff
+  classDef defer fill:#5a2727,stroke:#f47067,color:#fff
+  classDef shared fill:#2a313c,stroke:#5a6473,color:#d6dbe1
+  classDef lib fill:#1a3a52,stroke:#5aa8d8,color:#fff
+  classDef table fill:#2d1f4a,stroke:#a77ee0,color:#fff
+  classDef mig fill:#3d2817,stroke:#d18a4a,color:#fff
+
+  subgraph Aaron_New["New surfaces (built in Aaron's repo)"]
+    R_ACC["/account<br/>515 LOC<br/>🟢 ship"]:::ship
+    R_PROF["/profile self<br/>+ /profile/[userId]<br/>156 LOC<br/>🟢 ship"]:::ship
+    R_FIND["/find-partners<br/>332 LOC<br/>🟢 ship"]:::ship
+    R_LBRD["/leaderboard<br/>195 LOC<br/>🟡 placeholder"]:::placeholder
+    R_MSG["/messages<br/>+ /messages/[partnerId]<br/>276 LOC<br/>🔴 defer"]:::defer
+    R_COMM["/community<br/>+ /community/feed<br/>544 LOC<br/>🔴 defer"]:::defer
+  end
+
+  subgraph Server_Libs["Server libraries (Aaron's $lib/server)"]
+    L_SHIV["db/shivworks.ts<br/>extended queries"]:::lib
+    L_GAM["gamification.ts<br/>points + leaderboard + dossier"]:::lib
+    L_CACC["community-access.ts<br/>permissionsFor()"]:::lib
+    L_CPRES["community-presenter.ts<br/>sortPinnedFirst, presentMessages"]:::lib
+    L_RT["realtime.ts<br/>DM listener"]:::lib
+    L_GUARD["guards.ts<br/>requireAuthenticated<br/>requirePaidMember"]:::lib
+  end
+
+  subgraph D1_Tables["D1 tables"]
+    T_MEM["members<br/>(exists ✓)"]:::table
+    T_MPROF["member_profiles<br/>(NEW — need migration)"]:::table
+    T_GAM["member_gamification<br/>(NEW — need migration)"]:::table
+    T_CHAN["community_channels<br/>+ channel_permissions"]:::table
+    T_CMSG["community_messages<br/>+ pins"]:::table
+    T_DM["dm_conversations<br/>+ dm_messages"]:::table
+    T_DMR["dm_conversation_reports<br/>(moderation)"]:::table
+  end
+
+  subgraph Migrations["Aaron's migrations (need renumbering 0013+)"]
+    M_PROF["member_profiles_tags<br/>0010 → 0015"]:::mig
+    M_GAM["gamification<br/>0009 → 0014"]:::mig
+    M_COMM["community<br/>0008 → 0013"]:::mig
+    M_DM["direct_messages<br/>0011 → 0016"]:::mig
+    M_DMR["dm_conversation_reports<br/>0015 → 0020"]:::mig
+  end
+
+  R_ACC --> L_SHIV
+  R_ACC --> L_GAM
+  R_ACC --> L_GUARD
+  R_PROF --> L_SHIV
+  R_PROF --> L_GAM
+  R_PROF --> L_GUARD
+  R_FIND --> L_SHIV
+  R_FIND --> L_GUARD
+  R_LBRD --> L_GAM
+  R_LBRD --> L_SHIV
+  R_LBRD --> L_GUARD
+  R_MSG --> L_SHIV
+  R_MSG --> L_RT
+  R_MSG --> L_GUARD
+  R_COMM --> L_SHIV
+  R_COMM --> L_CACC
+  R_COMM --> L_CPRES
+  R_COMM --> L_GUARD
+
+  L_SHIV --> T_MEM
+  L_SHIV --> T_MPROF
+  L_SHIV --> T_CHAN
+  L_SHIV --> T_CMSG
+  L_SHIV --> T_DM
+  L_GAM --> T_GAM
+  L_GAM --> T_MEM
+  L_CACC --> T_CHAN
+  L_CPRES --> T_CMSG
+  L_RT --> T_DM
+  L_RT --> T_DMR
+
+  T_MPROF -.requires.-> M_PROF
+  T_GAM -.requires.-> M_GAM
+  T_CHAN -.requires.-> M_COMM
+  T_CMSG -.requires.-> M_COMM
+  T_DM -.requires.-> M_DM
+  T_DMR -.requires.-> M_DMR
+</div>
+
+<h2>2. Launch-tier ERD — just what ships tomorrow</h2>
+<p>Strips out the post-launch surfaces. Shows the minimum dependency chain to ship <code>/account</code>, <code>/profile</code>, and <code>/find-partners</code> — plus what placeholders replace.</p>
+<div class="mermaid">
+graph LR
+  classDef ship fill:#1f6f3f,stroke:#7ce38b,color:#fff
+  classDef placeholder fill:#7a5d11,stroke:#e3b341,color:#fff
+  classDef lib fill:#1a3a52,stroke:#5aa8d8,color:#fff
+  classDef table fill:#2d1f4a,stroke:#a77ee0,color:#fff
+  classDef mig fill:#3d2817,stroke:#d18a4a,color:#fff
+  classDef stub fill:#3a2a4a,stroke:#a77ee0,color:#fff
+
+  subgraph Real["🟢 Real pages (tier 1)"]
+    L_ACC["/account"]:::ship
+    L_PROF["/profile"]:::ship
+    L_FIND["/find-partners"]:::ship
+  end
+
+  subgraph Placeholders["🟡 Placeholder pages (tier 3)"]
+    P_LBRD["/leaderboard<br/>'Coming soon'"]:::placeholder
+    P_MSG["/messages<br/>'Coming soon'"]:::placeholder
+    P_COMM["/community<br/>'Coming soon' + Circle CTA"]:::placeholder
+  end
+
+  subgraph Backend["Backend (must port)"]
+    B_LIB["db/shivworks.ts<br/>+ profile + finder helpers"]:::lib
+    B_GUARD["guards.ts<br/>(we already have)"]:::lib
+    B_TBL["member_profiles table"]:::table
+    B_MIG["migration 0013_member_profiles"]:::mig
+  end
+
+  subgraph Comp["Coming Soon component"]
+    C_CS["ComingSoon.svelte<br/>(net-new, lightweight)"]:::stub
+  end
+
+  L_ACC --> B_LIB
+  L_ACC --> B_GUARD
+  L_PROF --> B_LIB
+  L_FIND --> B_LIB
+  B_LIB --> B_TBL
+  B_TBL -.requires.-> B_MIG
+
+  P_LBRD --> C_CS
+  P_MSG --> C_CS
+  P_COMM --> C_CS
+</div>
+
+<h2>3. Frontend nav structure (what members see)</h2>
+<p>The actual sitemap of clickable surfaces after launch.</p>
+<div class="mermaid">
+graph TB
+  classDef ship fill:#1f6f3f,stroke:#7ce38b,color:#fff
+  classDef placeholder fill:#7a5d11,stroke:#e3b341,color:#fff
+  classDef shared fill:#2a313c,stroke:#5a6473,color:#d6dbe1
+
+  Member([Logged-in Member]) --> Nav{Polished sidebar nav}
+
+  Nav --> Dashboard["/dashboard<br/>Member home"]:::shared
+  Nav --> Library["/library<br/>Courses + episodes<br/>+ CustomVideoPlayer 🟢"]:::shared
+  Nav --> Live["/live<br/>Livestream surface"]:::shared
+  Nav --> Updates["/updates<br/>Announcement feed"]:::shared
+  Nav --> VipCalls["/vip-calls<br/>VIP requests"]:::shared
+  Nav --> Account["/account 🟢<br/>Training profile"]:::ship
+  Nav --> Profile["/profile 🟢<br/>Self view"]:::ship
+  Nav --> Find["/find-partners 🟢<br/>Partner directory"]:::ship
+  Nav --> Community["/community 🟡<br/>Coming soon + Circle CTA"]:::placeholder
+  Nav --> Messages["/messages 🟡<br/>Coming soon"]:::placeholder
+  Nav --> Leaderboard["/leaderboard 🟡<br/>Coming soon"]:::placeholder
+  Nav --> Settings["/settings<br/>Profile + sessions"]:::shared
+
+  AnonMember([Anonymous]) --> AnonNav{Public nav}
+  AnonNav --> Landing["/<br/>Landing page"]:::shared
+  AnonNav --> Login["/login"]:::shared
+  AnonNav --> Signup["/signup"]:::shared
+  AnonNav --> Checkout["/checkout<br/>→ WC redirect 🟢"]:::shared
+</div>
+
+<h2>4. Launch-day data flow (member journey)</h2>
+<p>End-to-end from purchase to first session in the platform.</p>
+<div class="mermaid">
+sequenceDiagram
+  participant B as Buyer
+  participant WC as WooCommerce
+  participant Net as network.shivworks.com
+  participant DB as D1
+  participant Clerk
+
+  B->>WC: purchase founding-member tier
+  WC->>Net: POST /api/wc/webhook (signed)
+  Net->>DB: upsert member_imports {email, tier}
+  Net-->>WC: 200 OK
+
+  Note over B,Clerk: member receives welcome email
+  B->>Net: visits /login
+  Net->>Clerk: Clerk-hosted signup
+  Clerk-->>Net: webhook + session
+  Net->>DB: claim member_imports by email
+  DB-->>Net: tier = bronze | vip
+  Net-->>B: redirect /welcome → /account
+
+  Note over B,Net: NEW: /account flow
+  B->>Net: fills training profile
+  Net->>DB: upsert member_profiles
+  Net-->>B: redirect /dashboard
+
+  Note over B,Net: explores the platform
+  B->>Net: /library → watch first episode
+  B->>Net: /find-partners → discovers nearby members
+  B->>Net: /community → 'Coming soon' (Circle CTA)
+</div>
+
+<h2>5. What's NEW for launch vs. what's UNCHANGED</h2>
+<div class="mermaid">
+graph LR
+  classDef new fill:#1f6f3f,stroke:#7ce38b,color:#fff
+  classDef unchanged fill:#2a313c,stroke:#5a6473,color:#d6dbe1
+  classDef placeholder fill:#7a5d11,stroke:#e3b341,color:#fff
+
+  subgraph NEW["🟢 NEW / IMPROVED for launch"]
+    N1["Polished UI: Sidebar + Nav + Footer<br/>+ design tokens"]:::new
+    N2["/account training profile flow"]:::new
+    N3["/profile self view"]:::new
+    N4["/find-partners directory"]:::new
+    N5["CustomVideoPlayer + EpisodePlayer<br/>on /library"]:::new
+    N6["WC checkout wiring (just merged PR #23)"]:::new
+  end
+
+  subgraph SAME["⚪ UNCHANGED from our current repo"]
+    S1["/dashboard, /live, /updates"]:::unchanged
+    S2["/vip-calls, /settings, /admin"]:::unchanged
+    S3["Library content + progress tracking"]:::unchanged
+    S4["Auth (Clerk), email (Resend)"]:::unchanged
+    S5["Error boundaries + Sentry"]:::unchanged
+  end
+
+  subgraph LATER["🟡 PLACEHOLDER tonight, real later"]
+    L1["/community (in-app)"]:::placeholder
+    L2["/messages (DMs)"]:::placeholder
+    L3["/leaderboard (gamification)"]:::placeholder
+  end
+</div>
+
+<h2>6. Migration map</h2>
+<p>Which of Aaron's migrations we'd need for the launch-tier surfaces, and how they'd renumber.</p>
+<div class="mermaid">
+graph LR
+  classDef ours fill:#1f6f3f,stroke:#7ce38b,color:#fff
+  classDef his fill:#3d2817,stroke:#d18a4a,color:#fff
+  classDef ship fill:#7a5d11,stroke:#e3b341,color:#fff
+  classDef defer fill:#5a2727,stroke:#f47067,color:#fff
+
+  subgraph Ours["Already in our repo (don't touch)"]
+    O1["0001-0007<br/>identical to his"]:::ours
+    O2["0008_media_assets_and_module_episodes"]:::ours
+    O3["0009_processed_webhook_events"]:::ours
+    O4["0010_indexes"]:::ours
+    O5["0011_gamification (ours)"]:::ours
+    O6["0012_member_profiles (ours, lite)"]:::ours
+  end
+
+  subgraph LaunchTier["🟢 Cherry-pick for launch tier 1"]
+    P1["0013_member_profiles_tags<br/>(was his 0010)"]:::ship
+  end
+
+  subgraph PostLaunch["🔴 Defer to post-launch"]
+    D1["0014_community<br/>(was his 0008)"]:::defer
+    D2["0015_direct_messages<br/>(was his 0011)"]:::defer
+    D3["0016_dm_conversation_reports<br/>(was his 0015)"]:::defer
+    D4["0017_onboarding_checklist<br/>(was his 0013)"]:::defer
+    D5["0018_in_app_notifications<br/>(was his 0016)"]:::defer
+  end
+
+  O6 --> P1
+  P1 -.unblocks.-> Acc[/account]:::ship
+  P1 -.unblocks.-> Prof[/profile]:::ship
+  P1 -.unblocks.-> Find[/find-partners]:::ship
+</div>
+
+<div class="footer">
+Companion to: <code>AARON-RECONCILE.md</code> · <code>AARON-SITEMAP.md</code> · <code>MAP.html</code><br/>
+This file is the visual index — read <code>AARON-SITEMAP.md</code> for the per-route details, <code>AARON-RECONCILE.md</code> for the integration plan.
+</div>
+
+</body>
+</html>

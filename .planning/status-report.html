@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Macks Studios LLC — ShivWorks Network · Production-Readiness Status</title>
+		<style>
+			@page {
+				size: Letter;
+				margin: 0.5in;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+				color: #24292f;
+				max-width: 900px;
+				margin: 0 auto;
+				padding: 48px 24px;
+				font-size: 14px;
+				line-height: 1.55;
+			}
+			.header {
+				text-align: center;
+				margin-bottom: 36px;
+			}
+			.logo {
+				font-size: 22px;
+				font-weight: 700;
+				letter-spacing: 0.5px;
+				margin-bottom: 8px;
+			}
+			.title {
+				font-size: 32px;
+				font-weight: 300;
+				margin: 8px 0 0;
+			}
+			.subtitle {
+				color: #57606a;
+				font-size: 14px;
+				margin-top: 6px;
+			}
+			.divider {
+				border: none;
+				border-top: 1px solid #d0d7de;
+				margin: 16px auto 0;
+				width: 80px;
+			}
+
+			.summary {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 14px;
+				margin: 32px 0 40px;
+			}
+			.card {
+				background: #f6f8fa;
+				border: 1px solid #d0d7de;
+				border-radius: 8px;
+				padding: 16px 18px;
+			}
+			.card .label {
+				color: #57606a;
+				font-size: 11px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				margin-bottom: 6px;
+			}
+			.card .value {
+				font-size: 22px;
+				font-weight: 700;
+				color: #24292f;
+			}
+			.card .sub {
+				color: #57606a;
+				font-size: 12px;
+				margin-top: 4px;
+			}
+			.card.accent {
+				background: #ddf4ff;
+				border-color: #54aeff;
+			}
+			.card.accent .value {
+				color: #0969da;
+			}
+			.card.warn {
+				background: #fff8c5;
+				border-color: #d4a72c;
+			}
+			.card.warn .value {
+				color: #7d4e00;
+			}
+
+			h2 {
+				font-size: 18px;
+				margin: 36px 0 12px;
+				padding-bottom: 8px;
+				border-bottom: 1px solid #d0d7de;
+			}
+			h3 {
+				font-size: 14px;
+				margin: 20px 0 6px;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 8px 0 16px;
+			}
+			th,
+			td {
+				text-align: left;
+				padding: 9px 8px;
+				border-bottom: 1px solid #d0d7de;
+				font-size: 13px;
+				vertical-align: top;
+			}
+			th {
+				color: #57606a;
+				font-size: 10px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				font-weight: 600;
+				border-bottom: 2px solid #24292f;
+			}
+			td.num {
+				text-align: right;
+				font-variant-numeric: tabular-nums;
+				white-space: nowrap;
+			}
+			td code {
+				font-family: ui-monospace, SFMono-Regular, monospace;
+				font-size: 12px;
+			}
+			tr.total td {
+				font-weight: 700;
+				border-top: 2px solid #24292f;
+			}
+
+			.pill {
+				display: inline-block;
+				padding: 2px 8px;
+				border-radius: 10px;
+				font-size: 10px;
+				font-weight: 600;
+				color: #fff;
+				letter-spacing: 0.3px;
+			}
+			.pill.done {
+				background: #1a7f37;
+			}
+			.pill.ready {
+				background: #0969da;
+			}
+			.pill.blocked {
+				background: #cf222e;
+			}
+			.pill.client {
+				background: #9a6700;
+			}
+			.pill.backlog {
+				background: #6e7781;
+			}
+
+			.gantt {
+				margin: 16px 0 8px;
+				background: #f6f8fa;
+				border: 1px solid #d0d7de;
+				border-radius: 8px;
+				padding: 16px 18px;
+			}
+			.gantt-row {
+				display: grid;
+				grid-template-columns: 180px 1fr 120px;
+				align-items: center;
+				gap: 12px;
+				margin: 6px 0;
+				font-size: 12px;
+			}
+			.gantt-row .label {
+				color: #24292f;
+			}
+			.gantt-row .date {
+				color: #57606a;
+				text-align: right;
+				font-variant-numeric: tabular-nums;
+			}
+			.bar {
+				height: 14px;
+				border-radius: 3px;
+				position: relative;
+			}
+			.bar.done {
+				background: #1a7f37;
+			}
+			.bar.expected {
+				background: #0969da;
+			}
+			.bar.optimistic {
+				background: #54aeff;
+			}
+			.bar.pessimistic {
+				background: #d4a72c;
+			}
+			.bar.client {
+				background: #9a6700;
+			}
+			.gantt-legend {
+				display: flex;
+				gap: 18px;
+				margin-top: 12px;
+				font-size: 11px;
+				color: #57606a;
+			}
+			.gantt-legend .item {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.gantt-legend .swatch {
+				width: 10px;
+				height: 10px;
+				border-radius: 2px;
+				display: inline-block;
+			}
+
+			.callout {
+				background: #ddf4ff;
+				border-left: 3px solid #54aeff;
+				padding: 12px 16px;
+				margin: 16px 0;
+				border-radius: 4px;
+			}
+			.callout.warn {
+				background: #fff8c5;
+				border-color: #d4a72c;
+			}
+			.callout.risk {
+				background: #ffebe9;
+				border-color: #cf222e;
+			}
+			.callout p {
+				margin: 0 0 8px;
+			}
+			.callout p:last-child {
+				margin-bottom: 0;
+			}
+			.callout strong {
+				color: #24292f;
+			}
+
+			ul {
+				padding-left: 20px;
+			}
+			li {
+				margin: 4px 0;
+			}
+
+			.footer {
+				margin-top: 48px;
+				padding-top: 16px;
+				border-top: 1px solid #d0d7de;
+				display: flex;
+				justify-content: space-between;
+				color: #8c959f;
+				font-size: 12px;
+			}
+			.footer .brand {
+				color: #24292f;
+				font-weight: 700;
+				font-size: 15px;
+				margin-bottom: 6px;
+			}
+			.note {
+				color: #8c959f;
+				font-size: 11px;
+				margin-top: 20px;
+			}
+
+			@media print {
+				body {
+					padding: 0;
+				}
+				.gantt,
+				.summary,
+				.callout {
+					break-inside: avoid;
+				}
+				table {
+					break-inside: auto;
+				}
+				tr {
+					break-inside: avoid;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="logo">MACKS STUDIOS</div>
+			<h1 class="title">Production-Readiness Status</h1>
+			<div class="subtitle">ShivWorks Network · As of 2026-05-26 · Engagement: Waves 1–4</div>
+			<hr class="divider" />
+		</div>
+
+		<div class="summary">
+			<div class="card">
+				<div class="label">Hours spent</div>
+				<div class="value">21.5</div>
+				<div class="sub">across 7 merged feature PRs</div>
+			</div>
+			<div class="card">
+				<div class="label">Billed to client</div>
+				<div class="value">
+					<s style="color: #8c959f; font-weight: 400; font-size: 16px">$2,602.50</s> &nbsp; $0
+				</div>
+				<div class="sub">pro bono — gift to Aaron</div>
+			</div>
+			<div class="card accent">
+				<div class="label">Progress</div>
+				<div class="value">61%</div>
+				<div class="sub">of 35.5 hr engagement</div>
+			</div>
+			<div class="card warn">
+				<div class="label">Stability ETA</div>
+				<div class="value">Jun 2</div>
+				<div class="sub">expected case, see projections</div>
+			</div>
+		</div>
+
+		<h2>What's done</h2>
+
+		<p>
+			Seven pull requests have been pushed to the <code>Mxcks/shivworks-network</code> fork as
+			cross-repo PR candidates for <code>createsomethingtoday/shivworks-network</code>. Each ships
+			with a ledger entry that records the actual files touched, actual hours, and any deviations
+			from the original spec.
+		</p>
+
+		<table>
+			<thead>
+				<tr>
+					<th>PR</th>
+					<th>Branch</th>
+					<th>What it does (plain English)</th>
+					<th>Hrs</th>
+					<th>Cost</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Bootstrap</td>
+					<td><code>chore/bootstrap-ledger</code></td>
+					<td>
+						Engineering ledger system established. Every future PR records "why this exists, how to
+						use it, how many hours" in one append-only file. Plus a one-command upstream sync
+						helper.
+					</td>
+					<td class="num">1.5</td>
+					<td class="num">$167.50</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr>
+					<td>INV-001</td>
+					<td><code>chore/eslint-prettier-baseline</code></td>
+					<td>
+						Code-style baseline. ESLint + Prettier + EditorConfig. Every file in the repo
+						reformatted once for clean future diffs. Surfaced 15 real security findings (filed as
+						follow-up tickets).
+					</td>
+					<td class="num">3.5</td>
+					<td class="num">$437.50</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr>
+					<td>INV-002</td>
+					<td><code>chore/pre-commit</code></td>
+					<td>
+						Pre-commit hook auto-fixes formatting + lint on every developer's laptop before code
+						leaves the machine. Saves ~3–5 min per failed CI run.
+					</td>
+					<td class="num">1.5</td>
+					<td class="num">$157.50</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr>
+					<td>INV-008</td>
+					<td><code>chore/governance</code></td>
+					<td>
+						CODEOWNERS (right reviewer auto-requested for auth/payments/migrations), Dependabot
+						(weekly dependency PRs), CONTRIBUTING.md (contributor one-pager).
+					</td>
+					<td class="num">2.0</td>
+					<td class="num">$210.00</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr>
+					<td>INV-004</td>
+					<td><code>feat/sentry</code></td>
+					<td>
+						Sentry error-monitoring SDK wired into client + server hooks. Silent-swallow bug in
+						member-hydration fixed — incidents now visible. Webhook failures captured. Currently in
+						no-op mode pending Aaron creating the Sentry project.
+					</td>
+					<td class="num">4.0</td>
+					<td class="num">$500.00</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr>
+					<td>INV-005</td>
+					<td><code>feat/error-boundaries</code></td>
+					<td>
+						7 contextual error pages (root + dashboard + checkout + library + community + vip-calls
+						+ admin). Most important: checkout boundary tells members "your payment was not charged"
+						with a try-again CTA — protects revenue and trust.
+					</td>
+					<td class="num">5.0</td>
+					<td class="num">$650.00</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr>
+					<td>INV-006</td>
+					<td><code>ci/baseline-pipeline</code></td>
+					<td>
+						GitHub Actions CI: every PR auto-runs typecheck, lint, format, unit tests, build, smoke.
+						Bad code physically cannot reach production. PR template enforces the SOP-required
+						sections.
+					</td>
+					<td class="num">4.0</td>
+					<td class="num">$480.00</td>
+					<td><span class="pill done">SHIPPED</span></td>
+				</tr>
+				<tr class="total">
+					<td colspan="3">Subtotal — shipped through 2026-05-26</td>
+					<td class="num">21.5</td>
+					<td class="num">$2,602.50</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="callout">
+			<p>
+				<strong>Verification.</strong> Every shipped PR passes the same checks the CI pipeline will
+				enforce:
+			</p>
+			<p>
+				<code>pnpm check</code> → 0 type errors across 5,366 files &nbsp;·&nbsp;
+				<code>pnpm test</code> → 53 unit tests pass &nbsp;·&nbsp; <code>pnpm lint</code> → exit 0
+				&nbsp;·&nbsp; <code>pnpm format:check</code> → exit 0
+			</p>
+		</div>
+
+		<h2>What's left</h2>
+
+		<table>
+			<thead>
+				<tr>
+					<th>PR</th>
+					<th>Branch (proposed)</th>
+					<th>What it does</th>
+					<th>Est. hrs</th>
+					<th>Est. cost</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>INV-003a</td>
+					<td><code>test/playwright-public</code></td>
+					<td>
+						Playwright smoke tests for public routes (/, /login, /signup, /welcome, /checkout,
+						/sitemap.xml). No client decisions needed.
+					</td>
+					<td class="num">3.0</td>
+					<td class="num">$375.00</td>
+					<td><span class="pill ready">READY</span></td>
+				</tr>
+				<tr>
+					<td>INV-003b</td>
+					<td><code>test/playwright-auth-gated</code></td>
+					<td>
+						Auth-gated smoke tests (/dashboard, /library, /community, /settings, /vip-calls). Needs
+						Clerk test users.
+					</td>
+					<td class="num">3.0</td>
+					<td class="num">$375.00</td>
+					<td><span class="pill client">CLIENT</span></td>
+				</tr>
+				<tr>
+					<td>INV-007</td>
+					<td><code>sec/hardening-pass-1</code></td>
+					<td>
+						Webhook replay protection, input validation (zod), rate limiting, security headers
+						(CSP/HSTS), admin redirect-loop fix. Closes 4 real vulnerabilities found during intake.
+					</td>
+					<td class="num">8.0</td>
+					<td class="num">$1,275.00</td>
+					<td><span class="pill ready">READY</span></td>
+				</tr>
+				<tr class="total">
+					<td colspan="3">Subtotal — remaining</td>
+					<td class="num">14.0</td>
+					<td class="num">$2,025.00</td>
+					<td></td>
+				</tr>
+				<tr class="total">
+					<td colspan="3">Engagement total (shipped + remaining) — standard rate</td>
+					<td class="num">35.5</td>
+					<td class="num"><s style="color: #8c959f; font-weight: 400">$4,627.50</s></td>
+					<td></td>
+				</tr>
+				<tr class="total" style="border-top: none">
+					<td colspan="3" style="color: #1a7f37">Billed to client — pro bono engagement</td>
+					<td class="num" style="color: #1a7f37">—</td>
+					<td class="num" style="color: #1a7f37">$0.00</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p style="font-size: 12px; color: #57606a">
+			Engagement total ran 3.8% above the $4,460 original estimate. Overage is the
+			engineering-ledger system itself (1.5 hrs / $167.50) — scope that emerged during execution to
+			keep specs, costs, and shipped reality reconciled. Documented in
+			<code>.planning/LEDGER.md</code>.
+		</p>
+
+		<div class="callout" style="background: #dafbe1; border-left-color: #1a7f37">
+			<p>
+				<strong>Pro bono engagement.</strong> This work is delivered at no cost to Aaron /
+				Outerfields as a contribution to the ShivWorks Network launch. Standard-rate figures remain
+				in the document so the engineering value is visible and the work is reusable as a reference
+				for future paid engagements. <strong>Amount billed: $0.00.</strong>
+			</p>
+		</div>
+
+		<h3>Follow-ups surfaced during execution (backlog — not in current engagement)</h3>
+		<ul>
+			<li>
+				<code>sec/tabnabbing-pass</code> — fix 15 <code>target="_blank"</code> security findings +
+				promote the lint rule back to error. Provisional 1.5 hrs / $187.
+			</li>
+			<li>
+				<code>chore/each-key-pass</code> — fix 30 missing <code>{#each}</code> keys (real
+				correctness, low risk). Provisional 1.5 hrs / $187.
+			</li>
+			<li>
+				<code>sec/log-migration</code> — migrate remaining 7 server-side
+				<code>console.error</code> sites to <code>logError</code>. Provisional 1.5 hrs / $187.
+			</li>
+			<li>
+				<code>feat/sentry-sourcemaps</code> — wire CI sourcemap upload to Sentry once
+				<code>SENTRY_AUTH_TOKEN</code> exists. Provisional 0.5 hr / $62.
+			</li>
+		</ul>
+
+		<h2>Open client-side decisions blocking completion</h2>
+
+		<table>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Decision</th>
+					<th>Owner</th>
+					<th>Blocks</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>
+						Create Sentry project + paste DSN into Doppler. Without it, Sentry SDK runs in no-op
+						mode (no errors captured in production).
+					</td>
+					<td>Aaron</td>
+					<td>End-to-end Sentry verification</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>
+						Provision Clerk dev-instance test users (member / vip / admin) with the
+						<code>e2e_</code> metadata prefix. Pick credential model (passwords-in-CI-secrets vs
+						Clerk testing-tokens API).
+					</td>
+					<td>Aaron + Alex</td>
+					<td>INV-003b auth-gated smoke</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>
+						Replace 4 <code>@TBD-*</code> placeholder handles in
+						<code>.github/CODEOWNERS</code> with real GitHub usernames.
+					</td>
+					<td>You + Aaron</td>
+					<td>Branch-protection enforcement</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>
+						Enable branch protection on <code>main</code> requiring all 6 CI checks + CODEOWNER
+						review. GitHub UI setting; one-time.
+					</td>
+					<td>Repo admin</td>
+					<td>SOP §3 enforcement</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2>Completion-date projections</h2>
+
+		<p>
+			Three scenarios. All assume one engineer at typical mid-level output (5–6 hrs of focused work
+			per day, accounting for context switches and review cycles).
+		</p>
+
+		<div class="gantt">
+			<div class="gantt-row">
+				<span class="label">Done (Waves 1+2 + CI)</span>
+				<div class="bar done" style="width: 60%"></div>
+				<span class="date">May 26 ✓</span>
+			</div>
+			<div class="gantt-row">
+				<span class="label">INV-003a public smoke</span>
+				<div class="bar optimistic" style="width: 12%; margin-left: 60%"></div>
+				<span class="date">May 27</span>
+			</div>
+			<div class="gantt-row">
+				<span class="label">INV-007 security</span>
+				<div class="bar expected" style="width: 22%; margin-left: 72%"></div>
+				<span class="date">May 28–29</span>
+			</div>
+			<div class="gantt-row">
+				<span class="label">Aaron decisions (Sentry, Clerk users, CODEOWNERS)</span>
+				<div class="bar client" style="width: 14%; margin-left: 60%"></div>
+				<span class="date">May 28–30</span>
+			</div>
+			<div class="gantt-row">
+				<span class="label">INV-003b auth-gated smoke</span>
+				<div class="bar expected" style="width: 12%; margin-left: 74%"></div>
+				<span class="date">Jun 1</span>
+			</div>
+			<div class="gantt-row">
+				<span class="label">Branch protection + verification</span>
+				<div class="bar pessimistic" style="width: 6%; margin-left: 86%"></div>
+				<span class="date">Jun 2</span>
+			</div>
+
+			<div class="gantt-legend">
+				<span class="item"><span class="swatch" style="background: #1a7f37"></span>Done</span>
+				<span class="item"
+					><span class="swatch" style="background: #54aeff"></span>Unblocked work</span
+				>
+				<span class="item"
+					><span class="swatch" style="background: #0969da"></span>Sequenced work</span
+				>
+				<span class="item"
+					><span class="swatch" style="background: #9a6700"></span>Waiting on client</span
+				>
+				<span class="item"
+					><span class="swatch" style="background: #d4a72c"></span>Hand-off + verify</span
+				>
+			</div>
+		</div>
+
+		<h3>Scenarios</h3>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Scenario</th>
+					<th>Stability date</th>
+					<th>Assumptions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><strong style="color: #1a7f37">Best case</strong></td>
+					<td>Fri May 29</td>
+					<td>
+						Aaron responds to all 4 decisions within 24 hrs of receiving them. Clerk test users
+						provisioned same day. INV-007 lands without spec deviation. Branch protection enabled by
+						EOD Friday.
+					</td>
+				</tr>
+				<tr>
+					<td><strong style="color: #0969da">Expected</strong></td>
+					<td>Tue Jun 2</td>
+					<td>
+						Aaron decisions return within 2–3 business days (Sentry account + Clerk users
+						provisioned over the weekend or Monday). INV-007 surfaces 1–2 minor spec deviations
+						consistent with prior PRs (~10% timeline impact). Verification + branch protection
+						completes Tuesday morning.
+					</td>
+				</tr>
+				<tr>
+					<td><strong style="color: #d4a72c">Worst case</strong></td>
+					<td>Fri Jun 5</td>
+					<td>
+						Aaron is travelling / slow to respond — full week before client-side decisions land.
+						INV-003b cannot run end-to-end. Branch protection enabled with smoke as a soft check
+						until creds arrive.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="callout warn">
+			<p>
+				<strong>Critical-path risk.</strong> The expected-case date (Jun 2) misses the original Jun
+				1 beta target by one day. The only way to recover the original date is for Aaron to
+				provision Sentry + Clerk test users by Friday May 29 morning. Without that, the network is
+				shippable but auth-gated smoke tests are not running on the day-1 beta release — meaning a
+				regression in <code>/dashboard</code>, <code>/library</code>, or
+				<code>/checkout-from-paid-state</code> would not be caught by CI until INV-003b lands.
+			</p>
+		</div>
+
+		<div class="callout">
+			<p>
+				<strong>Mitigation if the date matters.</strong> Ship the beta on Jun 1 with public-route
+				smoke (INV-003a) only. Auth-gated smoke catches regressions that public smoke misses, but
+				the rest of the safety net (typecheck + lint + unit + build + error boundaries + Sentry once
+				DSN arrives) is fully active. The day-1 risk is well-bounded: the most-trafficked authed
+				surface is <code>/dashboard</code>, and INV-005's dashboard error boundary already protects
+				the member experience from a hard-fail.
+			</p>
+		</div>
+
+		<h2>What "network stability" means in this report</h2>
+
+		<p>
+			"Stable" is defined as: every PR is gated by typecheck, lint, format, unit tests, smoke tests
+			(public + auth-gated), and a clean build; production errors are captured to Sentry with member
+			context and route tags; every route surface has a contextual error boundary; webhooks are
+			idempotent and signature-verified; member-facing endpoints are validated and rate-limited;
+			security headers and CODEOWNERS are enforced. Reaching this state means the application can
+			absorb the day-1 beta load without losing money silently to webhook replays, leaking PII
+			through error pages, or shipping a regression that takes hours to detect.
+		</p>
+
+		<p>
+			"Stable" does <em>not</em> mean feature-complete. Member-facing functionality is Alex's lane
+			(founder-tracker urgency, library hi-fi rebuild, the dashboard wireframe per task
+			<code>w260</code>). The production-readiness engagement makes Alex's work safe to deploy, not
+			the work itself.
+		</p>
+
+		<div class="footer">
+			<div>
+				<div class="brand">Macks Studios LLC</div>
+				Remote-first · USA<br />
+				Engineering services
+			</div>
+			<div style="text-align: right">
+				dev.mxcks@gmail.com<br />
+				maxstern.org
+			</div>
+		</div>
+
+		<p class="note">
+			Prepared 2026-05-26 against fork <code>Mxcks/shivworks-network</code>. Companion documents:
+			<code>.planning/LEDGER.md</code> (per-PR engineering record),
+			<code>.planning/README.md</code> (engagement plan),
+			<code>.planning/value-sheet.html</code> (investor-grade value translation),
+			<code>.planning/invoices/</code> (per-PR cost breakdowns). All dollar figures derive from the
+			rate card in <code>.planning/README.md</code>.
+		</p>
+	</body>
+</html>

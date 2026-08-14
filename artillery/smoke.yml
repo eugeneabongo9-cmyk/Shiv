@@ -1,0 +1,47 @@
+# Artillery smoke — fast sanity check.
+#
+# 60-second run, light load. Use to confirm a deploy is breathing
+# before running the heavier base.yml / authenticated.yml suites.
+#
+# Targets: landing, sitemap, checkout (redirects to login when
+# unauthenticated — verifies the gate, not the page itself).
+#
+# Run:
+#   TARGET_URL=https://network.shivworks.com pnpm load:smoke
+#
+# Launch-blocker thresholds (see README):
+#   p95 < 800ms on cached routes (/, /sitemap.xml)
+#   error rate < 1%
+#   zero 5xx anywhere
+
+config:
+  target: "{{ $processEnvironment.TARGET_URL }}"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: "Smoke"
+  defaults:
+    headers:
+      Accept: "text/html,application/json"
+  plugins:
+    expect: {}
+
+scenarios:
+  - name: "Landing + sitemap + checkout redirect"
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+            - contentType: "text/html"
+      - get:
+          url: "/sitemap.xml"
+          expect:
+            - statusCode: 200
+      - get:
+          url: "/checkout"
+          followRedirect: false
+          expect:
+            - statusCode:
+                - 200
+                - 302

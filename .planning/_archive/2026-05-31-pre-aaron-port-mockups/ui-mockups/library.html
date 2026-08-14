@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Library mockup · ShivWorks Network</title>
+		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet" />
+		<style>
+			:root {
+				--font-display: 'Space Grotesk', sans-serif; --font-body: 'Space Grotesk', sans-serif; --font-mono: 'Space Mono', ui-monospace, monospace;
+				--color-bg: #060606; --color-fg-primary: #f4ede1; --color-fg-secondary: #d4c4a6; --color-fg-muted: #938778;
+				--color-accent: #d1b27a; --color-accent-strong: #9b673c; --color-accent-soft: rgba(209,178,122,0.12);
+				--color-border: rgba(209,178,122,0.18); --color-border-strong: rgba(209,178,122,0.38);
+				--color-rule: rgba(255,255,255,0.07);
+				--surface: linear-gradient(180deg, rgba(16,16,17,0.96), rgba(8,8,9,0.98));
+				--surface-elevated: linear-gradient(180deg, rgba(26,20,14,0.98), rgba(10,10,10,0.98));
+				--shadow-card: 0 28px 84px rgba(0,0,0,0.42); --container-max: 1200px;
+			}
+			* { box-sizing: border-box; }
+			body { margin: 0; font-family: var(--font-body);
+				background: radial-gradient(circle at top left, rgba(209,178,122,0.16), transparent 20%),
+					radial-gradient(circle at 86% 12%, rgba(155,103,60,0.18), transparent 16%), var(--color-bg);
+				color: var(--color-fg-primary); min-height: 100vh;
+			}
+			body::before { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: 0.12;
+				background: repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 116px),
+					repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 92px);
+				mix-blend-mode: soft-light;
+			}
+			.container { max-width: var(--container-max); margin: 0 auto; padding: 0 2rem; }
+			.mockup-banner { background: rgba(209,178,122,0.06); border-bottom: 1px dashed var(--color-border);
+				padding: 0.65rem 2rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-fg-muted);
+				letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+			}
+			.mockup-banner b { color: var(--color-accent); }
+			.nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem;
+				border-bottom: 1px solid var(--color-rule); max-width: var(--container-max); margin: 0 auto; }
+			.nav-brand { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.85rem; }
+			.nav-brand span { color: var(--color-accent); }
+			.nav-actions { display: flex; gap: 1.25rem; align-items: center; }
+			.nav-link { color: var(--color-fg-secondary); font-size: 0.9rem; text-decoration: none; }
+			.nav-link.active { color: var(--color-fg-primary); border-bottom: 1px solid var(--color-accent); padding-bottom: 0.15rem; }
+			.eyebrow { font-size: 0.75rem; font-weight: 500; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.18em; margin: 0 0 1rem; }
+			.btn-tertiary { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--color-accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; border-bottom: 1px solid transparent; }
+			.btn-tertiary:hover { border-color: var(--color-accent); }
+			.panel { background: var(--surface); border: 1px solid var(--color-border); border-radius: 1.25rem; box-shadow: var(--shadow-card); }
+
+			.lib-shell { padding: 4rem 0 5rem; }
+			.lib-head { margin-bottom: 3rem; max-width: 50rem; }
+			.lib-head h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); margin: 0 0 1rem; letter-spacing: -0.02em; line-height: 1.1; }
+			.lib-head p { color: var(--color-fg-secondary); font-size: 1.05rem; line-height: 1.55; margin: 0; }
+
+			.lib-filter-row { display: flex; gap: 0.6rem; margin-bottom: 2rem; flex-wrap: wrap; }
+			.filter-chip { padding: 0.55rem 1rem; border-radius: 999px; border: 1px solid var(--color-border);
+				background: transparent; color: var(--color-fg-secondary); font-size: 0.85rem;
+				cursor: pointer; font-family: inherit; font-weight: 500;
+			}
+			.filter-chip.active { background: var(--color-accent-soft); color: var(--color-accent); border-color: var(--color-accent); }
+
+			.modules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+			.module-card { padding: 1.75rem; display: grid; gap: 1rem; position: relative; }
+			.module-card.locked { background: var(--surface); }
+			.module-card.locked::before {
+				content: ''; position: absolute; inset: 0; pointer-events: none;
+				background: repeating-linear-gradient(135deg, transparent 0 8px, rgba(255,255,255,0.012) 8px 9px);
+				border-radius: 1.25rem;
+			}
+			.module-meta { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+			.module-num { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-fg-muted); letter-spacing: 0.12em; text-transform: uppercase; }
+			.module-pill { font-family: var(--font-mono); font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 999px; letter-spacing: 0.1em; text-transform: uppercase; }
+			.pill-filming { background: rgba(155,103,60,0.2); color: var(--color-accent); }
+			.pill-queued { background: rgba(255,255,255,0.04); color: var(--color-fg-muted); }
+			.pill-live { background: rgba(110,201,138,0.12); color: #b9e2c1; }
+			.module-card h3 { font-family: var(--font-display); font-size: 1.25rem; margin: 0; letter-spacing: -0.01em; line-height: 1.25; color: var(--color-fg-primary); }
+			.module-card p { color: var(--color-fg-secondary); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+			.module-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+				padding-top: 1rem; border-top: 1px solid var(--color-rule);
+			}
+			.module-release { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-fg-secondary); letter-spacing: 0.08em; text-transform: uppercase; }
+			.module-notify { color: var(--color-accent); text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+
+			footer { border-top: 1px solid var(--color-rule); padding: 2rem 0; color: var(--color-fg-muted); font-size: 0.8rem; text-align: center; font-family: var(--font-mono); margin-top: 3rem; }
+
+			@media (max-width: 768px) { .modules-grid { grid-template-columns: 1fr; } }
+			@media (max-width: 560px) { .container { padding: 0 1.25rem; } }
+		</style>
+	</head>
+	<body>
+		<div class="mockup-banner">Mockup · <b>library</b> · v0 · audit at .planning/ui-audits/library.md</div>
+
+		<nav class="nav">
+			<div class="nav-brand">ShivWorks <span>Network</span></div>
+			<div class="nav-actions">
+				<a class="nav-link" href="#">Dashboard</a>
+				<a class="nav-link active" href="#">Library</a>
+				<a class="nav-link" href="#">Community</a>
+				<a class="nav-link" href="#">Find partners</a>
+				<a class="nav-link" href="#">Account</a>
+			</div>
+		</nav>
+
+		<section class="lib-shell">
+			<div class="container">
+
+				<div class="lib-head">
+					<p class="eyebrow">Curriculum shell</p>
+					<h1>The complete ShivWorks roadmap — visible from day one.</h1>
+					<p>
+						Every module in the planned curriculum is listed below. Modules move from <em>Filming</em>
+						to <em>In edit</em> to <em>Live</em> as production releases land. Each card shows its
+						real target date, not a "coming soon."
+					</p>
+				</div>
+
+				<div class="lib-filter-row">
+					<button class="filter-chip active">Roadmap (8)</button>
+					<button class="filter-chip">Available (0)</button>
+					<button class="filter-chip">My progress</button>
+				</div>
+
+				<div class="modules-grid">
+					<div class="panel module-card">
+						<div class="module-meta">
+							<span class="module-num">Module 01 · Week 1</span>
+							<span class="module-pill pill-filming">Filming</span>
+						</div>
+						<h3>Origin Story</h3>
+						<p>Craig opens the cohort. Sets the frame for the rest of the curriculum.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Dec 15</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card">
+						<div class="module-meta">
+							<span class="module-num">Module 02 · Week 2</span>
+							<span class="module-pill pill-filming">In edit</span>
+						</div>
+						<h3>Foundations of force</h3>
+						<p>Why the framework starts here. Released first to the library.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Dec 22</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card locked">
+						<div class="module-meta">
+							<span class="module-num">Module 03 · Week 3</span>
+							<span class="module-pill pill-queued">Queued</span>
+						</div>
+						<h3>Reading the encounter</h3>
+						<p>Pre-contact, contact, post-contact decision points.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Dec 29</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card locked">
+						<div class="module-meta">
+							<span class="module-num">Module 04 · Week 4</span>
+							<span class="module-pill pill-queued">Queued</span>
+						</div>
+						<h3>Tools + framework</h3>
+						<p>Where edged-weapon training sits inside the larger system.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Jan 5</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card locked">
+						<div class="module-meta">
+							<span class="module-num">Module 05 · Week 5</span>
+							<span class="module-pill pill-queued">Queued</span>
+						</div>
+						<h3>Live session 01</h3>
+						<p>First live members-only Q&A with Craig. Submit questions during the week.</p>
+						<div class="module-footer">
+							<span class="module-release">Live · Jan 12</span>
+							<a class="module-notify" href="#">RSVP opens →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card locked">
+						<div class="module-meta">
+							<span class="module-num">Module 06 · Week 6</span>
+							<span class="module-pill pill-queued">Queued</span>
+						</div>
+						<h3>Decision under stress</h3>
+						<p>What changes when adrenaline arrives — and what doesn't.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Jan 19</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card locked">
+						<div class="module-meta">
+							<span class="module-num">Module 07 · Week 7</span>
+							<span class="module-pill pill-queued">Queued</span>
+						</div>
+						<h3>Aftermath + legal</h3>
+						<p>What happens after the encounter. Practical, not theatrical.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Jan 26</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+
+					<div class="panel module-card locked">
+						<div class="module-meta">
+							<span class="module-num">Module 08 · Week 8</span>
+							<span class="module-pill pill-queued">Queued</span>
+						</div>
+						<h3>Cohort wrap + next steps</h3>
+						<p>What you've learned, where to take it, how to keep training.</p>
+						<div class="module-footer">
+							<span class="module-release">Releases Feb 2</span>
+							<a class="module-notify" href="#">Get notified →</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+		<footer>© 2026 ShivWorks · library mockup · v0</footer>
+	</body>
+</html>

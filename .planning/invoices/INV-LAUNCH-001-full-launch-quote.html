@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Macks Studios LLC — Quote · ShivWorks Network Full Launch (INV-LAUNCH-001)</title>
+<style>
+  @page { size: Letter; margin: 0.5in; }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#24292f;max-width:900px;margin:0 auto;padding:42px 24px 90px;font-size:14px;line-height:1.55}
+  .stamp{position:absolute;top:50px;right:36px;font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:800;font-size:36px;letter-spacing:2px;color:#d4a72c;border:3px solid #d4a72c;padding:6px 18px;transform:rotate(-8deg);opacity:.85}
+  .head{text-align:center;margin-bottom:30px}
+  .logo{font-size:22px;font-weight:700;letter-spacing:.5px}
+  .title{font-size:32px;font-weight:300;margin-top:6px}
+  .sub{color:#57606a;font-size:13px;margin-top:4px}
+  hr.div{border:none;border-top:1px solid #d0d7de;margin:12px auto 0;width:80px}
+  .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:28px 0}
+  .meta .box{background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:12px 14px}
+  .meta .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#57606a;margin-bottom:4px}
+  .meta .val{font-weight:600}
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+  .card{background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:16px 18px;text-align:center}
+  .card.accent{background:#ddf4ff;border-color:#54aeff}
+  .card .l{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#57606a;margin-bottom:6px}
+  .card .v{font-size:26px;font-weight:700}
+  .card.accent .v{color:#0969da}
+  h2{font-size:16px;margin:28px 0 8px;padding-bottom:6px;border-bottom:1px solid #d0d7de}
+  table{width:100%;border-collapse:collapse;margin:6px 0 12px;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #d0d7de;vertical-align:top}
+  th{color:#57606a;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:2px solid #24292f}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.line{color:#57606a;font-size:12.5px;font-style:italic}
+  tr.subtot td{font-weight:700;background:#f6f8fa}
+  tr.total td{font-weight:700;border-top:2px solid #24292f;background:#fff8c5;font-size:15px}
+  .note{background:#f6f8fa;border-left:3px solid #0969da;padding:10px 14px;margin:14px 0;font-size:12.5px}
+  .note strong{color:#0969da}
+  .footer{margin-top:38px;padding-top:18px;border-top:1px solid #d0d7de;display:flex;justify-content:space-between;color:#8c959f;font-size:12px}
+  .footer .brand{color:#24292f;font-weight:700;font-size:14px;margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="stamp">QUOTE</div>
+
+<div class="head">
+  <div class="logo">MACKS STUDIOS</div>
+  <h1 class="title">Project Quote</h1>
+  <div class="sub">ShivWorks Network — Full Launch Execution</div>
+  <hr class="div"/>
+</div>
+
+<div class="meta">
+  <div class="box"><div class="lbl">Quote #</div><div class="val">INV-LAUNCH-001</div></div>
+  <div class="box"><div class="lbl">Date</div><div class="val">2026-05-29</div></div>
+  <div class="box"><div class="lbl">Valid through</div><div class="val">2026-06-15</div></div>
+  <div class="box"><div class="lbl">Client</div><div class="val">Aaron Thomas · Outerfields / ShivWorks</div></div>
+  <div class="box"><div class="lbl">Project</div><div class="val">ShivWorks Network Beta Launch · June 1 target</div></div>
+  <div class="box"><div class="lbl">Scope</div><div class="val">Full platform launch execution by Max</div></div>
+</div>
+
+<div class="summary">
+  <div class="card"><div class="l">Estimated hours</div><div class="v">82.5</div></div>
+  <div class="card"><div class="l">Flat rate</div><div class="v">$100 / hr</div></div>
+  <div class="card accent"><div class="l">Project total</div><div class="v">$8,250.00</div></div>
+</div>
+
+<div class="note">
+  <strong>What this quote covers.</strong> Everything Max is now personally executing to land the June 1 beta — the webhook + import money path, the four-layer cache architecture, the security pass, the remaining Network feature surfaces (formerly Micah's lane), store-side integration on shivworkspg.com, secrets / staging / Replit / rollout infrastructure, and launch-day support. Excludes content production (Marvin: courses + Roadshow filming) and physical fulfillment (Shannon). Aaron's decisions and approvals are not billed.
+</div>
+
+<div class="note">
+  <strong>Client-provided access (already confirmed).</strong> Infisical workspace access ✓ · Replit repo connected ✓ · GitHub fork commit + merge access ✓ · WooCommerce store admin access (for webhook config) — TBC.
+</div>
+
+<h2>Section 1 · Payment pipeline (the money path)</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>1.1</td><td><strong>WooCommerce webhook receiver</strong><br/><span class="line">Endpoint + HMAC signature verify + payload parse + product-ID → tier mapping (31517 → bronze / 31518 → vip) + email-keyed `upsertImportedMemberProvision` + zod payload validation + `processed_webhook_events` idempotency migration + unit tests + curl mock fixture + ActiveCampaign tagging on success + Resend welcome dispatch.</span></td><td class="num">8.0</td><td class="num">$800.00</td></tr>
+  <tr><td>1.2</td><td><strong>Bulk member import — execution + dress rehearsal</strong><br/><span class="line">Map Alex's WooCommerce buyer export to the `member_imports` CSV format · rehearse against 10–20 internal accounts on D1 staging · execute the full ~643-row import against prod D1 · verify every imported row resolves on first Clerk login · reconciliation report for any failed rows.</span></td><td class="num">6.0</td><td class="num">$600.00</td></tr>
+  <tr><td>1.3</td><td><strong>Founding-member tracker — go live</strong><br/><span class="line">Build the WordPress `/api/members` endpoint that counts completed WC orders for products 31517 / 31518 · wire active-tier capacity (Bronze tier-2 = 1,000 / VIP = 200) · deploy the mobile + desktop PHP templates to the live theme · cross-device QA pass.</span></td><td class="num">4.0</td><td class="num">$400.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 1 subtotal</td><td class="num">18.0</td><td class="num">$1,800.00</td></tr>
+</table>
+
+<h2>Section 2 · Cache architecture (load tested to 600+ users)</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>2.1</td><td><strong>L2 cache — SvelteKit `setHeaders` pass</strong><br/><span class="line">`Cache-Control: public, max-age=60` on `/`, `/sitemap.xml`, `/api/members` and any read-mostly route the Artillery baseline flags · record before/after p95 in the LEDGER.</span></td><td class="num">2.0</td><td class="num">$200.00</td></tr>
+  <tr><td>2.2</td><td><strong>L4 cache — Cloudflare KV for hot reads</strong><br/><span class="line">KV namespace binding in `wrangler.jsonc` · cache `members.tier` keyed by Clerk user id on every authenticated request (the biggest D1 traffic reducer) · cache the course catalog · write-through invalidation on webhooks + admin mutations · re-run Artillery to confirm p95 &lt; 1.5 s.</span></td><td class="num">3.0</td><td class="num">$300.00</td></tr>
+  <tr><td>2.3</td><td><strong>D1 index audit + add missing</strong><br/><span class="line">Verify indexes on `members.clerk_user_id`, `members.email`, `member_imports.email`, `member_episode_progress (member_id, episode_id)` · add an additive migration `0009_indexes.sql` if any are missing.</span></td><td class="num">1.0</td><td class="num">$100.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 2 subtotal</td><td class="num">6.0</td><td class="num">$600.00</td></tr>
+</table>
+
+<h2>Section 3 · Security &amp; verification</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>3.1</td><td><strong>Security hardening pass</strong><br/><span class="line">zod validation on every mutation endpoint (vip-calls, RSVP, progress, admin) · rate limiting via D1 token-bucket on member-facing endpoints · security headers (CSP, HSTS, Referrer-Policy, Permissions-Policy) in `hooks.server.ts` · `requireAdmin` redirect-loop fix · gitleaks pre-commit add.</span></td><td class="num">6.0</td><td class="num">$600.00</td></tr>
+  <tr><td>3.2</td><td><strong>Auth-gated smoke tests</strong><br/><span class="line">Clerk testing-token global setup · 5 authed specs (dashboard, library, community, settings, vip-calls) · D1 seed script for the test users' membership tier · CI wire-up.</span></td><td class="num">3.0</td><td class="num">$300.00</td></tr>
+  <tr><td>3.3</td><td><strong>Sentry sourcemap CI upload</strong><br/><span class="line">Wire `sentrySvelteKit()` vite plugin against `SENTRY_AUTH_TOKEN` so stack traces resolve to TypeScript line numbers in prod.</span></td><td class="num">0.5</td><td class="num">$50.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 3 subtotal</td><td class="num">9.5</td><td class="num">$950.00</td></tr>
+</table>
+
+<h2>Section 4 · Network app features (Max absorbs Micah's lane)</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>4.1</td><td><strong>"People of ShivWorks" Library section</strong><br/><span class="line">New `/library/people` route · profile data model (static JSON for beta, D1-backed for v2) · 1–2 starter profiles plumbed · tier-gating consistent with the Library guards.</span></td><td class="num">7.0</td><td class="num">$700.00</td></tr>
+  <tr><td>4.2</td><td><strong>Gamification visible surfaces</strong><br/><span class="line">Dashboard rank / TP / streak / milestones surfaces — visible with static beta defaults · "fully live with Module 4" caption · engine remains inactive (no point-event writes for beta).</span></td><td class="num">6.0</td><td class="num">$600.00</td></tr>
+  <tr><td>4.3</td><td><strong>Dashboard tier-completeness audit + fills</strong><br/><span class="line">Walk `/dashboard` against the brief's success criteria #4 / #5 · fill any missing surfaces (trainer status, continue-training, training-status block, course rails, Live, Updates, Community, VIP sidebar).</span></td><td class="num">3.0</td><td class="num">$300.00</td></tr>
+  <tr><td>4.4</td><td><strong>Checkout UI reconcile (retire in-app Stripe checkout)</strong><br/><span class="line">Replace the live `/checkout` Stripe path with a clean redirect to the WordPress store · keep Stripe code dormant (no deletion) per the agreed fallback posture.</span></td><td class="num">2.0</td><td class="num">$200.00</td></tr>
+  <tr><td>4.5</td><td><strong>Live + Updates + Community tab wiring</strong><br/><span class="line">Confirm ≥1 scheduled Live session renders · Updates feed reads from D1 + admin form · Community tab links to the live Circle URL once Aaron supplies it.</span></td><td class="num">3.0</td><td class="num">$300.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 4 subtotal</td><td class="num">21.0</td><td class="num">$2,100.00</td></tr>
+</table>
+
+<h2>Section 5 · Store-side integration (WordPress / WC / Fortis / AC)</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>5.1</td><td><strong>WordPress `/api/members` count endpoint</strong><br/><span class="line">Theme/plugin code that counts completed WC orders for product 31517 / 31518 and returns `{ bronze: {sold,capacity}, vip: {sold,capacity} }` · CORS for the Network app if cross-origin is needed.</span></td><td class="num">2.0</td><td class="num">$200.00</td></tr>
+  <tr><td>5.2</td><td><strong>WooCommerce webhook configuration</strong><br/><span class="line">Add a WC webhook in store admin pointing at `network.shivworks.com/api/wc/webhook` · shared secret to Infisical as `WC_WEBHOOK_SECRET` · confirm delivery end-to-end via a $0 test product.</span></td><td class="num">0.5</td><td class="num">$50.00</td></tr>
+  <tr><td>5.3</td><td><strong>Checkout PHP templates → live theme deploy</strong><br/><span class="line">Push the mobile + desktop founding-member-tracker checkout templates from `data/replit builds/` to the live WordPress theme · mobile + desktop QA.</span></td><td class="num">1.5</td><td class="num">$150.00</td></tr>
+  <tr><td>5.4</td><td><strong>ActiveCampaign Bronze / VIP tag automations</strong><br/><span class="line">Define + wire the `Jujitsu_Course_Member` + `VIP_Founding` tags + their welcome-email automations · the webhook (1.1) pings AC on success.</span></td><td class="num">1.0</td><td class="num">$100.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 5 subtotal</td><td class="num">5.0</td><td class="num">$500.00</td></tr>
+</table>
+
+<h2>Section 6 · Infrastructure, secrets, environments</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>6.1</td><td><strong>Infisical workspace + secret population</strong><br/><span class="line">`infisical init` against the workspace · populate dev / staging / prod envs with every secret in the inventory · Cloudflare integration so values sync into CF Pages env automatically.</span></td><td class="num">1.5</td><td class="num">$150.00</td></tr>
+  <tr><td>6.2</td><td><strong>Replit development environment</strong><br/><span class="line">Verify the Replit-connected repo runs `pnpm dev:secrets` cleanly · `replit.nix` + `wrangler.replit.jsonc` reconciled with the live `wrangler.jsonc` · `.replit` run command set.</span></td><td class="num">1.5</td><td class="num">$150.00</td></tr>
+  <tr><td>6.3</td><td><strong>Staging environment + smoke discipline</strong><br/><span class="line">CF Pages preview branch wired · Infisical `staging` env populated · `pnpm deploy:preview` + Playwright public + auth-gated smoke runs documented in `STAGING.md`.</span></td><td class="num">1.5</td><td class="num">$150.00</td></tr>
+  <tr><td>6.4</td><td><strong>Production secrets rotation</strong><br/><span class="line">Swap Clerk test keys for `pk_live_` / `sk_live_` · Clerk redirect URIs include `network.shivworks.com` · Sentry DSN populated · final `.env.example` consistency check.</span></td><td class="num">1.5</td><td class="num">$150.00</td></tr>
+  <tr><td>6.5</td><td><strong>Resend deliverability — SPF / DKIM / DMARC</strong><br/><span class="line">Add the DNS records on the From-domain · verify in Resend dashboard · send a test transactional and confirm inbox (not spam) across Gmail / Outlook / Apple Mail.</span></td><td class="num">0.5</td><td class="num">$50.00</td></tr>
+  <tr><td>6.6</td><td><strong>Rollout + rollback runbook</strong><br/><span class="line">Staged-onboarding cadence (50 → wait 30 min → 150 → wait 30 min → rest) with the exact metric thresholds to advance or halt · CF Pages one-click rollback procedure · `wrangler d1 backup` snapshot procedure · on-call comms plan.</span></td><td class="num">1.5</td><td class="num">$150.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 6 subtotal</td><td class="num">8.0</td><td class="num">$800.00</td></tr>
+</table>
+
+<h2>Section 7 · Coordination, verification, launch support</h2>
+<table>
+  <tr><th>#</th><th>Line item</th><th class="num">Hrs</th><th class="num">Subtotal</th></tr>
+  <tr><td>7.1</td><td><strong>Aaron + Micah syncs through to launch</strong><br/><span class="line">Recurring coordination — the 1 PM 5/29 sync + scope reviews + decision capture in the running-log. Tracks open items via the project hub.</span></td><td class="num">3.0</td><td class="num">$300.00</td></tr>
+  <tr><td>7.2</td><td><strong>Doc maintenance + LEDGER</strong><br/><span class="line">Append-only LEDGER entries for every PR · keep `ARCHITECTURE.md` / `INFISICAL.md` / `LOAD-TEST-PLAN.md` / `LAUNCH-PLAN-ALIGNMENT.md` current as work lands.</span></td><td class="num">2.0</td><td class="num">$200.00</td></tr>
+  <tr><td>7.3</td><td><strong>Final E2E verification</strong><br/><span class="line">Real-money $0 (test product) purchase on the live store → WC webhook → D1 provisioning → Clerk signup with same email → dashboard renders correct tier → welcome email arrives. End-to-end on production.</span></td><td class="num">2.0</td><td class="num">$200.00</td></tr>
+  <tr><td>7.4</td><td><strong>Launch day on-call + Sentry watch</strong><br/><span class="line">Real-time monitoring during staged rollout · Sentry + CF Pages analytics open · hot-fix readiness · ~24 hr coverage post-launch.</span></td><td class="num">6.0</td><td class="num">$600.00</td></tr>
+  <tr><td>7.5</td><td><strong>Post-launch retrospective + handoff doc</strong><br/><span class="line">Day-after retro · LEDGER finalization · gap list for v1.1 · invoice finalization vs estimate.</span></td><td class="num">2.0</td><td class="num">$200.00</td></tr>
+  <tr class="subtot"><td colspan="2">Section 7 subtotal</td><td class="num">15.0</td><td class="num">$1,500.00</td></tr>
+</table>
+
+<h2>Totals</h2>
+<table>
+  <tr><th></th><th>Bucket</th><th class="num">Hours</th><th class="num">Subtotal</th></tr>
+  <tr><td>1</td><td>Payment pipeline</td><td class="num">18.0</td><td class="num">$1,800.00</td></tr>
+  <tr><td>2</td><td>Cache architecture</td><td class="num">6.0</td><td class="num">$600.00</td></tr>
+  <tr><td>3</td><td>Security &amp; verification</td><td class="num">9.5</td><td class="num">$950.00</td></tr>
+  <tr><td>4</td><td>Network app features</td><td class="num">21.0</td><td class="num">$2,100.00</td></tr>
+  <tr><td>5</td><td>Store-side integration</td><td class="num">5.0</td><td class="num">$500.00</td></tr>
+  <tr><td>6</td><td>Infra, secrets, environments</td><td class="num">8.0</td><td class="num">$800.00</td></tr>
+  <tr><td>7</td><td>Coordination, verification, launch support</td><td class="num">15.0</td><td class="num">$1,500.00</td></tr>
+  <tr class="total"><td colspan="2">Total at flat $100 / hr</td><td class="num">82.5</td><td class="num">$8,250.00</td></tr>
+</table>
+
+<div class="note" style="background:#dafbe1;border-left-color:#1a7f37">
+  <strong>Out of scope (not in this quote).</strong> Course filming + editing (Marvin) · Roadshow production (Marvin) · physical fulfillment (Shannon — trainers, VIP blades) · post-launch redesign engagement (separate quote — see <code>.planning/value-sheet.html</code> for the Outerfields-expansion conversation).
+</div>
+
+<div class="note">
+  <strong>Terms.</strong> Flat $100 / hr against the scope listed. Net 14 from launch day or invoice date, whichever later. Material scope changes (e.g. a new feature surface Micah doesn't deliver) re-quoted in writing. 1099-reportable, US professional services, no sales tax. Hours tracked per PR / per LEDGER entry; final invoice reconciled against this estimate at delivery.
+</div>
+
+<div class="footer">
+  <div>
+    <div class="brand">Macks Studios LLC</div>
+    Remote-first · USA<br/>
+    Engineering services
+  </div>
+  <div style="text-align:right">
+    dev.mxcks@gmail.com<br/>
+    maxstern.org
+  </div>
+</div>
+
+</body>
+</html>

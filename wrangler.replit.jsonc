@@ -1,0 +1,17 @@
+{
+        "$schema": "node_modules/wrangler/config-schema.json",
+        "name": "shivworks-network-replit",
+        "compatibility_date": "2026-03-20",
+        "compatibility_flags": ["nodejs_compat"],
+        "vars": {
+                "ENVIRONMENT": "development",
+                "PUBLIC_SITE_URL": "https://shivworks-network.pages.dev",
+                "PUBLIC_SHIVWORKS_MAIN_SITE": "https://shivworks.com",
+                "PUBLIC_SHIVWORKS_STORE_URL": "https://shivworkspg.com",
+                "PUBLIC_SHIVWORKS_MEMBERSHIP_URL": "https://shivworkspg.com/theshivworksnetwork/",
+                "PUBLIC_SUPPORT_EMAIL": "network@shivworks.com"
+        }
+        // KV not wired in Replit dev (Node.js runtime — no Cloudflare bindings).
+        // kv-cache.ts falls through to D1 when platform.env.KV is undefined.
+        // Add kv_namespaces here after running: wrangler kv namespace create shivworks-network-cache
+}

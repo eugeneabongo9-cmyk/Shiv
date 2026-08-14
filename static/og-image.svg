@@ -1,0 +1,42 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="70" x2="1120" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f1217"/>
+      <stop offset="1" stop-color="#191f29"/>
+    </linearGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" stroke="rgba(255,255,255,0.05)"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <rect x="88" y="88" width="172" height="42" rx="21" fill="rgba(200,178,122,0.14)" stroke="rgba(200,178,122,0.32)"/>
+  <text x="112" y="114" font-family="Space Grotesk, system-ui, sans-serif" font-size="14" font-weight="700" fill="#c8b27a" letter-spacing="0.18em">SHIVWORKS</text>
+
+  <rect x="88" y="164" width="118" height="118" rx="28" fill="#121720" stroke="#c8b27a" stroke-width="3"/>
+  <path d="M116 194h62l-36 34 38 36h-60l20-19-22-21 31-30z" fill="#f4efe6"/>
+
+  <text x="234" y="228" font-family="Space Grotesk, system-ui, sans-serif" font-size="70" font-weight="700" fill="#f4efe6" letter-spacing="-0.03em">ShivWorks Network</text>
+  <text x="234" y="286" font-family="Space Grotesk, system-ui, sans-serif" font-size="28" font-weight="400" fill="rgba(244,239,230,0.72)">A dedicated member platform for training, updates, live sessions, and community.</text>
+
+  <rect x="88" y="354" width="160" height="36" rx="18" fill="rgba(255,255,255,0.08)"/>
+  <text x="116" y="377" font-family="Space Grotesk, system-ui, sans-serif" font-size="15" font-weight="500" fill="#f4efe6">Dashboard</text>
+  <rect x="266" y="354" width="138" height="36" rx="18" fill="rgba(255,255,255,0.08)"/>
+  <text x="294" y="377" font-family="Space Grotesk, system-ui, sans-serif" font-size="15" font-weight="500" fill="#f4efe6">Library</text>
+  <rect x="422" y="354" width="132" height="36" rx="18" fill="rgba(255,255,255,0.08)"/>
+  <text x="450" y="377" font-family="Space Grotesk, system-ui, sans-serif" font-size="15" font-weight="500" fill="#f4efe6">Live</text>
+  <rect x="572" y="354" width="168" height="36" rx="18" fill="rgba(255,255,255,0.08)"/>
+  <text x="600" y="377" font-family="Space Grotesk, system-ui, sans-serif" font-size="15" font-weight="500" fill="#f4efe6">Community</text>
+
+  <text x="88" y="520" font-family="Space Mono, ui-monospace, monospace" font-size="16" fill="rgba(255,255,255,0.42)">network.shivworks.com</text>
+
+  <circle cx="1000" cy="190" r="124" stroke="rgba(200,178,122,0.16)" stroke-width="2"/>
+  <circle cx="1000" cy="190" r="78" stroke="rgba(200,178,122,0.24)" stroke-width="2"/>
+  <circle cx="1000" cy="190" r="28" fill="rgba(200,178,122,0.2)"/>
+
+  <rect x="850" y="430" width="260" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="850" y="430" width="178" height="8" rx="4" fill="#c8b27a"/>
+  <text x="850" y="468" font-family="Space Grotesk, system-ui, sans-serif" font-size="14" fill="rgba(255,255,255,0.5)">Member platform launch in progress</text>
+</svg>

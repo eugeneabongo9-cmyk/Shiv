@@ -1,0 +1,20 @@
+body { display: grid; place-items: center; min-height: 100vh; }
+  .login-wrap { width: min(420px, calc(100vw - 2.5rem)); position: relative; z-index: 1; }
+  .login-brand { display: flex; align-items: center; gap: 0.7rem; justify-content: center; margin-bottom: 1.5rem; }
+  .login-brand img { width: 2.4rem; height: 2.4rem; object-fit: contain; }
+  .login-brand .lb-name { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em; font-size: 1.05rem; text-transform: uppercase; }
+  .login-card { padding: 2.2rem 2.1rem 2.4rem; }
+  .login-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); border: 1px solid var(--color-accent-border); background: var(--color-accent-soft); border-radius: 999px; padding: 0.4rem 0.8rem; }
+  .login-tag svg { width: 0.9rem; height: 0.9rem; }
+  .login-card h1 { font-size: 1.6rem; text-transform: uppercase; margin-top: 1rem; }
+  .login-card .sub { color: var(--color-fg-muted); font-size: 0.88rem; line-height: 1.55; margin-top: 0.5rem; margin-bottom: 1.6rem; }
+  .fld { margin-bottom: 0.9rem; }
+  .fld label { display: block; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-fg-muted); margin-bottom: 0.4rem; }
+  .fld input { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--color-border-strong); border-radius: 6px; color: var(--color-fg-primary); font-family: var(--font-body); font-size: 0.92rem; padding: 0.7rem 0.8rem; }
+  .fld input:focus { outline: 0; border-color: var(--color-accent-border); background: rgba(255,255,255,0.05); }
+  .login-card .btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+  .login-demo { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--color-border); text-align: center; }
+  .login-demo p { font-size: 0.78rem; color: var(--color-fg-faint); margin-bottom: 0.7rem; line-height: 1.5; }
+  .login-foot { text-align: center; margin-top: 1.3rem; }
+  .login-foot a { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-fg-muted); }
+  .login-foot a:hover { color: #fff; }

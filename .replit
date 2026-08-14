@@ -1,0 +1,33 @@
+entrypoint = "package.json"
+language = "nodejs"
+modules = ["nodejs-20", "python-3.11"]
+hidden = [".git", ".next", ".svelte-kit", "node_modules", ".pnpm-store", ".wrangler"]
+onBoot = "pnpm install --frozen-lockfile=false && pnpm exec svelte-kit sync"
+run = "SHIVWORKS_DB_MODE=sqlite DATABASE_PATH=./data/shivworks-network.db pnpm exec svelte-kit sync && SHIVWORKS_DB_MODE=sqlite DATABASE_PATH=./data/shivworks-network.db pnpm exec vite dev --host 0.0.0.0 --port 3000"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", "replit.md", "package.json"]
+
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 4173
+externalPort = 3000
+
+[deployment]
+deploymentTarget = "cloudrun"
+build = ["pnpm", "build:replit"]
+run = ["pnpm", "start:replit"]
+
+[agent]
+expertMode = true
+
+[userenv]
+
+[userenv.shared]
+SHIVWORKS_ADMIN_EMAILS = "dev.mxcks@gmail.com"

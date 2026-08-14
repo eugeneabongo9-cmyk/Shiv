@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Welcome mockup · ShivWorks Network</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			:root {
+				--font-display: 'Space Grotesk', sans-serif;
+				--font-body: 'Space Grotesk', sans-serif;
+				--font-mono: 'Space Mono', ui-monospace, monospace;
+				--color-bg: #060606;
+				--color-fg-primary: #f4ede1;
+				--color-fg-secondary: #d4c4a6;
+				--color-fg-muted: #938778;
+				--color-accent: #d1b27a;
+				--color-accent-strong: #9b673c;
+				--color-accent-soft: rgba(209, 178, 122, 0.12);
+				--color-border: rgba(209, 178, 122, 0.18);
+				--color-border-strong: rgba(209, 178, 122, 0.38);
+				--color-rule: rgba(255, 255, 255, 0.07);
+				--surface: linear-gradient(180deg, rgba(16, 16, 17, 0.96), rgba(8, 8, 9, 0.98));
+				--surface-elevated: linear-gradient(180deg, rgba(26, 20, 14, 0.98), rgba(10, 10, 10, 0.98));
+				--shadow-card: 0 28px 84px rgba(0, 0, 0, 0.42);
+				--container-max: 1200px;
+			}
+			* { box-sizing: border-box; }
+			body {
+				margin: 0;
+				font-family: var(--font-body);
+				background:
+					radial-gradient(circle at top left, rgba(209, 178, 122, 0.16), transparent 20%),
+					radial-gradient(circle at 86% 12%, rgba(155, 103, 60, 0.18), transparent 16%),
+					var(--color-bg);
+				color: var(--color-fg-primary);
+				min-height: 100vh;
+			}
+			body::before {
+				content: '';
+				position: fixed; inset: 0; pointer-events: none; opacity: 0.12;
+				background:
+					repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 116px),
+					repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 92px);
+				mix-blend-mode: soft-light;
+			}
+			.container { max-width: var(--container-max); margin: 0 auto; padding: 0 2rem; }
+			.mockup-banner {
+				background: rgba(209, 178, 122, 0.06);
+				border-bottom: 1px dashed var(--color-border);
+				padding: 0.65rem 2rem;
+				font-family: var(--font-mono);
+				font-size: 0.72rem;
+				color: var(--color-fg-muted);
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				text-align: center;
+			}
+			.mockup-banner b { color: var(--color-accent); }
+			.nav {
+				display: flex; justify-content: space-between; align-items: center;
+				padding: 1.25rem 2rem; border-bottom: 1px solid var(--color-rule);
+				max-width: var(--container-max); margin: 0 auto;
+			}
+			.nav-brand {
+				font-family: var(--font-display); font-weight: 700; letter-spacing: 0.04em;
+				text-transform: uppercase; font-size: 0.85rem;
+			}
+			.nav-brand span { color: var(--color-accent); }
+			.nav-actions { display: flex; gap: 1.25rem; align-items: center; }
+			.nav-link { color: var(--color-fg-secondary); font-size: 0.9rem; text-decoration: none; }
+			.nav-link:hover { color: #f2d7a2; }
+			.eyebrow {
+				font-size: 0.75rem; font-weight: 500; color: var(--color-accent);
+				text-transform: uppercase; letter-spacing: 0.18em; margin: 0 0 1rem;
+			}
+			.btn-primary {
+				display: inline-flex; align-items: center; gap: 0.55rem;
+				padding: 0.95rem 1.5rem; background: var(--color-accent); color: #1a120a;
+				border-radius: 1rem; font-weight: 700; text-decoration: none;
+				transition: transform 140ms ease, box-shadow 140ms ease; font-size: 1rem;
+			}
+			.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(209, 178, 122, 0.18); }
+			.btn-secondary {
+				display: inline-flex; align-items: center; gap: 0.55rem;
+				padding: 0.95rem 1.5rem; border: 1px solid var(--color-border-strong);
+				color: var(--color-fg-primary); border-radius: 1rem; text-decoration: none; font-weight: 500;
+			}
+			.btn-secondary:hover { border-color: var(--color-accent); color: var(--color-accent); }
+			.panel {
+				background: var(--surface); border: 1px solid var(--color-border);
+				border-radius: 1.25rem; box-shadow: var(--shadow-card);
+			}
+
+			/* welcome layout */
+			.welcome-shell { padding: 6rem 0 5rem; }
+			.welcome-grid {
+				display: grid; grid-template-columns: 1.4fr 1fr; gap: 4rem; align-items: center;
+			}
+			.welcome-copy h1 {
+				font-family: var(--font-display);
+				font-size: clamp(2.6rem, 5.5vw, 4rem);
+				line-height: 1.04;
+				margin: 0 0 1.5rem;
+				letter-spacing: -0.02em;
+			}
+			.welcome-copy .lede {
+				font-size: 1.15rem; color: var(--color-fg-secondary);
+				line-height: 1.55; margin: 0 0 2.5rem; max-width: 36rem;
+			}
+			.welcome-actions {
+				display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; margin-bottom: 3rem;
+			}
+			.ghost-link {
+				color: var(--color-fg-secondary); text-decoration: none; font-size: 0.95rem;
+				border-bottom: 1px solid transparent;
+			}
+			.ghost-link:hover { border-color: var(--color-border-strong); }
+
+			.welcome-status {
+				display: grid; gap: 1rem; padding: 2rem; background: var(--surface-elevated);
+				border: 1px solid var(--color-border); border-radius: 1.5rem;
+			}
+			.status-row {
+				display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center;
+				padding: 0.9rem 0; border-bottom: 1px solid var(--color-rule);
+			}
+			.status-row:last-child { border-bottom: 0; }
+			.status-icon {
+				width: 2.25rem; height: 2.25rem; display: grid; place-items: center;
+				border-radius: 999px; background: var(--color-accent-soft);
+				color: var(--color-accent); font-family: var(--font-mono); font-weight: 700;
+			}
+			.status-text strong {
+				font-family: var(--font-display); display: block; font-size: 1rem;
+				color: var(--color-fg-primary); margin-bottom: 0.15rem;
+			}
+			.status-text span { font-size: 0.85rem; color: var(--color-fg-muted); }
+			.status-tag {
+				font-family: var(--font-mono); font-size: 0.72rem;
+				color: var(--color-accent); letter-spacing: 0.1em; text-transform: uppercase;
+			}
+
+			.welcome-side {
+				display: grid; gap: 1.5rem; padding: 1.75rem;
+			}
+			.welcome-side .card-eyebrow {
+				font-size: 0.7rem; color: var(--color-accent); text-transform: uppercase;
+				letter-spacing: 0.18em; margin: 0;
+			}
+			.cohort-block { display: grid; gap: 1rem; }
+			.cohort-week {
+				font-family: var(--font-display); font-size: 2.5rem; font-weight: 700;
+				color: var(--color-fg-primary); line-height: 1; letter-spacing: -0.02em;
+			}
+			.cohort-label {
+				font-family: var(--font-mono); font-size: 0.75rem;
+				color: var(--color-fg-muted); letter-spacing: 0.12em; text-transform: uppercase;
+			}
+			.cohort-detail {
+				font-size: 0.95rem; color: var(--color-fg-secondary); line-height: 1.5; margin: 0;
+			}
+			.cohort-detail strong { color: var(--color-fg-primary); }
+			.cohort-progress {
+				height: 4px; background: rgba(255, 255, 255, 0.04); border-radius: 2px; overflow: hidden;
+			}
+			.cohort-progress-fill {
+				height: 100%; width: 12.5%; background: var(--color-accent);
+				border-radius: 2px;
+			}
+
+			footer {
+				border-top: 1px solid var(--color-rule); padding: 2rem 0;
+				color: var(--color-fg-muted); font-size: 0.8rem;
+				text-align: center; font-family: var(--font-mono);
+			}
+
+			@media (max-width: 900px) {
+				.welcome-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+			}
+			@media (max-width: 560px) { .container { padding: 0 1.25rem; } }
+		</style>
+	</head>
+	<body>
+		<div class="mockup-banner">Mockup · <b>welcome</b> · v0 · audit at .planning/ui-audits/welcome.md</div>
+
+		<nav class="nav">
+			<div class="nav-brand">ShivWorks <span>Network</span></div>
+			<div class="nav-actions">
+				<a class="nav-link" href="#">Library</a>
+				<a class="nav-link" href="#">Community</a>
+				<a class="nav-link" href="#">Account</a>
+			</div>
+		</nav>
+
+		<section class="welcome-shell">
+			<div class="container welcome-grid">
+				<div class="welcome-copy">
+					<p class="eyebrow">You're in</p>
+					<h1>Welcome to the network. Let's set you up.</h1>
+					<p class="lede">
+						Your founding-member access is active. Before you dive in, take two minutes to fill out
+						your training profile — it powers the partner finder, the leaderboard opt-in, and any
+						cohort-specific recommendations as modules drop.
+					</p>
+
+					<div class="welcome-actions">
+						<a class="btn-primary" href="#">
+							Set up your training profile
+							<span aria-hidden="true">→</span>
+						</a>
+						<a class="btn-secondary" href="#">Skip for now</a>
+					</div>
+
+					<div class="welcome-status panel">
+						<div class="status-row">
+							<div class="status-icon">1</div>
+							<div class="status-text">
+								<strong>Training profile</strong>
+								<span>2 minutes · powers partner finder + recommendations</span>
+							</div>
+							<div class="status-tag">Start here</div>
+						</div>
+						<div class="status-row">
+							<div class="status-icon">2</div>
+							<div class="status-text">
+								<strong>First module · Origin Story</strong>
+								<span>Filming now · releases week of Dec 15</span>
+							</div>
+							<div class="status-tag">Dec 15</div>
+						</div>
+						<div class="status-row">
+							<div class="status-icon">3</div>
+							<div class="status-text">
+								<strong>First live session</strong>
+								<span>Members-only Q&A with Craig</span>
+							</div>
+							<div class="status-tag">Week 5</div>
+						</div>
+					</div>
+				</div>
+
+				<aside class="welcome-side panel">
+					<p class="card-eyebrow">Cohort status</p>
+					<div class="cohort-block">
+						<div>
+							<div class="cohort-week">Week 1</div>
+							<div class="cohort-label">of 8 · cohort 1</div>
+						</div>
+						<div class="cohort-progress"><div class="cohort-progress-fill"></div></div>
+						<p class="cohort-detail">
+							The first cohort is being filmed now. <strong>Modules drop weekly starting Dec 15.</strong>
+							Live sessions begin in week 5.
+						</p>
+					</div>
+				</aside>
+			</div>
+		</section>
+
+		<footer>© 2026 ShivWorks · welcome mockup · v0</footer>
+	</body>
+</html>

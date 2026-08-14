@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Macks Studios LLC — PR Invoice INV-006</title>
+<style>
+  @page { size: Letter; margin: 0.6in; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #24292f;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .header { text-align: center; margin-bottom: 32px; }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .title { font-size: 36px; font-weight: 300; margin: 8px 0 0; }
+  .subtitle { color: #57606a; font-size: 14px; margin-top: 4px; }
+  .divider { border: none; border-top: 1px solid #d0d7de; margin: 16px auto 0; width: 80px; }
+  .intro { margin: 24px 0 32px; }
+  .intro a { color: #0969da; text-decoration: none; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 12px 0; border-bottom: 1px solid #d0d7de; vertical-align: top; }
+  td.label { color: #57606a; width: 30%; }
+  td.value { font-weight: 600; color: #24292f; }
+  .section-header td {
+    font-weight: 700;
+    color: #24292f;
+    padding-top: 24px;
+    border-bottom: 2px solid #24292f;
+  }
+  .line-item .desc { color: #24292f; }
+  .line-item .period { color: #57606a; font-weight: 400; font-size: 13px; display: block; margin-top: 2px; }
+  .line-item .summary { color: #57606a; font-weight: 400; font-size: 13px; display: block; margin-top: 4px; }
+  .total td { font-weight: 700; font-size: 15px; }
+  .files-block {
+    background: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 8px 0 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: #24292f;
+    white-space: pre-wrap;
+  }
+  .files-block .added { color: #1a7f37; }
+  .files-block .changed { color: #9a6700; }
+  .files-block .deleted { color: #cf222e; }
+  .thank-you {
+    font-size: 60px;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 60px 0 32px;
+    letter-spacing: -1px;
+  }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    color: #8c959f;
+    font-size: 13px;
+  }
+  .footer .brand { color: #24292f; font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+  .footer-left { max-width: 50%; }
+  .note { color: #8c959f; font-size: 12px; margin-top: 24px; }
+  .stamp {
+    position: absolute;
+    top: 60px; right: 60px;
+    border: 3px solid #57606a;
+    color: #57606a;
+    padding: 6px 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transform: rotate(-8deg);
+    opacity: 0.3;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stamp">ESTIMATE</div>
+
+  <div class="header">
+    <div class="logo">MACKS STUDIOS</div>
+    <h1 class="title">PR Invoice</h1>
+    <div class="subtitle">INV-006 &middot; CI pipeline (.github/workflows/ci.yml)</div>
+    <hr class="divider" />
+  </div>
+
+  <p class="intro">
+    Deliverable bundled into <a href="https://github.com/createsomethingtoday/shivworks-network/pulls">PR #(pending)</a> on <code>createsomethingtoday/shivworks-network</code>.<br />
+    Questions? Contact <a href="mailto:dev.mxcks@gmail.com">dev.mxcks@gmail.com</a>.
+  </p>
+
+  <table>
+    <tr><td class="label">Date</td><td class="value">2026-05-26</td></tr>
+    <tr><td class="label">Billed to</td><td class="value">Outerfields — ShivWorks Network<br /><span style="font-weight:400;color:#57606a">aaron@outerfields.example</span></td></tr>
+    <tr><td class="label">Invoice ID</td><td class="value">INV-006</td></tr>
+    <tr><td class="label">Branch</td><td class="value">ci/baseline-pipeline</td></tr>
+    <tr><td class="label">Commit range</td><td class="value">TBD</td></tr>
+    <tr><td class="label">Spec refs</td><td class="value">spec 01 §6</td></tr>
+
+    <tr class="section-header"><td colspan="2">Files in this PR &nbsp;&middot;&nbsp; +2 added &nbsp;&middot;&nbsp; ~1 changed &nbsp;&middot;&nbsp; -0 deleted</td></tr>
+    <tr><td colspan="2">
+      <div class="files-block"><span class="added">+ .github/workflows/ci.yml
++ .github/PULL_REQUEST_TEMPLATE.md</span>
+<span class="changed">~ package.json</span>
+<span class="deleted">- (none)</span></div>
+    </td></tr>
+
+    <tr class="section-header"><td>Line items</td><td>Amount</td></tr>
+
+        <tr class="line-item">
+      <td class="desc">
+        Pipeline authoring (parallel jobs)
+        <span class="period">2 hrs &middot; $125.00/hr &middot; mid-level dev</span>
+        <span class="summary">Jobs: install (cached) → check, lint, format, unit, build (parallel) → smoke (depends on build). Concurrency-cancel for PRs.</span>
+      </td>
+      <td class="value">$250.00</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        pnpm cache + Playwright cache
+        <span class="period">1 hrs &middot; $125.00/hr &middot; mid-level dev</span>
+        <span class="summary">Hash pnpm-lock.yaml for pnpm store cache. Hash @playwright/test version for browser cache. Cold-cache vs hot-cache benchmark.</span>
+      </td>
+      <td class="value">$125.00</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        Vitest coverage upload + thresholds
+        <span class="period">0.5 hrs &middot; $125.00/hr &middot; mid-level dev</span>
+        <span class="summary">Coverage thresholds in vitest.config.ts. lcov uploaded as workflow artifact for now (Codecov optional later).</span>
+      </td>
+      <td class="value">$62.50</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        PR template + docs
+        <span class="period">0.5 hrs &middot; $85.00/hr &middot; junior dev</span>
+        <span class="summary">.github/PULL_REQUEST_TEMPLATE.md matching SOP §4. README CI badge.</span>
+      </td>
+      <td class="value">$42.50</td>
+    </tr>
+    <!-- generated -->
+
+    <tr class="total">
+      <td>Total</td>
+      <td>$480.00</td>
+    </tr>
+  </table>
+
+  <div class="thank-you">Thank you.</div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div class="brand">Macks Studios LLC</div>
+      Macks Studios LLC<br />
+      Remote-first · USA<br />
+      United States
+    </div>
+    <div>
+      dev.mxcks@gmail.com<br />
+      maxstern.org
+    </div>
+  </div>
+
+  <p class="note">* No sales tax applied to professional services. 1099-reportable. Net 14.</p>
+
+</body>
+</html>

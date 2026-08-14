@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ShivWorks Network — Flow Board (GraphViz)</title>
+<script src="https://unpkg.com/@viz-js/viz@3.7.0/lib/viz-standalone.js"></script>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin:0; padding:0; background:#0e1116; color:#d6dbe1; font:13px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif; height:100%; overflow:hidden; }
+
+  header { position:fixed; top:0; left:0; right:0; background:#0e1116ee; backdrop-filter:blur(8px); border-bottom:1px solid #2a313c; padding:10px 18px; z-index:10; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  header h1 { margin:0; font-size:15px; font-weight:600; color:#fff; }
+  header .meta { font-size:11px; color:#6e7681; }
+
+  .filters { display:flex; gap:6px; align-items:center; margin-left:auto; }
+  .filters button { font-family:inherit; font-size:11px; padding:4px 10px; border-radius:14px; border:1px solid #2a313c; background:#161b22; color:#9aa4b2; cursor:pointer; transition:all .12s; }
+  .filters button:hover { color:#fff; border-color:#5a6473; }
+  .filters button.active { color:#fff; border-color:currentColor; box-shadow:0 0 0 1px currentColor inset; }
+  .filters button[data-persona="anonymous"].active { color:#5aa8d8; }
+  .filters button[data-persona="new-buyer"].active { color:#7ce38b; }
+  .filters button[data-persona="returning-bronze"].active { color:#e3b341; }
+  .filters button[data-persona="vip"].active { color:#c8a2ed; }
+  .filters button[data-persona="admin"].active { color:#f47067; }
+
+  #canvas { position:absolute; inset:54px 0 0 0; overflow:hidden; cursor:grab; }
+  #canvas.dragging { cursor:grabbing; }
+  #stage { transform-origin:0 0; transition:none; }
+  #stage svg { display:block; }
+
+  /* SVG node card styling — applied to GraphViz HTML labels */
+  .card { background:#161b22; border:1px solid #2a313c; border-radius:8px; padding:8px 10px; min-width:170px; font-family:-apple-system,system-ui,sans-serif; }
+  .card.muted { opacity:.35; filter:grayscale(.5); }
+  .card .route { font-family:ui-monospace,monospace; font-size:12px; color:#9aa4b2; }
+  .card .name { font-size:13px; font-weight:600; color:#fff; margin:2px 0; }
+  .card .tier { font-size:9px; text-transform:uppercase; letter-spacing:.06em; color:#6e7681; }
+  .card .pill { display:inline-block; padding:1px 7px; border-radius:9px; font-size:9px; font-weight:600; margin-top:4px; }
+  .p-g { background:#1a3d23; color:#7ce38b; }
+  .p-y { background:#3d3417; color:#e3b341; }
+  .p-w { background:#1a3a52; color:#5aa8d8; }
+  .p-r { background:#3d1d1d; color:#f47067; }
+
+  /* Edge styling via persona class */
+  g.edge.dim { opacity:.05 !important; }
+  g.edge.dim text { opacity:.05 !important; }
+  g.edge path { stroke-width:1.6 !important; }
+  g.edge polygon { stroke-width:1 !important; }
+
+  .legend { position:fixed; bottom:12px; right:12px; background:#161b22; border:1px solid #2a313c; border-radius:8px; padding:10px 14px; font-size:11px; z-index:9; box-shadow:0 4px 20px rgba(0,0,0,.4); }
+  .legend h4 { margin:0 0 6px; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:#6e7681; font-weight:600; }
+  .legend .row { display:flex; align-items:center; gap:8px; margin:3px 0; }
+  .legend .swatch { width:16px; height:2px; border-radius:1px; }
+  .legend .help { color:#6e7681; font-size:10px; margin-top:8px; padding-top:8px; border-top:1px solid #2a313c; }
+
+  #loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#6e7681; font-size:13px; }
+  #error { position:absolute; inset:0; display:none; align-items:center; justify-content:center; color:#f47067; font-size:13px; padding:20px; text-align:center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ShivWorks Network — Flow Board</h1>
+  <span class="meta">GraphViz · drag to pan · wheel to zoom</span>
+  <div class="filters">
+    <button data-persona="all" class="active">All</button>
+    <button data-persona="anonymous">Anonymous</button>
+    <button data-persona="new-buyer">New buyer</button>
+    <button data-persona="returning-bronze">Returning bronze</button>
+    <button data-persona="vip">VIP</button>
+    <button data-persona="admin">Admin</button>
+  </div>
+</header>
+
+<div id="canvas">
+  <div id="stage"></div>
+  <div id="loading">Loading Graphviz WASM…</div>
+  <div id="error"></div>
+</div>
+
+<div class="legend">
+  <h4>Personas</h4>
+  <div class="row"><span class="swatch" style="background:#5aa8d8"></span>Anonymous visitor</div>
+  <div class="row"><span class="swatch" style="background:#7ce38b"></span>New buyer (first login)</div>
+  <div class="row"><span class="swatch" style="background:#e3b341"></span>Returning bronze member</div>
+  <div class="row"><span class="swatch" style="background:#c8a2ed"></span>VIP member</div>
+  <div class="row"><span class="swatch" style="background:#f47067"></span>Admin</div>
+  <h4 style="margin-top:10px">Screen status</h4>
+  <div class="row"><span class="pill p-g">🟢</span> Shipped</div>
+  <div class="row"><span class="pill p-y">🟡</span> Placeholder / pending</div>
+  <div class="row"><span class="pill p-r">🔴</span> Not built</div>
+  <div class="row"><span class="pill p-w">⚪</span> External</div>
+  <div class="help">Solid line = happy path<br/>Dashed = alternate</div>
+</div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────
+
+const SCREENS = [
+  { id: 'ext_marketing',   route: 'external',          name: 'Marketing site',     tier: 'External',  status: 'w', cluster: 'external' },
+  { id: 'ext_email',       route: 'external',          name: 'Welcome email',      tier: 'External',  status: 'w', cluster: 'external' },
+  { id: 'ext_wc',          route: 'shivworkspg.com',   name: 'WooCommerce',        tier: 'External',  status: 'w', cluster: 'external' },
+  { id: 'landing',         route: '/',                 name: 'Landing',            tier: 'Public',    status: 'g', cluster: 'public' },
+  { id: 'checkout',        route: '/checkout',         name: 'Checkout',           tier: 'Public',    status: 'g', cluster: 'public' },
+  { id: 'login',           route: '/login',            name: 'Login',              tier: 'Public',    status: 'g', cluster: 'public' },
+  { id: 'signup',          route: '/signup',           name: 'Signup',             tier: 'Public',    status: 'g', cluster: 'public' },
+  { id: 'sitemap',         route: '/sitemap.xml',      name: 'Sitemap',            tier: 'Public',    status: 'g', cluster: 'public' },
+  { id: 'welcome',         route: '/welcome',          name: 'Welcome',            tier: 'Auth',      status: 'g', cluster: 'onboarding' },
+  { id: 'account',         route: '/account',          name: 'Training profile',   tier: 'Auth',      status: 'g', cluster: 'onboarding' },
+  { id: 'dashboard',       route: '/dashboard',        name: 'Dashboard',          tier: 'Auth',      status: 'g', cluster: 'member' },
+  { id: 'library',         route: '/library',          name: 'Library',            tier: 'Auth',      status: 'g', cluster: 'member' },
+  { id: 'library_slug',    route: '/library/[slug]',   name: 'Course detail',      tier: 'Auth',      status: 'g', cluster: 'member' },
+  { id: 'live',            route: '/live',             name: 'Live',               tier: 'Paid',      status: 'g', cluster: 'member' },
+  { id: 'updates',         route: '/updates',          name: 'Updates',            tier: 'Auth',      status: 'g', cluster: 'member' },
+  { id: 'profile',         route: '/profile',          name: 'Profile',            tier: 'Paid',      status: 'g', cluster: 'member' },
+  { id: 'find_partners',   route: '/find-partners',    name: 'Find partners',      tier: 'Paid',      status: 'g', cluster: 'member' },
+  { id: 'settings',        route: '/settings',         name: 'Settings',           tier: 'Auth',      status: 'g', cluster: 'member' },
+  { id: 'community',       route: '/community',        name: 'Community',          tier: 'Paid',      status: 'g', cluster: 'member' },
+  { id: 'messages',        route: '/messages',         name: 'Messages',           tier: 'Paid',      status: 'y', cluster: 'placeholder' },
+  { id: 'leaderboard',     route: '/leaderboard',      name: 'Leaderboard',        tier: 'Paid',      status: 'y', cluster: 'placeholder' },
+  { id: 'vip_calls',       route: '/vip-calls',        name: 'VIP calls',          tier: 'VIP',       status: 'g', cluster: 'vip' },
+  { id: 'admin',           route: '/admin',            name: 'Admin',              tier: 'Admin',    status: 'g', cluster: 'admin' }
+];
+
+const ROUTE_TO_ID = {};
+SCREENS.forEach(s => { ROUTE_TO_ID[s.route] = s.id; ROUTE_TO_ID[s.id] = s.id; });
+ROUTE_TO_ID['external:marketing'] = 'ext_marketing';
+ROUTE_TO_ID['external:email']     = 'ext_email';
+ROUTE_TO_ID['external:woocommerce'] = 'ext_wc';
+
+const PERSONAS = {
+  'anonymous':         { color: '#5aa8d8', name: 'Anonymous' },
+  'new-buyer':         { color: '#7ce38b', name: 'New buyer' },
+  'returning-bronze':  { color: '#e3b341', name: 'Returning bronze' },
+  'vip':               { color: '#c8a2ed', name: 'VIP' },
+  'admin':             { color: '#f47067', name: 'Admin' }
+};
+
+const TRANSITIONS = [
+  // anonymous
+  { p:'anonymous', from:'external:marketing', to:'/',           t:'arrives from marketing',         h:1 },
+  { p:'anonymous', from:'/',                  to:'/checkout',   t:'clicks Join/Buy CTA',            h:1 },
+  { p:'anonymous', from:'/checkout',          to:'external:woocommerce', t:'redirect to WC',        h:1 },
+  { p:'anonymous', from:'/',                  to:'/login',      t:'clicks Log in',                  h:0 },
+  { p:'anonymous', from:'/',                  to:'/signup',     t:'clicks Sign up',                 h:0 },
+  { p:'anonymous', from:'/login',             to:'/signup',     t:'Create account link',            h:0 },
+  // new-buyer
+  { p:'new-buyer', from:'external:email',     to:'/signup',     t:'clicks email link',              h:1 },
+  { p:'new-buyer', from:'/signup',            to:'/welcome',    t:'completes Clerk signup',         h:1 },
+  { p:'new-buyer', from:'/welcome',           to:'/account',    t:'set up training profile',        h:1 },
+  { p:'new-buyer', from:'/account',           to:'/dashboard',  t:'submits profile',                h:1 },
+  { p:'new-buyer', from:'/dashboard',         to:'/library',    t:'clicks Library',                 h:1 },
+  { p:'new-buyer', from:'/welcome',           to:'/dashboard',  t:'skip for now',                   h:0 },
+  { p:'new-buyer', from:'/signup',            to:'/login',      t:'already have account',           h:0 },
+  { p:'new-buyer', from:'/dashboard',         to:'/settings',   t:'avatar menu',                    h:0 },
+  // returning-bronze
+  { p:'returning-bronze', from:'/login',          to:'/dashboard',      t:'signs in',              h:1 },
+  { p:'returning-bronze', from:'/dashboard',      to:'/library',        t:'Library in sidebar',    h:1 },
+  { p:'returning-bronze', from:'/library',        to:'/library/[slug]', t:'clicks course card',    h:1 },
+  { p:'returning-bronze', from:'/library/[slug]', to:'/dashboard',      t:'dashboard breadcrumb',  h:1 },
+  { p:'returning-bronze', from:'/dashboard',      to:'/updates',        t:'Updates in sidebar',    h:1 },
+  { p:'returning-bronze', from:'/updates',        to:'/community',      t:'Community in sidebar',  h:1 },
+  { p:'returning-bronze', from:'/community',      to:'/find-partners',  t:'Find Partners link',    h:0 },
+  { p:'returning-bronze', from:'/find-partners',  to:'/profile',        t:'clicks own avatar',     h:0 },
+  { p:'returning-bronze', from:'/profile',        to:'/settings',       t:'Settings in menu',      h:0 },
+  // vip
+  { p:'vip', from:'/login',          to:'/dashboard',     t:'Clerk login',              h:1 },
+  { p:'vip', from:'/dashboard',      to:'/vip-calls',     t:'VIP Calls in sidebar',     h:1 },
+  { p:'vip', from:'/vip-calls',      to:'/library',       t:'Library in sidebar',       h:1 },
+  { p:'vip', from:'/library',        to:'/library/[slug]',t:'clicks course',            h:1 },
+  { p:'vip', from:'/library/[slug]', to:'/live',          t:'Live in sidebar',          h:1 },
+  { p:'vip', from:'/dashboard',      to:'/updates',       t:'Updates',                  h:0 },
+  { p:'vip', from:'/dashboard',      to:'/find-partners', t:'Find Partners',            h:0 },
+  { p:'vip', from:'/dashboard',      to:'/settings',      t:'Settings',                 h:0 },
+  // admin
+  { p:'admin', from:'/',          to:'/login',     t:'Sign in',          h:1 },
+  { p:'admin', from:'/login',     to:'/dashboard', t:'Clerk login',      h:1 },
+  { p:'admin', from:'/dashboard', to:'/admin',     t:'Admin in sidebar', h:1 },
+  { p:'admin', from:'/admin',     to:'/dashboard', t:'Dashboard',        h:0 },
+  { p:'admin', from:'/admin',     to:'/login',     t:'sign out',         h:0 }
+];
+
+// ─── DOT GENERATION ────────────────────────────────────────────────────────
+
+function cardLabel(s) {
+  const pillMap = { g: ['p-g','🟢 SHIPPED'], y: ['p-y','🟡 PENDING'], r: ['p-r','🔴 NOT BUILT'], w: ['p-w','⚪ EXTERNAL'] };
+  const [cls, txt] = pillMap[s.status] || ['p-w', s.status];
+  // Graphviz HTML-like labels
+  return `<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2" CELLSPACING="0" BGCOLOR="#161b22">
+    <TR><TD ALIGN="LEFT"><FONT FACE="Consolas" POINT-SIZE="9" COLOR="#9aa4b2">${s.route}</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="11" COLOR="#ffffff"><B>${s.name}</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6e7681">${s.tier.toUpperCase()}</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="${
+      s.status==='g'?'#7ce38b':s.status==='y'?'#e3b341':s.status==='r'?'#f47067':'#5aa8d8'
+    }">${txt}</FONT></TD></TR>
+  </TABLE>>`;
+}
+
+function buildDot() {
+  const lines = [];
+  lines.push('digraph G {');
+  lines.push('  bgcolor="#0e1116";');
+  lines.push('  rankdir=LR;');
+  lines.push('  splines=ortho;');
+  lines.push('  nodesep=0.45;');
+  lines.push('  ranksep=1.0;');
+  lines.push('  pad=0.5;');
+  lines.push('  node [shape=box, style="rounded,filled", fillcolor="#161b22", color="#2a313c", fontname="Helvetica", fontcolor="#d6dbe1", margin="0.15,0.08", penwidth=1];');
+  lines.push('  edge [fontname="Helvetica", fontsize=8, fontcolor="#9aa4b2", color="#5a6473", penwidth=1.4, arrowsize=0.7];');
+
+  // Clusters
+  const clusters = {
+    external:    { label: 'External',      color: '#1a3a52' },
+    public:      { label: 'Public',        color: '#2a313c' },
+    onboarding:  { label: 'Onboarding',    color: '#3a2a4a' },
+    member:      { label: 'Member daily',  color: '#1f6f3f' },
+    vip:         { label: 'VIP',           color: '#5a3a7a' },
+    placeholder: { label: 'Placeholders',  color: '#7a5d11' },
+    admin:       { label: 'Admin',         color: '#5a2727' }
+  };
+
+  Object.entries(clusters).forEach(([key, c]) => {
+    lines.push(`  subgraph cluster_${key} {`);
+    lines.push(`    label="${c.label}";`);
+    lines.push(`    fontname="Helvetica"; fontsize=10; fontcolor="#9aa4b2";`);
+    lines.push(`    color="${c.color}"; bgcolor="#0e1116"; style="rounded,dashed"; penwidth=1;`);
+    SCREENS.filter(s => s.cluster === key).forEach(s => {
+      lines.push(`    ${s.id} [label=${cardLabel(s)}];`);
+    });
+    lines.push('  }');
+  });
+
+  // Edges
+  TRANSITIONS.forEach((tr, i) => {
+    const from = ROUTE_TO_ID[tr.from];
+    const to   = ROUTE_TO_ID[tr.to];
+    if (!from || !to) { console.warn('Missing route mapping:', tr); return; }
+    const color = PERSONAS[tr.p].color;
+    const style = tr.h ? 'solid' : 'dashed';
+    const w = tr.h ? 1.6 : 1.2;
+    // class= is custom — we'll inject this into the SVG post-render for filtering
+    lines.push(`  ${from} -> ${to} [color="${color}", style=${style}, penwidth=${w}, label="${tr.t.replace(/"/g,'\\"')}", id="edge_${tr.p}_${i}", fontcolor="${color}99", tooltip="${tr.p}"];`);
+  });
+
+  lines.push('}');
+  return lines.join('\n');
+}
+
+// ─── RENDER ────────────────────────────────────────────────────────────────
+
+let activeFilter = 'all';
+
+async function render() {
+  try {
+    const viz = await Viz.instance();
+    const dot = buildDot();
+    const svg = viz.renderSVGElement(dot);
+    const stage = document.getElementById('stage');
+    stage.innerHTML = '';
+    stage.appendChild(svg);
+
+    // Tag each edge group with its persona class for filtering
+    svg.querySelectorAll('g.edge').forEach(g => {
+      const id = g.getAttribute('id') || '';
+      // viz.js puts the edge id in <title>; check title text
+      const titleEl = g.querySelector('title');
+      const titleText = titleEl?.textContent || '';
+      // dot ids look like "edge_anonymous_3"; viz.js may title them with the dot id
+      // tooltip attribute holds the persona key — find via the original DOT id below
+      // Easier: scan our edge id attribute through Viz's emitted id
+    });
+
+    // viz.js encodes edge `id=` as the SVG <g> id; we set id="edge_<persona>_<i>" in DOT
+    svg.querySelectorAll('g[id^="edge_"]').forEach(g => {
+      const m = g.id.match(/^edge_([a-z-]+)_/);
+      if (m) g.classList.add('persona-' + m[1]);
+    });
+
+    document.getElementById('loading').style.display = 'none';
+    fitToView();
+  } catch (e) {
+    document.getElementById('loading').style.display = 'none';
+    const err = document.getElementById('error');
+    err.style.display = 'flex';
+    err.textContent = 'Failed to render: ' + e.message;
+    console.error(e);
+  }
+}
+
+// ─── PAN / ZOOM ────────────────────────────────────────────────────────────
+
+const canvas = document.getElementById('canvas');
+const stage = document.getElementById('stage');
+let panX = 0, panY = 0, scale = 1;
+
+function applyTransform() {
+  stage.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+}
+
+function fitToView() {
+  const svg = stage.querySelector('svg');
+  if (!svg) return;
+  const bb = svg.getBBox();
+  const cw = canvas.clientWidth - 40;
+  const ch = canvas.clientHeight - 40;
+  const sX = cw / bb.width;
+  const sY = ch / bb.height;
+  scale = Math.min(sX, sY, 1);
+  panX = (canvas.clientWidth - bb.width * scale) / 2 - bb.x * scale;
+  panY = (canvas.clientHeight - bb.height * scale) / 2 - bb.y * scale;
+  applyTransform();
+}
+
+let dragging = false, dragStart = {x:0,y:0}, panStart = {x:0,y:0};
+canvas.addEventListener('mousedown', e => {
+  if (e.target.closest('.legend, .filters, header')) return;
+  dragging = true;
+  canvas.classList.add('dragging');
+  dragStart = { x: e.clientX, y: e.clientY };
+  panStart = { x: panX, y: panY };
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  panX = panStart.x + (e.clientX - dragStart.x);
+  panY = panStart.y + (e.clientY - dragStart.y);
+  applyTransform();
+});
+window.addEventListener('mouseup', () => { dragging = false; canvas.classList.remove('dragging'); });
+
+canvas.addEventListener('wheel', e => {
+  if (e.target.closest('.legend, .filters, header')) return;
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const delta = -e.deltaY * 0.0015;
+  const newScale = Math.min(3, Math.max(0.15, scale * (1 + delta)));
+  const k = newScale / scale;
+  panX = mx - (mx - panX) * k;
+  panY = my - (my - panY) * k;
+  scale = newScale;
+  applyTransform();
+}, { passive: false });
+
+window.addEventListener('resize', fitToView);
+
+// ─── PERSONA FILTER ────────────────────────────────────────────────────────
+
+document.querySelectorAll('.filters button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.persona;
+    document.querySelectorAll('g.edge').forEach(g => {
+      if (activeFilter === 'all') {
+        g.classList.remove('dim');
+      } else {
+        if (g.classList.contains('persona-' + activeFilter)) g.classList.remove('dim');
+        else g.classList.add('dim');
+      }
+    });
+  });
+});
+
+// ─── BOOT ──────────────────────────────────────────────────────────────────
+
+render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ShivWorks Network — UX + UI Launch Map</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false, theme: 'dark', securityLevel: 'loose',
+    layout: 'elk',
+    flowchart: { htmlLabels: true, nodeSpacing: 60, rankSpacing: 90 },
+    journey: { useMaxWidth: true }
+  });
+  const CORNER_R = 15;
+  function roundOrthogonalPath(d, r) {
+    if (!d) return d;
+    const tokens = d.match(/[MLHVZmlhvz][^MLHVZmlhvz]*/g) || [];
+    const pts = []; let cx = 0, cy = 0;
+    for (const tok of tokens) {
+      const cmd = tok[0];
+      const nums = (tok.slice(1).trim().match(/-?\d+(\.\d+)?/g) || []).map(Number);
+      if (cmd === 'M' || cmd === 'L') { cx = nums[0]; cy = nums[1]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'm' || cmd === 'l') { cx += nums[0]; cy += nums[1]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'H') { cx = nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'h') { cx += nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'V') { cy = nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'v') { cy += nums[0]; pts.push({x:cx,y:cy}); }
+      else if (cmd === 'Z' || cmd === 'z') {}
+      else { return d; }
+    }
+    if (pts.length < 3) return d;
+    let out = `M${pts[0].x},${pts[0].y}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const a = pts[i-1], b = pts[i], c = pts[i+1];
+      const dx1 = b.x - a.x, dy1 = b.y - a.y;
+      const dx2 = c.x - b.x, dy2 = c.y - b.y;
+      const isCorner = (dy1 === 0 && dx2 === 0) || (dx1 === 0 && dy2 === 0);
+      if (!isCorner) { out += ` L${b.x},${b.y}`; continue; }
+      const rr = Math.min(r, Math.hypot(dx1,dy1)/2, Math.hypot(dx2,dy2)/2);
+      const sx = b.x - Math.sign(dx1) * rr;
+      const sy = b.y - Math.sign(dy1) * rr;
+      const ex = b.x + Math.sign(dx2) * rr;
+      const ey = b.y + Math.sign(dy2) * rr;
+      out += ` L${sx.toFixed(2)},${sy.toFixed(2)} Q${b.x},${b.y} ${ex.toFixed(2)},${ey.toFixed(2)}`;
+    }
+    const last = pts[pts.length - 1];
+    out += ` L${last.x},${last.y}`;
+    return out;
+  }
+  function roundAllEdges() {
+    document.querySelectorAll('.mermaid svg').forEach(svg => {
+      svg.querySelectorAll('.edgePath path, path.flowchart-link, g.edges path, g.edgePaths path').forEach(p => {
+        const rd = roundOrthogonalPath(p.getAttribute('d'), CORNER_R);
+        if (rd) p.setAttribute('d', rd);
+      });
+    });
+  }
+  window.addEventListener('DOMContentLoaded', async () => {
+    await mermaid.run({ querySelector: '.mermaid' });
+    requestAnimationFrame(() => requestAnimationFrame(roundAllEdges));
+  });
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body { font: 14px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif; background:#0e1116; color:#d6dbe1; max-width:1400px; margin:0 auto; padding:32px 40px 80px; }
+  h1 { font-size:30px; margin:0 0 4px; color:#fff; letter-spacing:-.01em; }
+  h2 { font-size:20px; margin:48px 0 16px; color:#fff; border-bottom:1px solid #2a313c; padding-bottom:8px; }
+  h2 .anchor { font-size:11px; color:#5a6473; font-weight:400; margin-left:8px; }
+  h3 { font-size:15px; margin:24px 0 8px; color:#9aa4b2; text-transform:uppercase; letter-spacing:.06em; }
+  h4 { font-size:14px; margin:16px 0 6px; color:#d6dbe1; }
+  .meta { color:#8892a0; font-size:13px; margin-bottom:24px; }
+  .nav { position:sticky; top:0; background:#0e1116; padding:12px 0; margin:-32px -40px 24px; border-bottom:1px solid #2a313c; z-index:10; }
+  .nav-inner { max-width:1400px; margin:0 auto; padding:0 40px; display:flex; gap:18px; flex-wrap:wrap; font-size:13px; }
+  .nav a { color:#9aa4b2; text-decoration:none; padding:4px 8px; border-radius:4px; }
+  .nav a:hover { background:#161b22; color:#fff; }
+
+  .mermaid { background:#161b22; border:1px solid #2a313c; border-radius:8px; padding:24px; margin:12px 0; text-align:center; overflow-x:auto; }
+  table { border-collapse:collapse; margin:8px 0 16px; width:100%; font-size:13px; }
+  th, td { border:1px solid #2a313c; padding:7px 12px; text-align:left; vertical-align:top; }
+  th { background:#161b22; color:#fff; font-weight:600; }
+  ul { padding-left:22px; } li { margin:3px 0; }
+  code { background:#161b22; padding:1px 6px; border-radius:4px; font-size:12px; color:#e6edf3; }
+
+  .pill { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11px; font-weight:600; margin-right:4px; }
+  .p-g { background:#1a3d23; color:#7ce38b; }
+  .p-y { background:#3d3417; color:#e3b341; }
+  .p-r { background:#3d1d1d; color:#f47067; }
+  .p-w { background:#1a3a52; color:#5aa8d8; }
+  .p-d { background:#3a2a4a; color:#c8a2ed; }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:16px; margin:16px 0; }
+  .card { background:#161b22; border:1px solid #2a313c; border-radius:8px; padding:14px 16px; }
+  .card h4 { margin-top:0; display:flex; align-items:center; justify-content:space-between; }
+  .card .url { font-family:ui-monospace, monospace; color:#9aa4b2; font-size:12px; }
+  .card dl { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:8px 0; font-size:12px; }
+  .card dt { color:#6e7681; font-weight:600; text-transform:uppercase; font-size:10px; letter-spacing:.06em; padding-top:1px; }
+  .card dd { margin:0; color:#d6dbe1; }
+  .card .notes { font-size:12px; color:#9aa4b2; margin-top:8px; padding-top:8px; border-top:1px dashed #2a313c; }
+
+  /* Wireframe boxes */
+  .wf { background:#0a0c10; border:1px solid #2a313c; border-radius:4px; padding:8px; margin:8px 0; font-family:ui-monospace, monospace; font-size:10px; line-height:1.4; color:#6e7681; }
+  .wf .row { display:flex; gap:4px; margin-bottom:4px; }
+  .wf .row:last-child { margin-bottom:0; }
+  .wf .b { background:#1a1f28; border:1px dashed #3a4150; padding:6px 8px; border-radius:3px; color:#9aa4b2; }
+  .wf .b.f { flex:1; }
+  .wf .b.fx2 { flex:2; }
+  .wf .b.fx3 { flex:3; }
+  .wf .b.hi { background:#1f6f3f33; border-color:#7ce38b; color:#7ce38b; }
+  .wf .b.warn { background:#7a5d1133; border-color:#e3b341; color:#e3b341; }
+  .wf .b.muted { background:#161b22; border-color:#2a313c; color:#6e7681; }
+  .wf .b.tall { padding:20px 8px; }
+  .wf .b.taller { padding:40px 8px; }
+
+  .sync-box { background:#1a3a52; border-left:3px solid #5aa8d8; padding:14px 18px; border-radius:4px; margin:16px 0; font-size:13px; }
+  .sync-box h3 { margin-top:0; color:#5aa8d8; }
+  .decision-box { background:#3a2a4a; border-left:3px solid #c8a2ed; padding:14px 18px; border-radius:4px; margin:12px 0; }
+  .decision-box h4 { margin-top:0; color:#c8a2ed; }
+  .blocker-box { background:#3d1d1d; border-left:3px solid #f47067; padding:14px 18px; border-radius:4px; margin:12px 0; }
+
+  .footer { margin-top:64px; padding-top:16px; border-top:1px solid #2a313c; color:#6e7681; font-size:12px; }
+</style>
+</head>
+<body>
+
+<div class="nav"><div class="nav-inner">
+  <a href="#sync">↻ Sync</a>
+  <a href="#legend">Legend</a>
+  <a href="#decisions">⚠ Decisions</a>
+  <a href="#personas">Personas</a>
+  <a href="#journey">UX Journey</a>
+  <a href="#public">Public screens</a>
+  <a href="#member">Member screens</a>
+  <a href="#placeholder">Placeholders</a>
+  <a href="#admin">Admin</a>
+  <a href="#components">Components</a>
+  <a href="#checklist">Launch checklist</a>
+</div></div>
+
+<h1>ShivWorks Network — UX + UI Launch Map</h1>
+<div class="meta"><b>Last updated:</b> 2026-05-31 &nbsp;·&nbsp; <b>Lens:</b> member-facing screens, journey, decisions &nbsp;·&nbsp; <b>Companion to:</b> MAP.html (system), AARON-FRONTEND-ERD.html (data)</div>
+
+<section id="sync">
+<h2>↻ Three-document sync protocol <span class="anchor">#sync</span></h2>
+<div class="sync-box">
+  <h3>How these three docs relate</h3>
+  <p>The platform is described from three lenses, each in its own file. Same underlying facts — different views. When something changes, you update the doc for the affected lens; pills + cross-links keep the others honest.</p>
+
+  <table>
+    <tr><th>Doc</th><th>Lens</th><th>Update it when…</th></tr>
+    <tr>
+      <td><code>MAP.html</code></td>
+      <td>System / backend / integrations</td>
+      <td>An integration changes (Clerk, WC, Stream, Sentry, Resend), a webhook is added, a cache layer is built, secrets configuration shifts, infra topology changes</td>
+    </tr>
+    <tr>
+      <td><code>AARON-FRONTEND-ERD.html</code></td>
+      <td>Routes ↔ libs ↔ tables (data flow)</td>
+      <td>A route is added or removed, a new server lib is added, a migration is renumbered, a D1 table is added or schema-changed</td>
+    </tr>
+    <tr>
+      <td><code>LAUNCH-UX-UI-MAP.html</code> (this doc)</td>
+      <td>Member experience, screen design, decisions</td>
+      <td>A screen's layout/copy/status changes, a new screen ships, a UX decision is made, a persona's access changes</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:18px">Shared vocabulary (all 3 docs use these pills)</h3>
+  <ul style="margin:0">
+    <li><span class="pill p-g">🟢 SHIPPED</span> code merged + verified</li>
+    <li><span class="pill p-y">🟡 PENDING</span> wired in code, waiting on external action</li>
+    <li><span class="pill p-r">🔴 NOT BUILT</span> launch blocker, work needed</li>
+    <li><span class="pill p-w">⚪ EXTERNAL</span> third-party / out of repo</li>
+    <li><span class="pill p-d">🟣 DECISION</span> blocked on a product decision before work starts</li>
+  </ul>
+
+  <h3 style="margin-top:18px">Discipline (do these or the docs drift)</h3>
+  <ol style="margin:0">
+    <li>After any merged PR, flip the relevant pill in the doc(s) the change touched. Same commit, no follow-up "I'll do it later."</li>
+    <li>If a change affects two lenses (e.g. new route = data lens + UX lens), update both files.</li>
+    <li>Add a one-line entry to that doc's changelog at the bottom.</li>
+    <li>If a decision is pending (🟣 pill), the decision lives in <i>this</i> doc's Decisions section. Don't scatter decision-tracking across files.</li>
+  </ol>
+
+  <p style="margin:14px 0 0; color:#9aa4b2; font-size:12px"><b>Upgrade path:</b> once these stabilize, a single YAML file (<code>.planning/architecture/state.yaml</code>) becomes the source of truth and a tiny generator script rebuilds all three HTMLs. For now: manual discipline.</p>
+</div>
+</section>
+
+<section id="legend">
+<h2>Legend <span class="anchor">#legend</span></h2>
+<table>
+  <tr><th>Pill</th><th>Meaning in this doc</th></tr>
+  <tr><td><span class="pill p-g">🟢 SHIPPED</span></td><td>Screen renders, real data, no UI work left</td></tr>
+  <tr><td><span class="pill p-y">🟡 PENDING</span></td><td>Screen exists, blocked on secret/DNS/data/copy from another party</td></tr>
+  <tr><td><span class="pill p-r">🔴 NOT BUILT</span></td><td>Screen doesn't exist yet; needed for launch</td></tr>
+  <tr><td><span class="pill p-w">⚪ EXTERNAL</span></td><td>Lives outside this codebase (Clerk hosted, Circle, WC)</td></tr>
+  <tr><td><span class="pill p-d">🟣 DECISION</span></td><td>Blocked on a product/design call — see Decisions panel</td></tr>
+</table>
+</section>
+
+<section id="decisions">
+<h2>⚠ Pending decisions <span class="anchor">#decisions</span></h2>
+<p style="color:#9aa4b2">These block work. Each card names the question, the options, and the recommendation. Once decided, flip the pill on the affected screen(s) and resolve the card.</p>
+
+<div class="decision-box">
+  <h4>D-1 · member_profiles schema conflict</h4>
+  <p><b>Question:</b> Our <code>0012_member_profiles</code> defines a public-bio table (<code>display_name, bio, photo_url, is_public</code>). Aaron's <code>0010_member_profiles_tags</code> defines a training-profile table (<code>location, background, training_goal, alumni_flags, show_in_finder</code>). Same table name, different schemas.</p>
+  <p><b>Affects:</b> <code>/people</code> (ours, uses public-bio), <code>/account</code> (his, writes training-profile), <code>/find-partners</code> (his, reads training-profile), <code>/profile</code> (his, reads training-profile)</p>
+  <ul>
+    <li><b>Option A (rec):</b> drop our schema, ship his. Convert <code>/people</code> → redirect to <code>/find-partners</code>. ~30 min, low risk.</li>
+    <li><b>Option B:</b> rename his table to <code>member_training_profiles</code>. Keep both. ~1 hr, medium risk.</li>
+    <li><b>Option C:</b> merge schemas into one wide table. ~2 hr, cleanest data model.</li>
+  </ul>
+  <p><b>Status:</b> <span class="pill p-d">🟣 awaiting Max</span></p>
+</div>
+
+<div class="decision-box">
+  <h4>D-2 · How visible is gamification at launch?</h4>
+  <p><b>Question:</b> Max said gamification is post-launch. But <code>/account</code> has a "leaderboard opt-in" toggle and awards points on profile completion. And <code>/profile</code> shows a TP dossier.</p>
+  <ul>
+    <li><b>Option A (rec):</b> ship the toggle (writes to a stub table or member preference); hide the points/dossier UI; <code>/leaderboard</code> is placeholder.</li>
+    <li><b>Option B:</b> strip every gamification UI element. Add back post-launch.</li>
+  </ul>
+  <p><b>Status:</b> <span class="pill p-d">🟣 awaiting Max</span></p>
+</div>
+
+<div class="decision-box">
+  <h4>D-3 · Adopt Aaron's <code>app.css</code> wholesale, or merge?</h4>
+  <p><b>Question:</b> His design tokens conflict with ours in places. Whole-import gives consistency with his polished components (Nav, Sidebar) but may break our existing pages visually until reviewed.</p>
+  <ul>
+    <li><b>Option A (rec):</b> adopt wholesale, do a 30-min visual sweep of every existing route, fix any obvious breakage.</li>
+    <li><b>Option B:</b> manually merge the design tokens — slower, lower visual-regression risk.</li>
+  </ul>
+  <p><b>Status:</b> <span class="pill p-d">🟣 awaiting Max</span></p>
+</div>
+
+<div class="decision-box">
+  <h4>D-4 · Onboarding flow after first login</h4>
+  <p><b>Question:</b> Where does a freshly-claimed member land after signup? Options affect <code>/welcome</code>, <code>/account</code>, <code>/dashboard</code>.</p>
+  <ul>
+    <li><b>Option A (rec):</b> <code>/welcome</code> → <code>/account?welcome=1</code> (must fill profile, can skip) → <code>/dashboard</code></li>
+    <li><b>Option B:</b> straight to <code>/dashboard</code>, surface a profile-completion banner on dashboard</li>
+  </ul>
+  <p><b>Status:</b> <span class="pill p-d">🟣 awaiting Max</span></p>
+</div>
+</section>
+
+<section id="personas">
+<h2>Personas <span class="anchor">#personas</span></h2>
+<table>
+<tr><th>Persona</th><th>Tier</th><th>Sees</th><th>Notes</th></tr>
+<tr><td>Anonymous visitor</td><td>—</td><td>Public surfaces only: <code>/</code>, <code>/login</code>, <code>/signup</code>, <code>/checkout</code>, <code>/sitemap.xml</code></td><td>Bounce off authed routes to <code>/login</code></td></tr>
+<tr><td>Free member</td><td><code>free</code></td><td>Public + <code>/dashboard</code> (free state), <code>/library</code> (free episodes only), <code>/account</code></td><td>From the <code>free_access_tier</code> migration</td></tr>
+<tr><td>Bronze member</td><td><code>bronze</code></td><td>Everything Free has + paid library + community + find-partners + messages + leaderboard</td><td>Founding-member tier, WC product 31517</td></tr>
+<tr><td>VIP member</td><td><code>vip</code></td><td>Everything Bronze has + <code>/vip-calls</code> + VIP-only channels</td><td>Founding-member tier, WC product 31518</td></tr>
+<tr><td>Admin</td><td><code>admin</code></td><td>Everything + <code>/admin</code> (member imports, media uploads, analytics)</td><td>Tier-orthogonal role flag</td></tr>
+</table>
+</section>
+
+<section id="journey">
+<h2>UX Journey — purchase to first session <span class="anchor">#journey</span></h2>
+<div class="mermaid">
+flowchart LR
+  P1["1. Discover<br/>visits shivworkspg.com"]:::ex
+  P2["2. Pay<br/>WooCommerce + Fortis"]:::ex
+  P3["3. Receive welcome email<br/>(Resend)"]:::ship
+  P4["4. Click signup link<br/>/signup"]:::ship
+  P5["5. Clerk hosted signup<br/>email + password"]:::ship
+  P6["6. /welcome interstitial<br/>tier-confirmed"]:::ship
+  P7["7. /account<br/>fill training profile"]:::decision
+  P8["8. /dashboard<br/>member home"]:::ship
+  P9["9. /library<br/>first episode"]:::ship
+  P10["10. Explores<br/>community / find-partners"]:::partial
+
+  P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7 --> P8 --> P9 --> P10
+
+  classDef ex fill:#1a3a52,stroke:#5aa8d8,color:#fff
+  classDef ship fill:#1f6f3f,stroke:#7ce38b,color:#fff
+  classDef partial fill:#7a5d11,stroke:#e3b341,color:#fff
+  classDef decision fill:#3a2a4a,stroke:#c8a2ed,color:#fff
+</div>
+<p style="font-size:13px; color:#9aa4b2"><b>Friction map:</b> step 7 (the <code>/account</code> flow) is the riskiest — it's the only step gated on the schema decision (D-1). Steps 1–6 are working today; step 9 onwards is gated on Aaron's secrets landing tonight (DNS, Infisical, WC webhook test).</p>
+</section>
+
+<section id="public">
+<h2>Public screens (anonymous) <span class="anchor">#public</span></h2>
+
+<div class="grid">
+
+<div class="card">
+<h4>Landing page <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/</div>
+<div class="wf">
+  <div class="row"><div class="b f">HEADER · logo · login CTA</div></div>
+  <div class="row"><div class="b f tall">HERO · headline · CTA "Become a founding member"</div></div>
+  <div class="row"><div class="b fx2">VALUE PROP</div><div class="b f">FOUNDING-MEMBER COUNTER</div></div>
+  <div class="row"><div class="b f">FAQ / FEATURE STRIP</div></div>
+  <div class="row"><div class="b f muted">FOOTER</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Anonymous</dd>
+  <dt>Goal</dt><dd>Convert visitor → checkout</dd>
+  <dt>Data</dt><dd>Founding-member count (from <code>members</code>)</dd>
+</dl>
+<div class="notes">Counter currently hits D1 on every load — KV cache deferred to post-launch.</div>
+</div>
+
+<div class="card">
+<h4>Checkout <span class="pill p-g">🟢 SHIPPED</span> <span class="pill p-y">🟡 needs WC test</span></h4>
+<div class="url">/checkout</div>
+<div class="wf">
+  <div class="row"><div class="b f muted">HEADER</div></div>
+  <div class="row"><div class="b f tall">"Choose your tier" copy + Bronze ($X) and VIP ($Y) CTAs</div></div>
+  <div class="row"><div class="b f">→ both CTAs redirect to shivworkspg.com WC checkout</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Anonymous / paying buyer</dd>
+  <dt>Goal</dt><dd>Send buyer to WC for payment</dd>
+  <dt>Data</dt><dd>none — pure redirect</dd>
+</dl>
+<div class="notes">Wired in PR #23 (b782d48). Verify with one real test purchase before opening doors.</div>
+</div>
+
+<div class="card">
+<h4>Signup <span class="pill p-g">🟢 SHIPPED</span> <span class="pill p-w">⚪ Clerk hosted</span></h4>
+<div class="url">/signup</div>
+<div class="wf">
+  <div class="row"><div class="b f muted">HEADER</div></div>
+  <div class="row"><div class="b f tall">CLERK SIGNUP COMPONENT (email + password)</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Post-purchase buyer</dd>
+  <dt>Goal</dt><dd>Create Clerk identity + claim WC purchase by email</dd>
+</dl>
+<div class="notes">Clerk renders the form. On success, Clerk webhook → claimImportedMemberProvision → tier set.</div>
+</div>
+
+<div class="card">
+<h4>Login <span class="pill p-g">🟢 SHIPPED</span> <span class="pill p-w">⚪ Clerk hosted</span></h4>
+<div class="url">/login</div>
+<div class="wf">
+  <div class="row"><div class="b f muted">HEADER</div></div>
+  <div class="row"><div class="b f tall">CLERK SIGNIN COMPONENT</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Returning member</dd>
+  <dt>Goal</dt><dd>Authenticate</dd>
+</dl>
+</div>
+
+</div>
+</section>
+
+<section id="member">
+<h2>Member screens (paid) <span class="anchor">#member</span></h2>
+
+<div class="grid">
+
+<div class="card">
+<h4>Welcome <span class="pill p-g">🟢 SHIPPED</span> <span class="pill p-d">🟣 D-4</span></h4>
+<div class="url">/welcome</div>
+<div class="wf">
+  <div class="row"><div class="b f muted">NAV</div></div>
+  <div class="row"><div class="b f tall hi">"Welcome to ShivWorks Network" · tier badge · next-step CTA</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>First-login member</dd>
+  <dt>Goal</dt><dd>Confirm tier, push into /account or /dashboard</dd>
+  <dt>Data</dt><dd>locals.user (Clerk + members row)</dd>
+</dl>
+<div class="notes">D-4 decides: next step is /account or /dashboard?</div>
+</div>
+
+<div class="card">
+<h4>Account / training profile <span class="pill p-r">🔴 NOT BUILT here</span> <span class="pill p-d">🟣 D-1</span></h4>
+<div class="url">/account</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3 tall">"Tell us about your training" form</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">Location (city + state) · Background checkboxes · Training goal · Alumni flags</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">Leaderboard opt-in · Show in finder · [Save] [Skip for now]</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Any authenticated member</dd>
+  <dt>Goal</dt><dd>Capture training profile for finder + future personalization</dd>
+  <dt>Data</dt><dd>Writes <code>member_profiles</code>; reads <code>leaderboard_opt_in</code></dd>
+</dl>
+<div class="notes">Aaron has this fully built. Blocked on D-1 schema decision before cherry-pick.</div>
+</div>
+
+<div class="card">
+<h4>Dashboard <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/dashboard</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">"Welcome back, {name}" · tier badge</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b f">Continue watching</div><div class="b f">Upcoming live</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b f">Latest updates</div><div class="b f">Community link</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Authenticated member</dd>
+  <dt>Goal</dt><dd>Hub — entry to library / live / updates / community</dd>
+  <dt>Data</dt><dd>members, member_episode_progress, events, updates</dd>
+</dl>
+<div class="notes">Hottest D1 read path — KV cache the tier lookup post-launch.</div>
+</div>
+
+<div class="card">
+<h4>Library <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/library + /library/[slug]</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">Course grid · cards with thumbnails + progress bars</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3 tall hi">[on slug] Episode list · video player (CF Stream)</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Authenticated (free = limited / paid = full)</dd>
+  <dt>Goal</dt><dd>Browse + watch course content</dd>
+  <dt>Data</dt><dd>courses, course_modules, course_module_episodes, media_assets, member_episode_progress</dd>
+</dl>
+<div class="notes">Candidate: replace player with Aaron's CustomVideoPlayer/EpisodePlayer for resumable Stream uploads.</div>
+</div>
+
+<div class="card">
+<h4>Live <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/live</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3 taller">Embed: live stream player (CF Stream)</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">Upcoming events list · RSVP buttons</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Paid member</dd>
+  <dt>Goal</dt><dd>Watch livestreams + RSVP to upcoming</dd>
+  <dt>Data</dt><dd>events, member_episode_progress (live)</dd>
+</dl>
+</div>
+
+<div class="card">
+<h4>Updates feed <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/updates</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">Announcement list · newest first</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3 tall">Per-update detail card · admin-published</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Authenticated</dd>
+  <dt>Goal</dt><dd>Read platform announcements</dd>
+</dl>
+</div>
+
+<div class="card">
+<h4>VIP calls <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/vip-calls</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3 tall">VIP-only — request call form / scheduled calls list</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>VIP only</dd>
+  <dt>Goal</dt><dd>Request 1:1 call with instructor</dd>
+  <dt>Data</dt><dd>vip_call_requests</dd>
+</dl>
+</div>
+
+<div class="card">
+<h4>Profile (self) <span class="pill p-r">🔴 NOT BUILT here</span> <span class="pill p-d">🟣 D-1, D-2</span></h4>
+<div class="url">/profile</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">Avatar · name · tier badge</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b f">Training profile (from /account)</div><div class="b f">Training stats</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b f warn">[D-2] Gamification dossier (TP, rank)</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Self-view (Aaron also built /profile/[userId] for public)</dd>
+  <dt>Goal</dt><dd>See your training stats + profile</dd>
+  <dt>Data</dt><dd>members + member_profiles + gamification</dd>
+</dl>
+<div class="notes">Self-view only at launch. Public /profile/[userId] deferred.</div>
+</div>
+
+<div class="card">
+<h4>Find partners <span class="pill p-r">🔴 NOT BUILT here</span> <span class="pill p-d">🟣 D-1</span></h4>
+<div class="url">/find-partners</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">Filters: state · city · goal · background · ECQC alumni</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3 tall">Results grid — member cards with location + background + goal</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Paid member</dd>
+  <dt>Goal</dt><dd>Find local training partners by background + goal</dd>
+  <dt>Data</dt><dd>member_profiles WHERE show_in_finder = 1</dd>
+</dl>
+<div class="notes">Cherry-pick from Aaron's repo. Strong launch addition if D-1 resolves.</div>
+</div>
+
+<div class="card">
+<h4>Settings <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/settings</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">Email · password (Clerk-managed) · notification prefs</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">Active sessions · [Revoke] per session</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Authenticated</dd>
+  <dt>Goal</dt><dd>Manage account, notifications, session security</dd>
+  <dt>Data</dt><dd>members, member_sessions, member_notification_preferences</dd>
+</dl>
+</div>
+
+</div>
+</section>
+
+<section id="placeholder">
+<h2>Placeholder screens (Tier-3 nav presence) <span class="anchor">#placeholder</span></h2>
+<p style="color:#9aa4b2">These appear in the nav so the platform feels complete, but click-through shows a "Coming soon" panel with the existing alternative (e.g. Circle link for community) and optional email capture. All three use the same <code>&lt;ComingSoon&gt;</code> component.</p>
+
+<div class="grid">
+
+<div class="card">
+<h4>Community (placeholder) <span class="pill p-y">🟡 placeholder</span></h4>
+<div class="url">/community</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3 tall warn">"In-app community — coming soon"</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">Meanwhile → Circle community CTA (external link)</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">[optional] "Notify me when it launches" email field</div></div>
+</div>
+<div class="notes">Aaron has the full in-app community built (channels + permissions + pinning). Deferred — 2-day integration.</div>
+</div>
+
+<div class="card">
+<h4>Messages (placeholder) <span class="pill p-y">🟡 placeholder</span></h4>
+<div class="url">/messages</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3 tall warn">"Direct messages — coming soon"</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">[optional] Notify-me capture</div></div>
+</div>
+<div class="notes">Aaron has DMs built + moderation (dm_conversation_reports). Deferred — needs realtime layer.</div>
+</div>
+
+<div class="card">
+<h4>Leaderboard (placeholder) <span class="pill p-y">🟡 placeholder</span> <span class="pill p-d">🟣 D-2</span></h4>
+<div class="url">/leaderboard</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3 tall warn">"Leaderboard — coming soon"</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3">[optional] "Opt me in early" toggle (writes to member preference)</div></div>
+</div>
+<div class="notes">Per Max: gamification is post-launch. Placeholder until then.</div>
+</div>
+
+</div>
+</section>
+
+<section id="admin">
+<h2>Admin screens <span class="anchor">#admin</span></h2>
+
+<div class="grid">
+<div class="card">
+<h4>Admin home <span class="pill p-g">🟢 SHIPPED</span></h4>
+<div class="url">/admin</div>
+<div class="wf">
+  <div class="row"><div class="b muted">SIDEBAR</div><div class="b fx3">Tabs: Members · Imports · Media · Activity</div></div>
+  <div class="row"><div class="b muted">·</div><div class="b fx3 tall">Tab content area · table views with actions</div></div>
+</div>
+<dl>
+  <dt>Audience</dt><dd>Admin role only (403 otherwise)</dd>
+  <dt>Goal</dt><dd>Manage members, run imports, upload Stream media</dd>
+</dl>
+<div class="notes">Candidate: cherry-pick Aaron's admin-analytics tab for richer reporting view.</div>
+</div>
+</div>
+</section>
+
+<section id="components">
+<h2>Shared components <span class="anchor">#components</span></h2>
+<table>
+<tr><th>Component</th><th>Status</th><th>Source</th><th>Notes</th></tr>
+<tr><td><code>Nav.svelte</code></td><td><span class="pill p-y">🟡 cherry-pick pending</span></td><td>Aaron's polished version</td><td>Update layout.svelte to mount</td></tr>
+<tr><td><code>Sidebar.svelte</code></td><td><span class="pill p-r">🔴 doesn't exist here</span></td><td>Aaron net-new</td><td>We use top-nav only today</td></tr>
+<tr><td><code>Footer.svelte</code></td><td><span class="pill p-y">🟡 cherry-pick pending</span></td><td>Aaron's version</td><td></td></tr>
+<tr><td><code>MemberIdentityPanel.svelte</code></td><td><span class="pill p-y">🟡 cherry-pick pending</span></td><td>Both have it; his is polished</td><td>Avatar + tier badge + sign-out</td></tr>
+<tr><td><code>CustomVideoPlayer.svelte</code></td><td><span class="pill p-r">🔴 net-new</span></td><td>Aaron</td><td>For /library episodes</td></tr>
+<tr><td><code>EpisodePlayer.svelte</code></td><td><span class="pill p-r">🔴 net-new</span></td><td>Aaron</td><td>Episode-aware wrapper</td></tr>
+<tr><td><code>ComingSoon.svelte</code></td><td><span class="pill p-r">🔴 not built</span></td><td>To create</td><td>Used by /community, /messages, /leaderboard placeholders</td></tr>
+<tr><td><code>ProfileChips.svelte</code></td><td><span class="pill p-r">🔴 net-new</span></td><td>Aaron</td><td>Inline profile tags (background, alumni)</td></tr>
+<tr><td><code>TrainingStatus.svelte</code></td><td><span class="pill p-r">🔴 net-new</span></td><td>Aaron</td><td>Member training progress</td></tr>
+<tr><td><code>OnboardingChecklist.svelte</code></td><td><span class="pill p-d">🟣 D-4</span></td><td>Aaron</td><td>First-login walkthrough — depends on D-4 decision</td></tr>
+<tr><td><code>GamificationWidget.svelte</code></td><td><span class="pill p-d">🟣 D-2</span></td><td>Ours</td><td>Hide or show at launch?</td></tr>
+<tr><td><code>ClerkMount.svelte</code></td><td><span class="pill p-g">🟢 shipped</span></td><td>Both have it</td><td>Renders Clerk hosted UI</td></tr>
+</table>
+</section>
+
+<section id="checklist">
+<h2>Launch checklist (UI/UX lens only) <span class="anchor">#checklist</span></h2>
+<p style="color:#9aa4b2">For backend/infra checklist see <code>MAP.html</code>. For Aaron's external steps see <code>aaron-tonight.md</code>. This is the UI/UX side.</p>
+
+<h3>Decide</h3>
+<ul>
+  <li>[ ] D-1 — member_profiles schema (A/B/C)</li>
+  <li>[ ] D-2 — gamification visibility</li>
+  <li>[ ] D-3 — adopt Aaron's app.css?</li>
+  <li>[ ] D-4 — first-login flow</li>
+</ul>
+
+<h3>Build / cherry-pick (post-decisions)</h3>
+<ul>
+  <li>[ ] Port <code>0013_member_profiles_tags.sql</code> (already copied to migrations/)</li>
+  <li>[ ] Port profile/finder helpers into <code>db/shivworks.ts</code></li>
+  <li>[ ] Port <code>gamification.ts</code> stub (no-op awardPoints)</li>
+  <li>[ ] Port <code>/account</code> route (server + svelte)</li>
+  <li>[ ] Port <code>/profile</code> route (self only)</li>
+  <li>[ ] Port <code>/find-partners</code> route</li>
+  <li>[ ] Port Nav + Sidebar + Footer + MemberIdentityPanel</li>
+  <li>[ ] Port CustomVideoPlayer + EpisodePlayer; swap into /library/[slug]</li>
+  <li>[ ] Update <code>+layout.svelte</code> to use Sidebar shell</li>
+  <li>[ ] Build <code>ComingSoon.svelte</code></li>
+  <li>[ ] Build placeholder /community, /messages, /leaderboard</li>
+  <li>[ ] If D-1=A: convert /people → redirect to /find-partners</li>
+</ul>
+
+<h3>Verify</h3>
+<ul>
+  <li>[ ] <code>pnpm check</code> 0 errors</li>
+  <li>[ ] <code>pnpm test</code> all pass</li>
+  <li>[ ] <code>pnpm lint</code> 0 errors</li>
+  <li>[ ] <code>pnpm build</code> clean</li>
+  <li>[ ] <code>pnpm smoke</code> all pass + new routes added to smoke spec</li>
+  <li>[ ] Manual: every nav item clickable + lands on right screen</li>
+  <li>[ ] Manual: <code>/account</code> save flow saves + redirects</li>
+  <li>[ ] Manual: placeholder pages render with consistent layout</li>
+</ul>
+</section>
+
+<div class="footer">
+<b>This file's lens:</b> member-facing experience &amp; decisions.<br/>
+<b>Companion:</b> <code>MAP.html</code> (system) · <code>AARON-FRONTEND-ERD.html</code> (data) · <code>AARON-SITEMAP.md</code> (route detail) · <code>AARON-RECONCILE.md</code> (integration plan) · <code>aaron-tonight.md</code> (external launch checklist)
+</div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" class="dark">
+	<head>
+<!-- Google Tag Manager -->
+<script>!function(){"use strict";function l(e){for(var t=e,r=0,n=document.cookie.split(";");r<n.length;r++){var o=n[r].split("=");if(o[0].trim()===t)return o[1]}}function s(e){return localStorage.getItem(e)}function u(e){return window[e]}function A(e,t){e=document.querySelector(e);return t?null==e?void 0:e.getAttribute(t):null==e?void 0:e.textContent}var e=window,t=document,r="script",n="dataLayer",o="https://sst.theshivworksnetwork.com",a="https://load.sst.theshivworksnetwork.com",i="aqaetnier",c="8=GwFUKSAoTDolLz0oOlxZVwRYW0BFQwUfTxEBCwcNCAcFChsFBwsEBQUKGwVaBg4c",g="cookie",v="user_id",E="",d=!1;try{var d=!!g&&(m=navigator.userAgent,!!(m=new RegExp("Version/([0-9._]+)(.*Mobile)?.*Safari.*").exec(m)))&&16.4<=parseFloat(m[1]),f="stapeUserId"===g,I=d&&!f?function(e,t,r){void 0===t&&(t="");var n={cookie:l,localStorage:s,jsVariable:u,cssSelector:A},t=Array.isArray(t)?t:[t];if(e&&n[e])for(var o=n[e],a=0,i=t;a<i.length;a++){var c=i[a],c=r?o(c,r):o(c);if(c)return c}else console.warn("invalid uid source",e)}(g,v,E):void 0;d=d&&(!!I||f)}catch(e){console.error(e)}var m=e,g=(m[n]=m[n]||[],m[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"}),t.getElementsByTagName(r)[0]),v=I?"&bi="+encodeURIComponent(I):"",E=t.createElement(r),f=(d&&(i=8<i.length?i.replace(/([a-z]{8}$)/,"kp$1"):"kp"+i),!d&&a?a:o);E.async=!0,E.src=f+"/"+i+".js?"+c+v,null!=(e=g.parentNode)&&e.insertBefore(E,g)}();</script>
+<!-- End Google Tag Manager -->
+<!-- Hyros -->
+<script>
+	var head = document.head;
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src =
+		'https://222211.t.hyros.com/v1/lst/universal-script?ph=e865de1dbb8134daaac5502877926cf58f9914ed2949bc0d3913aa80ee8e77e8&tag=!clicked&ref_url=' +
+		encodeURI(document.URL);
+	head.appendChild(script);
+</script>
+<!-- End Hyros -->
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#070707" />
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
+
+		<!-- Apple Touch Icon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/apple-touch-icon.svg" />
+
+		<!-- PWA Manifest -->
+		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+
+		<!-- Typography — the design system's faces (Archivo / Inter / JetBrains Mono) are
+		     imported at the top of src/app.css. These preconnects warm that request; do not
+		     add a second stylesheet <link> here. -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

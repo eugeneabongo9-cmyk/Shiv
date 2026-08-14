@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Macks Studios LLC — PR Invoice INV-007</title>
+<style>
+  @page { size: Letter; margin: 0.6in; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #24292f;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .header { text-align: center; margin-bottom: 32px; }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .title { font-size: 36px; font-weight: 300; margin: 8px 0 0; }
+  .subtitle { color: #57606a; font-size: 14px; margin-top: 4px; }
+  .divider { border: none; border-top: 1px solid #d0d7de; margin: 16px auto 0; width: 80px; }
+  .intro { margin: 24px 0 32px; }
+  .intro a { color: #0969da; text-decoration: none; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 12px 0; border-bottom: 1px solid #d0d7de; vertical-align: top; }
+  td.label { color: #57606a; width: 30%; }
+  td.value { font-weight: 600; color: #24292f; }
+  .section-header td {
+    font-weight: 700;
+    color: #24292f;
+    padding-top: 24px;
+    border-bottom: 2px solid #24292f;
+  }
+  .line-item .desc { color: #24292f; }
+  .line-item .period { color: #57606a; font-weight: 400; font-size: 13px; display: block; margin-top: 2px; }
+  .line-item .summary { color: #57606a; font-weight: 400; font-size: 13px; display: block; margin-top: 4px; }
+  .total td { font-weight: 700; font-size: 15px; }
+  .files-block {
+    background: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 8px 0 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: #24292f;
+    white-space: pre-wrap;
+  }
+  .files-block .added { color: #1a7f37; }
+  .files-block .changed { color: #9a6700; }
+  .files-block .deleted { color: #cf222e; }
+  .thank-you {
+    font-size: 60px;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 60px 0 32px;
+    letter-spacing: -1px;
+  }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    color: #8c959f;
+    font-size: 13px;
+  }
+  .footer .brand { color: #24292f; font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+  .footer-left { max-width: 50%; }
+  .note { color: #8c959f; font-size: 12px; margin-top: 24px; }
+  .stamp {
+    position: absolute;
+    top: 60px; right: 60px;
+    border: 3px solid #57606a;
+    color: #57606a;
+    padding: 6px 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transform: rotate(-8deg);
+    opacity: 0.3;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stamp">ESTIMATE</div>
+
+  <div class="header">
+    <div class="logo">MACKS STUDIOS</div>
+    <h1 class="title">PR Invoice</h1>
+    <div class="subtitle">INV-007 &middot; Security hardening (webhooks, validation, rate limit, headers)</div>
+    <hr class="divider" />
+  </div>
+
+  <p class="intro">
+    Deliverable bundled into <a href="https://github.com/createsomethingtoday/shivworks-network/pulls">PR #(pending)</a> on <code>createsomethingtoday/shivworks-network</code>.<br />
+    Questions? Contact <a href="mailto:dev.mxcks@gmail.com">dev.mxcks@gmail.com</a>.
+  </p>
+
+  <table>
+    <tr><td class="label">Date</td><td class="value">2026-05-26</td></tr>
+    <tr><td class="label">Billed to</td><td class="value">Outerfields — ShivWorks Network<br /><span style="font-weight:400;color:#57606a">aaron@outerfields.example</span></td></tr>
+    <tr><td class="label">Invoice ID</td><td class="value">INV-007</td></tr>
+    <tr><td class="label">Branch</td><td class="value">sec/hardening-pass-1</td></tr>
+    <tr><td class="label">Commit range</td><td class="value">TBD</td></tr>
+    <tr><td class="label">Spec refs</td><td class="value">spec 02 §2, §5, §6, §7</td></tr>
+
+    <tr class="section-header"><td colspan="2">Files in this PR &nbsp;&middot;&nbsp; +7 added &nbsp;&middot;&nbsp; ~10 changed &nbsp;&middot;&nbsp; -0 deleted</td></tr>
+    <tr><td colspan="2">
+      <div class="files-block"><span class="added">+ migrations/0009_processed_webhook_events.sql
++ src/lib/server/webhook-idempotency.ts
++ src/lib/server/webhook-idempotency.test.ts
++ src/lib/server/rate-limit.ts
++ src/lib/server/rate-limit.test.ts
++ src/lib/server/security-headers.ts
++ src/lib/server/validate.ts</span>
+<span class="changed">~ src/hooks.server.ts
+~ src/routes/api/stripe/webhook/+server.ts
+~ src/routes/api/clerk/webhook/+server.ts
+~ src/routes/api/webhooks/stream/+server.ts
+~ src/routes/api/vip-calls/request/+server.ts
+~ src/routes/api/events/[id]/rsvp/+server.ts
+~ src/routes/api/library/episodes/[episodeId]/progress/+server.ts
+~ src/lib/server/guards.ts
+~ package.json
+~ pnpm-lock.yaml</span>
+<span class="deleted">- (none)</span></div>
+    </td></tr>
+
+    <tr class="section-header"><td>Line items</td><td>Amount</td></tr>
+
+        <tr class="line-item">
+      <td class="desc">
+        processed_webhook_events table + helper
+        <span class="period">2 hrs &middot; $175.00/hr &middot; senior dev</span>
+        <span class="summary">Migration 0009. Idempotency helper used by Stripe, Clerk, Stream webhooks. Atomic D1 batch wrapping. Replay-test fixtures.</span>
+      </td>
+      <td class="value">$350.00</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        zod validation across mutation endpoints
+        <span class="period">2 hrs &middot; $125.00/hr &middot; mid-level dev</span>
+        <span class="summary">Install zod. validate() helper. Apply to 4+ POST endpoints. 400 response shape per error taxonomy.</span>
+      </td>
+      <td class="value">$250.00</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        Rate limiter (D1-backed token bucket)
+        <span class="period">1.5 hrs &middot; $175.00/hr &middot; senior dev</span>
+        <span class="summary">Per-user keyed token bucket on D1. Apply to vip-calls request (5/day), RSVP (30/min), progress (300/min).</span>
+      </td>
+      <td class="value">$262.50</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        Security headers in hooks.server.ts
+        <span class="period">1.5 hrs &middot; $175.00/hr &middot; senior dev</span>
+        <span class="summary">HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, nonce-based CSP. Verify Clerk + Stripe + Stream still load. Target securityheaders.com grade A.</span>
+      </td>
+      <td class="value">$262.50</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        requireAdmin redirect-loop fix
+        <span class="period">0.5 hrs &middot; $125.00/hr &middot; mid-level dev</span>
+        <span class="summary">Non-admin on /admin → error(403) routed to admin +error.svelte, not infinite redirect.</span>
+      </td>
+      <td class="value">$62.50</td>
+    </tr>
+    <tr class="line-item">
+      <td class="desc">
+        Security review pass + threat model doc
+        <span class="period">0.5 hrs &middot; $175.00/hr &middot; senior dev</span>
+        <span class="summary">Re-read spec 02 against the implementation. Flag follow-ups for INV-007b (audit log, secrets rotation tooling, gitleaks).</span>
+      </td>
+      <td class="value">$87.50</td>
+    </tr>
+    <!-- generated -->
+
+    <tr class="total">
+      <td>Total</td>
+      <td>$1,275.00</td>
+    </tr>
+  </table>
+
+  <div class="thank-you">Thank you.</div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div class="brand">Macks Studios LLC</div>
+      Macks Studios LLC<br />
+      Remote-first · USA<br />
+      United States
+    </div>
+    <div>
+      dev.mxcks@gmail.com<br />
+      maxstern.org
+    </div>
+  </div>
+
+  <p class="note">* No sales tax applied to professional services. 1099-reportable. Net 14.</p>
+
+</body>
+</html>

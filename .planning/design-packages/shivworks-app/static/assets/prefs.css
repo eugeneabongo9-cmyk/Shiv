@@ -1,0 +1,225 @@
+/* ============================================================
+   THE SHIVWORKS NETWORK — preferences layer
+   Light theme + display / accessibility preferences.
+   Driven by data-* attributes and CSS vars set on <html> by prefs.js.
+   Loaded after shivworks.css on every page.
+   ============================================================ */
+
+/* ---- root hooks (text size + content width/align) ---- */
+html { font-size: var(--sw-root-fs, 100%); }
+.sidebar-main .container {
+  width: min(var(--sw-content-max, 1180px), calc(100% - 3rem));
+  margin-left: var(--sw-content-ml, auto);
+  margin-right: auto;
+}
+
+/* ============================================================
+   ACCENT COLOR — overrides the brand red token set
+   ============================================================ */
+/* Preset accents. Keyword keys are kept stable for saved prefs; the colors below
+   were set by design. --color-on-accent flips to dark on light fills (e.g. gold). */
+:root[data-accent="rust"] { /* Gold */
+  --color-accent: #fee600; --color-accent-strong: #d4bf00;
+  --color-accent-soft: rgba(254, 230, 0, 0.14);
+  --color-accent-border: rgba(254, 230, 0, 0.42);
+  --color-on-accent: #1a1606;
+}
+:root[data-accent="steel"] { /* Navy */
+  --color-accent: #00263b; --color-accent-strong: #001825;
+  --color-accent-soft: rgba(0, 38, 59, 0.14);
+  --color-accent-border: rgba(0, 38, 59, 0.42);
+  --color-on-accent: #ffffff;
+}
+:root[data-accent="hunter"] { /* Forest */
+  --color-accent: #142a20; --color-accent-strong: #0c1a14;
+  --color-accent-soft: rgba(20, 42, 32, 0.16);
+  --color-accent-border: rgba(20, 42, 32, 0.46);
+  --color-on-accent: #ffffff;
+}
+
+/* ============================================================
+   LIGHT THEME
+   ============================================================ */
+:root[data-theme="light"] {
+  --sw-sb-thumb: rgba(20, 16, 8, 0.22);
+  --sw-sb-thumb-hover: rgba(188, 19, 19, 0.5);
+  --color-bg: #f4f2ef;
+  --color-bg-alt: #ffffff;
+  --color-bg-alt-2: #eceae6;
+  --surface: #ffffff;
+  --surface-elevated: #faf8f5;
+  --surface-strong: #f0ede9;
+
+  --color-fg-primary: #17150f;
+  --color-fg-secondary: #3c3a34;
+  --color-fg-muted: #6b675f;
+  --color-fg-faint: #9a958c;
+
+  --color-accent-soft: rgba(188, 19, 19, 0.09);
+  --color-brass: #1a1a1a;
+  --color-brass-deep: #4a4a4a;
+
+  --color-border: rgba(20, 16, 8, 0.12);
+  --color-border-strong: rgba(20, 16, 8, 0.2);
+  --color-rule: rgba(20, 16, 8, 0.1);
+
+  --shadow-card: 0 24px 60px rgba(60, 50, 30, 0.12);
+  --shadow-accent: 0 0 0 1px rgba(188, 19, 19, 0.14), 0 22px 48px rgba(80, 30, 30, 0.12);
+}
+:root[data-accent="steel"][data-theme="light"],
+:root[data-accent="rust"][data-theme="light"],
+:root[data-accent="hunter"][data-theme="light"],
+:root[data-accent="custom"][data-theme="light"] { --color-brass: #1a1a1a; }
+
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(circle at top left, var(--color-accent-soft), transparent 24%),
+    radial-gradient(circle at 88% 10%, rgba(0, 0, 0, 0.03), transparent 20%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.015), transparent 18rem),
+    var(--color-bg);
+  color: var(--color-fg-primary);
+}
+:root[data-theme="light"] body::before {
+  opacity: 0.5;
+  background:
+    repeating-linear-gradient(90deg, rgba(20, 16, 8, 0.035) 0 1px, transparent 1px 116px),
+    repeating-linear-gradient(180deg, rgba(20, 16, 8, 0.025) 0 1px, transparent 1px 92px);
+  mix-blend-mode: normal;
+}
+:root[data-theme="light"] body::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(40, 34, 20, 0.04));
+}
+
+/* sidebar */
+:root[data-theme="light"] .app-sidebar {
+  background: linear-gradient(180deg, #ffffff, #f7f5f1);
+  border-right: 1px solid var(--color-accent-border);
+  box-shadow: 1px 0 0 rgba(20, 16, 8, 0.04);
+}
+:root[data-theme="light"] .sidebar-brand,
+:root[data-theme="light"] .sidebar-identity,
+:root[data-theme="light"] .sidebar-progress-wrap { border-color: rgba(20, 16, 8, 0.08); }
+:root[data-theme="light"] .sidebar-nav-item:hover { background: rgba(20, 16, 8, 0.05); }
+:root[data-theme="light"] .sidebar-progress-pill { background: rgba(20, 16, 8, 0.025); border-color: rgba(20, 16, 8, 0.08); }
+:root[data-theme="light"] .sidebar-progress-bar { background: rgba(20, 16, 8, 0.1); }
+
+/* inputs + subtle white fills that vanish on white */
+:root[data-theme="light"] .field input,
+:root[data-theme="light"] .field textarea,
+:root[data-theme="light"] .field select,
+:root[data-theme="light"] .threads-search,
+:root[data-theme="light"] .fp-field,
+:root[data-theme="light"] .composer-box,
+:root[data-theme="light"] .convo-box,
+:root[data-theme="light"] .live-chat-box,
+:root[data-theme="light"] .fp-sort select { background: #f6f4f1; }
+:root[data-theme="light"] .field input:focus,
+:root[data-theme="light"] .field textarea:focus,
+:root[data-theme="light"] .field select:focus { background: #fff; }
+:root[data-theme="light"] .btn-secondary { background: rgba(20, 16, 8, 0.04); }
+:root[data-theme="light"] .btn-secondary:hover { background: var(--color-accent-soft); }
+:root[data-theme="light"] .tag,
+:root[data-theme="light"] .detail-pill { background: rgba(20, 16, 8, 0.04); }
+:root[data-theme="light"] .toggle { background: rgba(20, 16, 8, 0.02); }
+:root[data-theme="light"] .toggle .sw { background: rgba(20, 16, 8, 0.18); }
+:root[data-theme="light"] .progress-track { background: rgba(20, 16, 8, 0.1); }
+:root[data-theme="light"] .who .avatar,
+:root[data-theme="light"] .thread .avatar,
+:root[data-theme="light"] .pcard .avatar,
+:root[data-theme="light"] .convo-head .avatar,
+:root[data-theme="light"] .msg .avatar { background: rgba(20, 16, 8, 0.05); color: var(--color-fg-primary); }
+
+/* columns that use black tints read fine on light, just soften */
+:root[data-theme="light"] .channels,
+:root[data-theme="light"] .members,
+:root[data-theme="light"] .threads,
+:root[data-theme="light"] .live-chat { background: rgba(20, 16, 8, 0.025); }
+:root[data-theme="light"] .feed-head,
+:root[data-theme="light"] .convo-head,
+:root[data-theme="light"] .live-chat-head { background: rgba(20, 16, 8, 0.015); }
+:root[data-theme="light"] .media-ph { color: var(--color-fg-muted); }
+:root[data-theme="light"] .site-footer { background: linear-gradient(180deg, transparent, rgba(20, 16, 8, 0.03)); }
+:root[data-theme="light"] .bubble-row.them .bubble { background: #f2efeb; }
+:root[data-theme="light"] .sw-sheet-panel { background: #ffffff; }
+:root[data-theme="light"] .sidebar-mobile-toggle { background: rgba(255, 255, 255, 0.92); }
+
+/* Black out the logo in light mode (the brand mark is white-on-transparent) */
+:root[data-theme="light"] .brand-mark img,
+:root[data-theme="light"] .sidebar-logo img,
+:root[data-theme="light"] .login-brand img,
+:root[data-theme="light"] .nav-logo img,
+:root[data-theme="light"] .site-logo img { filter: brightness(0); }
+
+/* Active/selected text that uses #fff sits on soft/transparent backgrounds — invisible
+   on a light surface. Promote it to the primary foreground (dark in light mode). */
+:root[data-theme="light"] .tabs a.active,
+:root[data-theme="light"] .upd-tab.active,
+:root[data-theme="light"] .adm-tab.on,
+:root[data-theme="light"] .adm-tab:hover,
+:root[data-theme="light"] .set-nav a.active,
+:root[data-theme="light"] .chan.active,
+:root[data-theme="light"] .lib-jump a:hover,
+:root[data-theme="light"] .module-item.current .mi-title,
+:root[data-theme="light"] .thread.unread .t-name,
+:root[data-theme="light"] tr.gold .pos .n,
+:root[data-theme="light"] tr.viewer .name { color: var(--color-fg-primary) !important; }
+
+/* ============================================================
+   HIGH CONTRAST
+   ============================================================ */
+:root[data-contrast="high"] {
+  --color-fg-secondary: var(--color-fg-primary);
+  --color-fg-muted: var(--color-fg-secondary);
+  --color-border: rgba(255, 255, 255, 0.28);
+  --color-border-strong: rgba(255, 255, 255, 0.45);
+}
+:root[data-contrast="high"][data-theme="light"] {
+  --color-fg-muted: #2c2a24;
+  --color-fg-faint: #56524b;
+  --color-border: rgba(20, 16, 8, 0.32);
+  --color-border-strong: rgba(20, 16, 8, 0.5);
+}
+:root[data-contrast="high"] .panel,
+:root[data-contrast="high"] .settings-section { border-width: 1.5px; }
+
+/* ============================================================
+   DENSITY — compact tightens the platform's primary surfaces
+   ============================================================ */
+:root[data-density="compact"] .panel { padding: 1.1rem; }
+:root[data-density="compact"] .settings-section { padding: 1.1rem 1.2rem; }
+:root[data-density="compact"] .settings-row { padding: 0.7rem 0; }
+:root[data-density="compact"] .dash-section { margin-bottom: 1.7rem; }
+:root[data-density="compact"] .set-body { gap: 0.85rem; }
+:root[data-density="compact"] .pcard { padding: 1.05rem; gap: 0.65rem; }
+:root[data-density="compact"] .sched-row { padding: 0.8rem 1.1rem; }
+:root[data-density="compact"] .upd-item { padding: 1.05rem 0; }
+:root[data-density="compact"] .feed { gap: 1.1rem; padding: 1.1rem 1.3rem; }
+
+/* ============================================================
+   ACCESSIBILITY TOGGLES
+   ============================================================ */
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+:root[data-links="underline"] .sidebar-main p a,
+:root[data-links="underline"] .sidebar-main .msg-text a,
+:root[data-links="underline"] .ghost-link { text-decoration: underline; text-underline-offset: 0.18em; }
+:root[data-focus="always"] a:focus,
+:root[data-focus="always"] button:focus,
+:root[data-focus="always"] input:focus,
+:root[data-focus="always"] select:focus,
+:root[data-focus="always"] textarea:focus,
+:root[data-focus="always"] .toggle input:focus + .sw {
+  outline: 2px solid var(--color-accent) !important;
+  outline-offset: 2px;
+}
+:root[data-targets="large"] .sidebar-nav-item { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+:root[data-targets="large"] .btn { padding-top: 1rem; padding-bottom: 1rem; }
+:root[data-targets="large"] .set-nav a,
+:root[data-targets="large"] .fp-opt { padding-top: 0.7rem; padding-bottom: 0.7rem; }
+:root[data-targets="large"] .toggle { padding: 1.15rem 1.15rem; }

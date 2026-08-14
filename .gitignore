@@ -1,0 +1,48 @@
+.env
+.env.local
+.env.*.local
+node_modules
+.svelte-kit
+.wrangler
+build
+.DS_Store
+static/thumbnails/
+
+# Test artifacts (never commit)
+test-results/
+playwright-report/
+
+# Replit drag-and-drop attachments — should never land in main
+attached_assets/
+
+# ── Chat-shared attachments — keep out of the repo ───────────────────────────
+# Screen recordings, design prototypes and archives shared over Telegram/email
+# belong in the reference folder alongside the design handoff, not in version
+# control. Root-anchored so tracked media under static/ is unaffected.
+/*.mp4
+/*.mov
+/*.zip
+/*.rar
+/*.7z
+/*.pdf
+/Telegram Desktop/
+/attachments/
+
+# ── Customer / member PII — NEVER commit ─────────────────────────────────────
+# Production member data lives in Cloudflare D1 only.
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+data/
+founding-members.sql
+d1-paste-chunks/
+buyers.csv
+buyers.sql
+*-purchasers*.csv
+exports/
+wc-export/
+scripts/fixtures/*.csv
+audit-report.html
+.claude/settings.local.json

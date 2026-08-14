@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Macks Studios LLC — INV-009 · WooCommerce Webhook Receiver</title>
+<style>
+  @page { size: Letter; margin: 0.6in; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #24292f;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .header { text-align: center; margin-bottom: 28px; }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .title { font-size: 34px; font-weight: 300; margin: 8px 0 0; }
+  .subtitle { color: #57606a; font-size: 13px; margin-top: 4px; }
+  .divider { border: none; border-top: 1px solid #d0d7de; margin: 16px auto 0; width: 80px; }
+  .intro { margin: 22px 0 26px; color: #424a53; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 11px 8px; border-bottom: 1px solid #d0d7de; vertical-align: top; text-align: left; }
+  th { color: #57606a; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 2px solid #24292f; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.struck { color: #8c959f; text-decoration: line-through; }
+  td.ai { color: #0969da; font-weight: 600; }
+  .line .desc { color: #24292f; }
+  .line .role { color: #57606a; font-weight: 400; font-size: 12px; display: block; margin-top: 2px; }
+  tr.total td { font-weight: 700; font-size: 15px; border-top: 2px solid #24292f; }
+  .meta-row td { border-bottom: 1px solid #d0d7de; }
+  td.label { color: #57606a; width: 32%; }
+  td.value { font-weight: 600; }
+  .thank-you { font-size: 56px; font-weight: 700; color: #f0f0f0; margin: 56px 0 28px; letter-spacing: -1px; }
+  .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #d0d7de; display: flex; justify-content: space-between; color: #8c959f; font-size: 12px; }
+  .footer .brand { color: #24292f; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .note { color: #8c959f; font-size: 11px; margin-top: 20px; }
+  .stamp { position: absolute; top: 50px; right: 50px; border: 3px solid #c8a44a; color: #c8a44a; padding: 6px 14px; font-weight: 700; letter-spacing: 2px; transform: rotate(-8deg); opacity: 0.4; font-size: 14px; }
+</style>
+</head>
+<body>
+
+  <div class="stamp">QUOTE</div>
+
+  <div class="header">
+    <div class="logo">MACKS STUDIOS</div>
+    <h1 class="title">PR Invoice</h1>
+    <div class="subtitle">INV-009 · WooCommerce → Network Webhook Receiver</div>
+    <hr class="divider" />
+  </div>
+
+  <p class="intro">
+    Estimate for the WooCommerce → Network webhook receiver (board task w358). Provisions Network membership
+    automatically from WooCommerce/Fortis purchases, keyed by buyer email, reusing the backend's existing
+    import-and-claim machinery. Never touches the dormant Stripe path.
+  </p>
+
+  <table>
+    <tr class="meta-row"><td class="label">Date</td><td class="value">2026-05-28</td></tr>
+    <tr class="meta-row"><td class="label">Billed to</td><td class="value">Outerfields — ShivWorks Network<br /><span style="font-weight:400;color:#57606a">Aaron Thomas</span></td></tr>
+    <tr class="meta-row"><td class="label">Repo</td><td class="value">createsomethingtoday/shivworks-network</td></tr>
+    <tr class="meta-row"><td class="label">Branch</td><td class="value">feat/wc-webhook (contribution PR)</td></tr>
+    <tr class="meta-row"><td class="label">Status</td><td class="value">Quote — pending Bronze/VIP product-name confirmation</td></tr>
+
+    <tr><th>Line item</th><th style="text-align:right">Hrs</th><th style="text-align:right">Standard</th><th style="text-align:right">AI-augmented</th></tr>
+
+    <tr class="line">
+      <td class="desc">Endpoint + WooCommerce signature verification (HMAC-SHA256)<span class="role">1.5 hrs · senior dev · security-critical</span></td>
+      <td class="num">1.5</td><td class="num struck">$262.50</td><td class="num ai">$26.25</td>
+    </tr>
+    <tr class="line">
+      <td class="desc">Payload parsing + product → tier mapping (Bronze / VIP)<span class="role">1.0 hr · mid-level dev</span></td>
+      <td class="num">1.0</td><td class="num struck">$125.00</td><td class="num ai">$12.50</td>
+    </tr>
+    <tr class="line">
+      <td class="desc">Idempotency: migration 0009 processed_webhook_events + replay guard<span class="role">1.5 hrs · senior dev · prevents double-provisioning on retry</span></td>
+      <td class="num">1.5</td><td class="num struck">$262.50</td><td class="num ai">$26.25</td>
+    </tr>
+    <tr class="line">
+      <td class="desc">zod payload validation + 413 oversize guard<span class="role">0.5 hr · mid-level dev</span></td>
+      <td class="num">0.5</td><td class="num struck">$62.50</td><td class="num ai">$6.25</td>
+    </tr>
+    <tr class="line">
+      <td class="desc">Unit tests — valid/invalid signature, tier mapping, idempotent replay<span class="role">1.5 hrs · mid-level dev</span></td>
+      <td class="num">1.5</td><td class="num struck">$187.50</td><td class="num ai">$18.75</td>
+    </tr>
+    <tr class="line">
+      <td class="desc">WooCommerce webhook config doc + Infisical secret + ledger entry<span class="role">0.5 hr · junior dev</span></td>
+      <td class="num">0.5</td><td class="num struck">$42.50</td><td class="num ai">$4.25</td>
+    </tr>
+
+    <tr class="total">
+      <td>Total</td>
+      <td class="num">6.5</td>
+      <td class="num struck">$942.50</td>
+      <td class="num ai">$94.25</td>
+    </tr>
+  </table>
+
+  <p class="note" style="margin-top:16px">
+    <strong>Standard</strong> = blended Jr/Mid/Sr human-only rate. <strong>AI-augmented</strong> = 1/10 standard,
+    reflecting supervised-AI delivery velocity. <strong>Billed</strong> = per engagement (currently pro bono —
+    Max's call; this is upcoming work, so the rate is shown for decision). The one open dependency — exact
+    Bronze/VIP WooCommerce product names — does not change the hours; it only determines the tier-mapping config.
+  </p>
+
+  <div class="thank-you">Thank you.</div>
+
+  <div class="footer">
+    <div>
+      <div class="brand">Macks Studios LLC</div>
+      Remote-first · USA<br />
+      Engineering services
+    </div>
+    <div style="text-align: right;">
+      dev.mxcks@gmail.com<br />
+      maxstern.org
+    </div>
+  </div>
+
+  <p class="note">* Quote prepared 2026-05-28. Companion: wc-webhook-pr-summary.md. Net 14 if billed.</p>
+
+</body>
+</html>

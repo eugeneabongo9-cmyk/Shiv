@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ShivWorks Network — Launch Flow Board</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --card: #161b22;
+    --border: #2a313c;
+    --text: #d6dbe1;
+    --muted: #8b949e;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    overflow: hidden;
+  }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+  /* Top bar */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(14,17,22,0.92);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+    backdrop-filter: blur(6px);
+  }
+  .topbar h1 {
+    font-size: 13px; margin: 0 12px 0 0; font-weight: 600; letter-spacing: 0.5px;
+    color: var(--text);
+  }
+  .pfilter {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .pfilter:hover { background: #1c222b; }
+  .pfilter.active {
+    box-shadow: 0 0 0 2px var(--pcolor, var(--text)), 0 0 12px var(--pcolor, var(--text));
+    border-color: var(--pcolor, var(--text));
+  }
+  .pfilter .swatch {
+    display: inline-block; width: 8px; height: 8px; border-radius: 2px;
+    background: var(--pcolor); margin-right: 6px; vertical-align: middle;
+  }
+
+  /* Legend */
+  .legend {
+    position: fixed; top: 60px; right: 16px; z-index: 99;
+    background: rgba(22,27,34,0.95);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 11px;
+    width: 220px;
+  }
+  .legend h3 {
+    margin: 0 0 8px 0; font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  }
+  .legend .row {
+    display: flex; align-items: center; gap: 6px; padding: 2px 0;
+  }
+  .legend .dot {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  }
+  .legend .hint {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 10px;
+  }
+
+  /* Canvas */
+  .viewport {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden; cursor: grab;
+  }
+  .viewport.dragging { cursor: grabbing; }
+  .canvas {
+    position: absolute; top: 0; left: 0;
+    width: 2800px; height: 1800px;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  .canvas.notrans { transition: none; }
+  .canvas.trans { transition: transform 0.2s ease; }
+
+  /* SVG arrow layer */
+  .arrows {
+    position: absolute; top: 0; left: 0;
+    width: 2800px; height: 1800px;
+    pointer-events: none;
+  }
+  .arrow-label {
+    fill: var(--text); font-size: 10px;
+    font-family: ui-monospace, monospace;
+    paint-order: stroke; stroke: #0e1116; stroke-width: 3px;
+  }
+  .arrow-group { transition: opacity 0.2s; }
+  .arrow-group.dim { opacity: 0.06; }
+
+  /* Cards */
+  .card {
+    position: absolute;
+    width: 260px; height: 180px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .card.dim { opacity: 0.18; }
+  .card.placeholder { border-style: dashed; opacity: 0.7; }
+  .card .route {
+    font-size: 12px; color: var(--text); font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .card .wire {
+    flex: 1; background: #0e1116; border: 1px solid #232932;
+    border-radius: 4px; padding: 6px; margin: 4px 0;
+    display: flex; flex-direction: column; gap: 3px;
+    overflow: hidden;
+  }
+  .wire-header { height: 8px; background: #2a313c; border-radius: 2px; }
+  .wire-row { display: flex; gap: 4px; flex: 1; }
+  .wire-side { width: 28px; background: #1c222b; border-radius: 2px; }
+  .wire-main { flex: 1; background: #1c222b; border-radius: 2px; display: flex; flex-direction: column; gap: 3px; padding: 3px; }
+  .wire-line { height: 4px; background: #2a313c; border-radius: 1px; }
+  .wire-line.w70 { width: 70%; }
+  .wire-line.w50 { width: 50%; }
+  .wire-line.w90 { width: 90%; }
+  .wire-block { background: #2a313c; border-radius: 2px; flex: 1; }
+  .wire-video { background: linear-gradient(135deg, #1c222b, #2a313c); border-radius: 2px; flex: 1; position: relative; }
+  .wire-video::after {
+    content: "▶"; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #5aa8d8; font-size: 10px;
+  }
+  .wire-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3px; flex: 1;
+  }
+  .wire-tile { background: #2a313c; border-radius: 2px; }
+  .card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 9px;
+  }
+  .pill {
+    padding: 2px 6px; border-radius: 999px; font-size: 9px;
+    font-weight: 600; letter-spacing: 0.3px;
+  }
+  .pill.shipped { background: #1f3a24; color: #7ce38b; }
+  .pill.placeholder { background: #3a311f; color: #e3b341; }
+  .pill.notbuilt { background: #3a1f1f; color: #f47067; }
+  .pill.external { background: #232932; color: #8b949e; }
+  .tier {
+    color: var(--muted); font-size: 9px; font-family: ui-monospace, monospace;
+  }
+  .card.external-node {
+    background: #1c222b; border-style: dashed; border-color: #4a5260;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <h1>ShivWorks Network — Launch Flow Board</h1>
+  <button class="pfilter active" data-persona="all">All</button>
+</div>
+
+<div class="legend">
+  <h3>Status</h3>
+  <div class="row"><span class="pill shipped">SHIPPED</span></div>
+  <div class="row"><span class="pill placeholder">PLACEHOLDER</span></div>
+  <div class="row"><span class="pill notbuilt">NOT BUILT</span></div>
+  <div class="row"><span class="pill external">EXTERNAL</span></div>
+  <h3 style="margin-top:12px">Personas</h3>
+  <div id="legend-personas"></div>
+  <div class="hint">drag to pan · wheel to zoom</div>
+</div>
+
+<div class="viewport" id="viewport">
+  <div class="canvas" id="canvas">
+    <svg class="arrows" id="arrows" viewBox="0 0 2800 1800" xmlns="http://www.w3.org/2000/svg">
+      <defs id="arrow-defs"></defs>
+      <g id="arrows-g"></g>
+    </svg>
+    <div id="cards"></div>
+  </div>
+</div>
+
+<script>
+const PERSONAS = [
+  { key:"anonymous", name:"Anonymous visitor", color:"#5aa8d8" },
+  { key:"new-buyer", name:"New buyer (first login)", color:"#7ce38b" },
+  { key:"returning-bronze", name:"Returning bronze", color:"#e3b341" },
+  { key:"vip", name:"VIP member", color:"#c8a2ed" },
+  { key:"admin", name:"Admin", color:"#f47067" }
+];
+
+// Screens with positions (x, y top-left), status, tier, wireframe type
+const SCREENS = [
+  // External entries top-left column
+  { id:"external:marketing", label:"external:marketing", x:40, y:80, status:"external", tier:"External", wire:"external" },
+  { id:"external:email", label:"external:email", x:40, y:300, status:"external", tier:"External", wire:"email" },
+  { id:"external:woocommerce", label:"external:woocommerce", x:40, y:520, status:"external", tier:"External", wire:"wc" },
+
+  // Public top row
+  { id:"/", label:"/", x:380, y:80, status:"shipped", tier:"Public", wire:"landing" },
+  { id:"/checkout", label:"/checkout", x:720, y:80, status:"shipped", tier:"Public", wire:"checkout" },
+  { id:"/login", label:"/login", x:380, y:300, status:"shipped", tier:"Public", wire:"auth" },
+  { id:"/signup", label:"/signup", x:720, y:300, status:"shipped", tier:"Public", wire:"auth" },
+  { id:"/sitemap.xml", label:"/sitemap.xml", x:380, y:520, status:"shipped", tier:"Public", wire:"sitemap" },
+
+  // First-login diagonal
+  { id:"/welcome", label:"/welcome", x:1060, y:300, status:"shipped", tier:"Paid", wire:"welcome" },
+  { id:"/account", label:"/account", x:1060, y:520, status:"shipped", tier:"Paid", wire:"form" },
+  { id:"/dashboard", label:"/dashboard", x:1400, y:740, status:"shipped", tier:"Paid", wire:"dashboard" },
+
+  // Member cluster around dashboard
+  { id:"/library", label:"/library", x:1740, y:520, status:"shipped", tier:"Paid", wire:"grid" },
+  { id:"/library/[slug]", label:"/library/[slug]", x:2080, y:520, status:"shipped", tier:"Paid", wire:"video" },
+  { id:"/live", label:"/live", x:2080, y:740, status:"shipped", tier:"Paid", wire:"video" },
+  { id:"/updates", label:"/updates", x:1740, y:740, status:"shipped", tier:"Paid", wire:"feed" },
+  { id:"/profile", label:"/profile", x:1740, y:960, status:"shipped", tier:"Paid", wire:"profile" },
+  { id:"/find-partners", label:"/find-partners", x:2080, y:960, status:"shipped", tier:"Paid", wire:"grid" },
+
+  // VIP track below
+  { id:"/vip-calls", label:"/vip-calls", x:2080, y:1180, status:"shipped", tier:"VIP", wire:"form" },
+
+  // Placeholders dimmed off to side
+  { id:"/community", label:"/community", x:1400, y:1180, status:"placeholder", tier:"Paid", wire:"placeholder" },
+  { id:"/messages", label:"/messages", x:1060, y:1180, status:"placeholder", tier:"Paid", wire:"placeholder" },
+  { id:"/leaderboard", label:"/leaderboard", x:720, y:1180, status:"placeholder", tier:"Paid", wire:"placeholder" },
+
+  // Settings
+  { id:"/settings", label:"/settings", x:1400, y:1420, status:"shipped", tier:"Paid", wire:"form" },
+
+  // Admin corner
+  { id:"/admin", label:"/admin", x:2440, y:1420, status:"shipped", tier:"Admin", wire:"admin" }
+];
+
+const PATHS = [
+  {"key":"anonymous","name":"Anonymous visitor","color":"#5aa8d8","transitions":[
+    {"from":"external:marketing","to":"/","trigger":"arrives from marketing link","isHappyPath":true},
+    {"from":"/","to":"/checkout","trigger":"clicks Join/Buy CTA","isHappyPath":true},
+    {"from":"/checkout","to":"external:woocommerce","trigger":"redirects to WooCommerce","isHappyPath":true},
+    {"from":"/","to":"/login","trigger":"clicks Log in","isHappyPath":false},
+    {"from":"/","to":"/signup","trigger":"clicks Sign up","isHappyPath":false},
+    {"from":"/login","to":"/signup","trigger":"Create account link","isHappyPath":false},
+    {"from":"/","to":"/sitemap.xml","trigger":"crawler fetch","isHappyPath":false}
+  ]},
+  {"key":"new-buyer","name":"New buyer","color":"#7ce38b","transitions":[
+    {"from":"external:email","to":"/signup","trigger":"welcome email link","isHappyPath":true},
+    {"from":"/signup","to":"/welcome","trigger":"completes Clerk signup","isHappyPath":true},
+    {"from":"/welcome","to":"/account","trigger":"Set up training profile","isHappyPath":true},
+    {"from":"/account","to":"/dashboard","trigger":"submits profile","isHappyPath":true},
+    {"from":"/dashboard","to":"/library","trigger":"Library in sidebar","isHappyPath":true},
+    {"from":"/library","to":"/dashboard","trigger":"return to Dashboard","isHappyPath":true},
+    {"from":"/welcome","to":"/dashboard","trigger":"Skip for now","isHappyPath":false},
+    {"from":"/signup","to":"/login","trigger":"Already have account","isHappyPath":false},
+    {"from":"/dashboard","to":"/settings","trigger":"avatar > Settings","isHappyPath":false}
+  ]},
+  {"key":"returning-bronze","name":"Returning bronze","color":"#e3b341","transitions":[
+    {"from":"/login","to":"/dashboard","trigger":"submits Clerk sign-in","isHappyPath":true},
+    {"from":"/dashboard","to":"/library","trigger":"Library in sidebar","isHappyPath":true},
+    {"from":"/library","to":"/library/[slug]","trigger":"clicks course card","isHappyPath":true},
+    {"from":"/library/[slug]","to":"/dashboard","trigger":"breadcrumb home","isHappyPath":true},
+    {"from":"/dashboard","to":"/updates","trigger":"Updates in sidebar","isHappyPath":true},
+    {"from":"/updates","to":"/community","trigger":"Community in sidebar","isHappyPath":true},
+    {"from":"/community","to":"/find-partners","trigger":"Find Partners link","isHappyPath":false},
+    {"from":"/find-partners","to":"/profile","trigger":"own avatar","isHappyPath":false},
+    {"from":"/profile","to":"/settings","trigger":"Settings link","isHappyPath":false}
+  ]},
+  {"key":"vip","name":"VIP member","color":"#c8a2ed","transitions":[
+    {"from":"/login","to":"/dashboard","trigger":"completes Clerk login","isHappyPath":true},
+    {"from":"/dashboard","to":"/vip-calls","trigger":"VIP Calls in sidebar","isHappyPath":true},
+    {"from":"/vip-calls","to":"/vip-calls","trigger":"submits call request","isHappyPath":true},
+    {"from":"/vip-calls","to":"/library","trigger":"Library in sidebar","isHappyPath":true},
+    {"from":"/library","to":"/library/[slug]","trigger":"clicks course card","isHappyPath":true},
+    {"from":"/library/[slug]","to":"/live","trigger":"Live in sidebar","isHappyPath":true},
+    {"from":"/dashboard","to":"/updates","trigger":"Updates in sidebar","isHappyPath":false},
+    {"from":"/dashboard","to":"/find-partners","trigger":"Find Partners","isHappyPath":false},
+    {"from":"/dashboard","to":"/settings","trigger":"menu > Settings","isHappyPath":false}
+  ]},
+  {"key":"admin","name":"Admin","color":"#f47067","transitions":[
+    {"from":"/","to":"/login","trigger":"clicks Sign in","isHappyPath":true},
+    {"from":"/login","to":"/dashboard","trigger":"submits Clerk login","isHappyPath":true},
+    {"from":"/dashboard","to":"/admin","trigger":"Admin in sidebar","isHappyPath":true},
+    {"from":"/admin","to":"/admin","trigger":"uploads member CSV","isHappyPath":true},
+    {"from":"/admin","to":"/admin","trigger":"uploads to Stream","isHappyPath":true},
+    {"from":"/admin","to":"/admin","trigger":"opens analytics tab","isHappyPath":true},
+    {"from":"/admin","to":"/dashboard","trigger":"Dashboard in sidebar","isHappyPath":false},
+    {"from":"/dashboard","to":"/admin","trigger":"back to admin","isHappyPath":false},
+    {"from":"/admin","to":"/login","trigger":"signs out","isHappyPath":false}
+  ]}
+];
+
+// ---- wireframe templates ----
+function wireHTML(type) {
+  switch(type) {
+    case "landing": return `<div class="wire-header"></div><div class="wire-block"></div><div class="wire-row"><div class="wire-tile"></div><div class="wire-tile"></div></div>`;
+    case "checkout": return `<div class="wire-header"></div><div class="wire-line w90"></div><div class="wire-line w70"></div><div class="wire-block"></div>`;
+    case "auth": return `<div class="wire-header"></div><div class="wire-line w70"></div><div class="wire-line w90"></div><div class="wire-line w50"></div><div class="wire-block" style="max-height:18px"></div>`;
+    case "sitemap": return `<div class="wire-line w90"></div><div class="wire-line w70"></div><div class="wire-line w90"></div><div class="wire-line w50"></div><div class="wire-line w70"></div>`;
+    case "welcome": return `<div class="wire-header"></div><div class="wire-line w70"></div><div class="wire-line w50"></div><div class="wire-block"></div>`;
+    case "form": return `<div class="wire-header"></div><div class="wire-line w70"></div><div class="wire-line w90"></div><div class="wire-line w50"></div><div class="wire-line w70"></div>`;
+    case "dashboard": return `<div class="wire-header"></div><div class="wire-row"><div class="wire-side"></div><div class="wire-main"><div class="wire-line w70"></div><div class="wire-grid"><div class="wire-tile"></div><div class="wire-tile"></div><div class="wire-tile"></div><div class="wire-tile"></div></div></div></div>`;
+    case "grid": return `<div class="wire-header"></div><div class="wire-grid"><div class="wire-tile"></div><div class="wire-tile"></div><div class="wire-tile"></div><div class="wire-tile"></div></div>`;
+    case "video": return `<div class="wire-header"></div><div class="wire-video"></div><div class="wire-line w70"></div>`;
+    case "feed": return `<div class="wire-header"></div><div class="wire-line w90"></div><div class="wire-block" style="max-height:24px"></div><div class="wire-line w70"></div><div class="wire-block" style="max-height:24px"></div>`;
+    case "profile": return `<div class="wire-header"></div><div class="wire-row"><div class="wire-side" style="border-radius:50%;width:24px;height:24px"></div><div class="wire-main"><div class="wire-line w70"></div><div class="wire-line w50"></div></div></div><div class="wire-line w90"></div>`;
+    case "admin": return `<div class="wire-header"></div><div class="wire-row"><div class="wire-side"></div><div class="wire-main"><div class="wire-line w90"></div><div class="wire-line w70"></div><div class="wire-line w50"></div></div></div>`;
+    case "placeholder": return `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#5a6270;font-size:10px;font-family:ui-monospace,monospace">[ placeholder ]</div>`;
+    case "external": return `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8b949e;font-size:11px">marketing site</div>`;
+    case "email": return `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8b949e;font-size:11px">welcome email</div>`;
+    case "wc": return `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8b949e;font-size:11px">WooCommerce<br/>shivworkspg.com</div>`;
+    default: return "";
+  }
+}
+
+// ---- render cards ----
+const cardsEl = document.getElementById("cards");
+const screenById = {};
+SCREENS.forEach(s => {
+  screenById[s.id] = s;
+  const el = document.createElement("div");
+  el.className = "card";
+  if (s.status === "placeholder") el.classList.add("placeholder");
+  if (s.status === "external") el.classList.add("external-node");
+  el.dataset.id = s.id;
+  el.style.left = s.x + "px";
+  el.style.top = s.y + "px";
+  const pillCls = s.status === "shipped" ? "shipped"
+    : s.status === "placeholder" ? "placeholder"
+    : s.status === "external" ? "external" : "notbuilt";
+  const pillTxt = s.status === "shipped" ? "🟢 SHIPPED"
+    : s.status === "placeholder" ? "🟡 PLACEHOLDER"
+    : s.status === "external" ? "⚪ EXTERNAL" : "🔴 NOT BUILT";
+  el.innerHTML = `
+    <div class="route mono">${s.label}</div>
+    <div class="wire">${wireHTML(s.wire)}</div>
+    <div class="card-footer">
+      <span class="pill ${pillCls}">${pillTxt}</span>
+      <span class="tier">${s.tier}</span>
+    </div>
+  `;
+  cardsEl.appendChild(el);
+});
+
+// ---- arrow defs + groups ----
+const defs = document.getElementById("arrow-defs");
+const gWrap = document.getElementById("arrows-g");
+
+PERSONAS.forEach(p => {
+  // arrowhead marker
+  const m = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+  m.setAttribute("id", "ah-" + p.key);
+  m.setAttribute("viewBox", "0 0 10 10");
+  m.setAttribute("refX", "9");
+  m.setAttribute("refY", "5");
+  m.setAttribute("markerWidth", "7");
+  m.setAttribute("markerHeight", "7");
+  m.setAttribute("orient", "auto-start-reverse");
+  m.innerHTML = `<path d="M0,0 L10,5 L0,10 z" fill="${p.color}"/>`;
+  defs.appendChild(m);
+});
+
+function cardCenter(id) {
+  const s = screenById[id];
+  if (!s) return null;
+  return { x: s.x + 130, y: s.y + 90, w: 260, h: 180, left: s.x, top: s.y };
+}
+
+// edge intersection: find point on card border from center toward target
+function edgePoint(c, tx, ty) {
+  const dx = tx - c.x, dy = ty - c.y;
+  if (dx === 0 && dy === 0) return { x: c.x, y: c.y };
+  const halfW = c.w/2, halfH = c.h/2;
+  const ax = Math.abs(dx), ay = Math.abs(dy);
+  const scale = Math.min(halfW/ax || Infinity, halfH/ay || Infinity);
+  return { x: c.x + dx * scale, y: c.y + dy * scale };
+}
+
+PATHS.forEach((persona, pIdx) => {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  g.setAttribute("class", "arrow-group");
+  g.dataset.persona = persona.key;
+
+  // group transitions by from->to to offset duplicates
+  const counts = {};
+  persona.transitions.forEach((t, i) => {
+    const key = t.from + "→" + t.to;
+    counts[key] = (counts[key] || 0) + 1;
+    const idx = counts[key] - 1;
+
+    const cFrom = cardCenter(t.from);
+    const cTo = cardCenter(t.to);
+    if (!cFrom || !cTo) return;
+
+    let path;
+    if (t.from === t.to) {
+      // self loop
+      const cx = cFrom.left + cFrom.w - 10;
+      const cy = cFrom.top + 20;
+      const r = 22 + idx * 8;
+      path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", `M ${cx} ${cy} a ${r} ${r} 0 1 1 ${r*0.1} ${r*1.6}`);
+      path.setAttribute("fill", "none");
+
+      const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      lbl.setAttribute("class", "arrow-label");
+      lbl.setAttribute("x", cx + r + 6);
+      lbl.setAttribute("y", cy + r);
+      lbl.setAttribute("fill", persona.color);
+      lbl.textContent = t.trigger;
+      g.appendChild(lbl);
+    } else {
+      const p1 = edgePoint(cFrom, cTo.x, cTo.y);
+      const p2 = edgePoint(cTo, cFrom.x, cFrom.y);
+      // perpendicular offset for duplicates / persona stacking
+      const dx = p2.x - p1.x, dy = p2.y - p1.y;
+      const len = Math.sqrt(dx*dx + dy*dy) || 1;
+      const nx = -dy / len, ny = dx / len;
+      const offset = (pIdx - 2) * 8 + idx * 12;
+      const mx = (p1.x + p2.x) / 2 + nx * offset;
+      const my = (p1.y + p2.y) / 2 + ny * offset;
+
+      path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", `M ${p1.x} ${p1.y} Q ${mx} ${my} ${p2.x} ${p2.y}`);
+      path.setAttribute("fill", "none");
+
+      // label at midpoint
+      const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      lbl.setAttribute("class", "arrow-label");
+      lbl.setAttribute("x", mx);
+      lbl.setAttribute("y", my - 2);
+      lbl.setAttribute("text-anchor", "middle");
+      lbl.setAttribute("fill", persona.color);
+      lbl.textContent = t.trigger;
+      g.appendChild(lbl);
+    }
+
+    path.setAttribute("stroke", persona.color);
+    path.setAttribute("stroke-width", t.isHappyPath ? 2 : 1.5);
+    if (!t.isHappyPath) path.setAttribute("stroke-dasharray", "5,4");
+    path.setAttribute("marker-end", `url(#ah-${persona.key})`);
+    path.setAttribute("opacity", "0.85");
+    g.insertBefore(path, g.firstChild);
+  });
+
+  gWrap.appendChild(g);
+});
+
+// ---- persona buttons in topbar + legend ----
+const topbar = document.getElementById("topbar");
+const legendP = document.getElementById("legend-personas");
+PERSONAS.forEach(p => {
+  const btn = document.createElement("button");
+  btn.className = "pfilter";
+  btn.dataset.persona = p.key;
+  btn.style.setProperty("--pcolor", p.color);
+  btn.innerHTML = `<span class="swatch"></span>${p.name}`;
+  topbar.appendChild(btn);
+
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = `<span class="dot" style="background:${p.color}"></span><span>${p.name}</span>`;
+  legendP.appendChild(row);
+});
+
+// persona -> screens map
+const personaScreens = {};
+PATHS.forEach(p => {
+  const set = new Set();
+  p.transitions.forEach(t => { set.add(t.from); set.add(t.to); });
+  personaScreens[p.key] = set;
+});
+
+function setFilter(key) {
+  document.querySelectorAll(".pfilter").forEach(b => {
+    b.classList.toggle("active", b.dataset.persona === key);
+  });
+  document.querySelectorAll(".arrow-group").forEach(g => {
+    g.classList.toggle("dim", key !== "all" && g.dataset.persona !== key);
+  });
+  document.querySelectorAll(".card").forEach(c => {
+    if (key === "all") {
+      c.classList.remove("dim");
+    } else {
+      c.classList.toggle("dim", !personaScreens[key].has(c.dataset.id));
+    }
+  });
+}
+document.querySelectorAll(".pfilter").forEach(b => {
+  b.addEventListener("click", () => setFilter(b.dataset.persona));
+});
+
+// ---- pan + zoom ----
+const viewport = document.getElementById("viewport");
+const canvas = document.getElementById("canvas");
+let scale = 0.55, tx = 40, ty = 40;
+function apply() {
+  canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+}
+apply();
+
+let dragging = false, sx = 0, sy = 0, stx = 0, sty = 0;
+viewport.addEventListener("mousedown", e => {
+  dragging = true;
+  viewport.classList.add("dragging");
+  canvas.classList.add("notrans");
+  canvas.classList.remove("trans");
+  sx = e.clientX; sy = e.clientY; stx = tx; sty = ty;
+});
+window.addEventListener("mousemove", e => {
+  if (!dragging) return;
+  tx = stx + (e.clientX - sx);
+  ty = sty + (e.clientY - sy);
+  apply();
+});
+window.addEventListener("mouseup", () => {
+  dragging = false;
+  viewport.classList.remove("dragging");
+});
+
+viewport.addEventListener("wheel", e => {
+  e.preventDefault();
+  const rect = viewport.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const wx = (mx - tx) / scale;
+  const wy = (my - ty) / scale;
+  const factor = e.deltaY < 0 ? 1.1 : 0.9;
+  scale = Math.max(0.15, Math.min(2.5, scale * factor));
+  tx = mx - wx * scale;
+  ty = my - wy * scale;
+  apply();
+}, { passive: false });
+</script>
+</body>
+</html>

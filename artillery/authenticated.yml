@@ -1,0 +1,78 @@
+config:
+  target: "{{ $processEnvironment.TARGET_URL }}"
+  phases:
+    - duration: 30
+      arrivalRate: 3
+      name: "Warm-up"
+    - duration: 60
+      arrivalRate: 10
+      name: "Sustained load"
+    - duration: 30
+      arrivalRate: 3
+      name: "Cool-down"
+  defaults:
+    headers:
+      Accept: "application/json"
+  plugins:
+    expect: {}
+
+scenarios:
+  - name: "Authenticated member — library"
+    weight: 50
+    flow:
+      - get:
+          url: "/library"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode: 200
+
+      - get:
+          url: "/dashboard"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode: 200
+
+      - get:
+          url: "/updates"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode: 200
+
+  - name: "Authenticated member — settings"
+    weight: 25
+    flow:
+      - get:
+          url: "/settings"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode: 200
+
+      - get:
+          url: "/settings/sessions"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode: 200
+
+  - name: "Authenticated member — live and VIP"
+    weight: 25
+    flow:
+      - get:
+          url: "/live"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode: 200
+
+      - get:
+          url: "/vip-calls"
+          headers:
+            Cookie: "{{ $processEnvironment.SESSION_COOKIE }}"
+          expect:
+            - statusCode:
+                - 200
+                - 403

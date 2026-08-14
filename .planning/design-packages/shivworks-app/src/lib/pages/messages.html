@@ -1,0 +1,56 @@
+<div class="sidebar-main">
+
+<div class="msg-shell">
+  
+  <aside class="threads col-rule" id="threads-pane" data-endpoint="GET /api/messages/threads">
+    <div class="threads-head">
+      <h1>Messages</h1>
+      <div class="threads-search">
+        <svg><use href="#i-search"></use></svg>
+        <input type="text" placeholder="Search conversations" />
+      </div>
+    </div>
+    <div class="thread-scroll" id="thread-list"></div>
+  </aside>
+
+  
+  <main class="convo" id="convo-pane">
+    <div class="convo-head" data-endpoint="GET /api/messages/threads/:id">
+      <button class="back" id="back-btn" aria-label="Back to conversations"><svg><use href="#i-arrow"></use></svg></button>
+      <span class="avatar" id="c-avatar">CD</span>
+      <div class="c-id">
+        <div class="c-name" id="c-name">Craig Douglas</div>
+        <div class="c-status" id="c-status"><span class="dot"></span> Online · Staff</div>
+      </div>
+      <div class="c-actions">
+        <a class="ic-btn" href="#" title="View profile"><svg><use href="#i-user"></use></svg></a>
+      </div>
+    </div>
+    <div class="convo-feed" id="convo-feed"></div>
+    <div class="convo-composer" data-endpoint="POST /api/messages/threads/:id">
+      <div class="convo-box">
+        <div class="kebab-wrap" style="position:relative;flex:0 0 auto;">
+          <button class="kebab" id="doc-kebab" data-tip="Share a document" aria-label="Share a document" type="button"><svg><use href="#i-dots"></use></svg></button>
+          <div class="kebab-menu" id="doc-menu" hidden style="bottom:calc(100% + 8px);left:0;">
+            <p class="km-label">Share a document</p>
+            <div id="doc-menu-list"></div>
+          </div>
+        </div>
+        <input type="text" id="convo-input" placeholder="Message Craig" />
+        <button class="send" id="convo-send"><svg><use href="#i-send"></use></svg></button>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></symbol>
+</svg>

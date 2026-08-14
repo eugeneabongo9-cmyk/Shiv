@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/assets/logo-mark.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Shared ShivWorks design system + engines (param-free, loaded on every page).
+		     prefs.js applies saved theme before paint; order matches the static mockups. -->
+		<link rel="stylesheet" href="/assets/shivworks.css" />
+		<link rel="stylesheet" href="/assets/prefs.css" />
+		<script src="/assets/prefs.js"></script>
+		<script src="/assets/session.js"></script>
+		<script src="/assets/pageflow.js"></script>
+
+		%sveltekit.head%
+	</head>
+	<!-- data-sveltekit-reload: every navigation is a full document load, so the
+	     vanilla engines (prefs/session/pageflow + the per-page loader) re-run
+	     exactly as they did in the standalone HTML package. No SPA duplication. -->
+	<body data-sveltekit-reload>
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

@@ -1,0 +1,271 @@
+<div class="sidebar-main">
+<main class="set">
+  <div class="container">
+    <div class="section-heading" style="margin-bottom:1.6rem;">
+      <p class="eyebrow">Settings</p>
+      <h1>Preferences &amp; account.</h1>
+      <p>Tune how the platform looks and reads, then manage your sign-in, devices, and membership. Display changes apply everywhere and are saved to this browser.</p>
+    </div>
+
+    <div class="set-grid">
+      
+      <aside class="set-nav">
+        <p class="nav-cap">Preferences</p>
+        <a href="#appearance" class="active"><svg><use href="#i-palette"></use></svg> Appearance</a>
+        <a href="#display"><svg><use href="#i-sliders"></use></svg> Display &amp; layout</a>
+        <a href="#accessibility"><svg><use href="#i-eye"></use></svg> Accessibility</a>
+        <p class="nav-cap">Account</p>
+        <a href="#account"><svg><use href="#i-user"></use></svg> Account</a>
+        <a href="#sessions"><svg><use href="#i-device"></use></svg> Active sessions</a>
+        <a href="#notifications"><svg><use href="#i-bell"></use></svg> Notifications</a>
+        <a href="#membership"><svg><use href="#i-card"></use></svg> Membership</a>
+        <a href="#danger"><svg><use href="#i-alert"></use></svg> Danger zone</a>
+      </aside>
+
+      
+      <div class="set-body" data-endpoint="GET /api/me/preferences">
+
+        
+        <section class="settings-section" id="appearance">
+          <div class="sec-head-row">
+            <div>
+              <h2>Appearance</h2>
+              <p class="sec-desc">Theme and accent for the whole network. Try Light — it switches instantly.</p>
+            </div>
+            <button class="reset-link" id="reset-prefs" type="button"><svg><use href="#i-refresh"></use></svg> Reset all</button>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">Theme</div><div class="pd">Dark is the default tactical look. System follows your device setting.</div></div>
+            <div class="pref-control">
+              <div class="seg" data-pref="theme">
+                <button data-val="dark">Dark</button>
+                <button data-val="light">Light</button>
+                <button data-val="system">System</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">Accent color</div><div class="pd">Used for highlights, links, active states, and progress. Pick a preset or set any custom color.</div></div>
+            <div class="pref-control">
+              <div class="swatches" data-pref="accent">
+                <button class="swatch" data-val="crimson" style="background:#bc1313;color:#bc1313;" title="Crimson"><svg><use href="#i-check"></use></svg></button>
+                <button class="swatch" data-val="rust" style="background:#fee600;color:#fee600;" title="Gold"><svg style="color:#1a1606;"><use href="#i-check"></use></svg></button>
+                <button class="swatch" data-val="steel" style="background:#00263b;color:#00263b;" title="Navy"><svg><use href="#i-check"></use></svg></button>
+                <button class="swatch" data-val="hunter" style="background:#142a20;color:#142a20;" title="Forest"><svg><use href="#i-check"></use></svg></button>
+                <label class="swatch swatch-custom" id="accent-custom" title="Custom color — opens the color wheel">
+                  <input type="color" id="accent-wheel" value="#bc1313" aria-label="Custom accent color" />
+                  <svg class="cs-check"><use href="#i-check"></use></svg>
+                  <svg class="cs-drop"><use href="#i-droplet"></use></svg>
+                </label>
+              </div>
+              <div class="accent-hex" id="accent-hex-wrap">
+                <span class="hash">#</span>
+                <input type="text" id="accent-hex" maxlength="7" spellcheck="false" placeholder="BC1313" aria-label="Accent hex code" />
+              </div>
+            </div>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">High contrast</div><div class="pd">Boost border and text contrast for tougher lighting.</div></div>
+            <div class="pref-control">
+              <label class="toggle" style="border:0;background:none;padding:0;"><input type="checkbox" data-pref="contrast" data-on="high" data-off="normal" /><span class="sw"></span></label>
+            </div>
+          </div>
+        </section>
+
+        
+        <section class="settings-section" id="display">
+          <h2>Display &amp; layout</h2>
+          <p class="sec-desc">Zoom, text size, and how content is laid out across the screen.</p>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">Interface zoom</div><div class="pd">Scales the entire interface up or down.</div></div>
+            <div class="pref-control">
+              <div class="seg" data-pref="zoom" data-numeric="1">
+                <button data-val="90">90%</button>
+                <button data-val="100">100%</button>
+                <button data-val="110">110%</button>
+                <button data-val="125">125%</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">Text size</div><div class="pd">Scales body and heading type without zooming chrome.</div></div>
+            <div class="pref-control">
+              <div class="seg" data-pref="textSize">
+                <button data-val="small">Small</button>
+                <button data-val="default">Default</button>
+                <button data-val="large">Large</button>
+                <button data-val="xlarge">X-Large</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">Content width</div><div class="pd">How wide pages stretch on large screens.</div></div>
+            <div class="pref-control">
+              <div class="seg" data-pref="width">
+                <button data-val="cozy">Cozy</button>
+                <button data-val="standard">Standard</button>
+                <button data-val="full">Full</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">Content alignment</div><div class="pd">Center the content column or pin it to the left.</div></div>
+            <div class="pref-control">
+              <div class="seg" data-pref="align">
+                <button data-val="center">Centered</button>
+                <button data-val="left">Left</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pref-row">
+            <div class="pref-label"><div class="pl">UI density</div><div class="pd">Compact tightens padding to fit more on screen.</div></div>
+            <div class="pref-control">
+              <div class="seg" data-pref="density">
+                <button data-val="comfortable">Comfortable</button>
+                <button data-val="compact">Compact</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        
+        <section class="settings-section" id="accessibility">
+          <h2>Accessibility</h2>
+          <p class="sec-desc">Reduce motion and other aids. Motion also respects your device's reduce-motion setting automatically.</p>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;margin-top:1.2rem;">
+            <label class="toggle"><input type="checkbox" data-pref="motion" data-on="reduced" data-off="system" /><span class="sw"></span><span class="tl"><strong>Reduce motion</strong><small>Turn off animated transitions, count-ups, and the live pulse.</small></span></label>
+            <label class="toggle"><input type="checkbox" data-pref="underlineLinks" /><span class="sw"></span><span class="tl"><strong>Underline links</strong><small>Always underline in-content links instead of color alone.</small></span></label>
+            <label class="toggle"><input type="checkbox" data-pref="focusRings" /><span class="sw"></span><span class="tl"><strong>Always show focus rings</strong><small>Draw a visible outline on whatever element is focused.</small></span></label>
+            <label class="toggle"><input type="checkbox" data-pref="largeTargets" /><span class="sw"></span><span class="tl"><strong>Larger touch targets</strong><small>Add padding to buttons and nav for easier tapping.</small></span></label>
+          </div>
+        </section>
+
+        
+        <section class="settings-section" id="account" data-endpoint="GET /api/me/account">
+          <h2>Account</h2>
+          <p class="sec-desc">Your sign-in identity for the network.</p>
+          <div class="settings-row">
+            <div><div class="sr-label">Email</div><div class="sr-value">marcus.reyes@email.com</div></div>
+            <button class="btn btn-secondary" type="button">Change</button>
+          </div>
+          <div class="settings-row">
+            <div><div class="sr-label">Password</div><div class="sr-value">Last changed 2 months ago</div></div>
+            <button class="btn btn-secondary" type="button">Update</button>
+          </div>
+          <div class="settings-row">
+            <div><div class="sr-label">Two-factor authentication</div><div class="sr-value">Adds a second step at sign-in</div></div>
+            <label class="toggle" style="border:0;background:none;padding:0;"><input type="checkbox" checked /><span class="sw"></span></label>
+          </div>
+          <div class="settings-row" id="admin-access-row">
+            <div><div class="sr-label">Admin console</div><div class="sr-value" id="admin-access-desc">Staff-only. Sign in with admin credentials to manage content and members.</div></div>
+            <a class="btn btn-secondary" id="admin-access-btn" href="admin-login.html" type="button">Admin sign-in</a>
+          </div>
+        </section>
+
+        
+        <section class="settings-section" id="sessions" data-endpoint="GET /api/settings/sessions">
+          <h2>Active sessions</h2>
+          <p class="sec-desc">The account is limited to two active devices at a time. Revoke old devices to tighten the account perimeter.</p>
+          <div class="session-summary" style="margin-top:1.2rem;">
+            <div class="ss-stat"><div class="v">2</div><div class="l">Active devices</div></div>
+            <div class="ss-stat"><div class="v">0</div><div class="l">Open slots</div></div>
+            <div class="ss-stat"><div class="v">1</div><div class="l">Trusted now</div></div>
+          </div>
+          <div class="session">
+            <div class="session-icon"><svg><use href="#i-laptop"></use></svg></div>
+            <div class="session-info">
+              <div class="s-dev">MacBook Pro · Chrome <span class="s-current">This device</span></div>
+              <div class="s-meta">Austin, TX · Active now</div>
+            </div>
+          </div>
+          <div class="session">
+            <div class="session-icon"><svg><use href="#i-phone"></use></svg></div>
+            <div class="session-info">
+              <div class="s-dev">iPhone 15 · ShivWorks App</div>
+              <div class="s-meta">Austin, TX · Last active 3 hours ago</div>
+            </div>
+            <button class="btn btn-secondary" type="button">Revoke</button>
+          </div>
+        </section>
+
+        
+        <section class="settings-section" id="notifications" data-endpoint="GET /api/me/notifications">
+          <h2>Notifications</h2>
+          <p class="sec-desc">Choose what reaches your inbox. In-app activity always shows in the platform.</p>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;margin-top:1.2rem;">
+            <label class="toggle"><input type="checkbox" checked /><span class="sw"></span><span class="tl"><strong>New course &amp; module releases</strong><small>When a curriculum block goes live.</small></span></label>
+            <label class="toggle"><input type="checkbox" checked /><span class="sw"></span><span class="tl"><strong>Live session reminders</strong><small>Before a livestream or VIP call with Craig.</small></span></label>
+            <label class="toggle"><input type="checkbox" /><span class="sw"></span><span class="tl"><strong>Community replies &amp; mentions</strong><small>When someone replies to you or tags you.</small></span></label>
+            <label class="toggle"><input type="checkbox" /><span class="sw"></span><span class="tl"><strong>Weekly training digest</strong><small>A Monday summary of your streak and what's new.</small></span></label>
+          </div>
+        </section>
+
+        
+        <section class="settings-section" id="membership" data-endpoint="GET /api/me/membership">
+          <h2>Membership</h2>
+          <p class="sec-desc">Your founding access to the ShivWorks Network.</p>
+          <div class="settings-row">
+            <div><div class="sr-label">Current tier</div><div class="sr-value">Bronze · Founding Member · Lifetime</div></div>
+            <span class="membership-badge">Bronze</span>
+          </div>
+          <div class="settings-row">
+            <div><div class="sr-label">Upgrade to VIP</div><div class="sr-value">VIP profile, priority booking, quarterly calls with Craig</div></div>
+            <button class="btn btn-primary" type="button">Upgrade</button>
+          </div>
+          <div class="settings-row">
+            <div><div class="sr-label">Billing history</div><div class="sr-value">1 lifetime purchase · Mar 4, 2026</div></div>
+            <button class="btn btn-secondary" type="button">View</button>
+          </div>
+        </section>
+
+        
+        <section class="settings-section danger" id="danger" data-endpoint="POST /api/me/account/deactivate">
+          <h2>Danger zone</h2>
+          <p class="sec-desc">These actions affect your access to the account.</p>
+          <div class="settings-row">
+            <div><div class="sr-label">Sign out everywhere</div><div class="sr-value">Ends every active session, including this one</div></div>
+            <button class="btn btn-secondary" type="button">Sign out all</button>
+          </div>
+          <div class="settings-row">
+            <div><div class="sr-label">Deactivate account</div><div class="sr-value">Hide your dossier and pause community access</div></div>
+            <button class="btn btn-secondary" type="button">Deactivate</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-legal" style="border-top:0;padding-top:2.5rem;">
+      <span>© 2026 ShivWorks · The Network</span>
+      <span>theshivworksnetwork.com · shivworks.com</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-device" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+</svg>

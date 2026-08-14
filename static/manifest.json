@@ -1,0 +1,45 @@
+{
+	"name": "ShivWorks Network",
+	"short_name": "ShivWorks",
+	"description": "The private training platform for ShivWorks members.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000",
+	"orientation": "portrait-primary",
+	"icons": [
+		{
+			"src": "/favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		},
+		{
+			"src": "/apple-touch-icon.svg",
+			"sizes": "180x180",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	],
+	"categories": ["business", "productivity", "entertainment"],
+	"lang": "en-US",
+	"dir": "ltr",
+	"scope": "/",
+	"prefer_related_applications": false,
+	"shortcuts": [
+		{
+			"name": "Dashboard",
+			"short_name": "Dashboard",
+			"description": "Open the ShivWorks member dashboard",
+			"url": "/dashboard",
+			"icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+		},
+		{
+			"name": "Live",
+			"short_name": "Live",
+			"description": "Open the live events and RSVP page",
+			"url": "/live",
+			"icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+		}
+	]
+}

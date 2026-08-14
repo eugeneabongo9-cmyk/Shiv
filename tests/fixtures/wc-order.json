@@ -1,0 +1,29 @@
+{
+  "id": 999001,
+  "status": "completed",
+  "currency": "USD",
+  "total": "249.00",
+  "date_created": "2026-05-29T12:00:00",
+  "date_modified": "2026-05-29T12:00:00",
+  "billing": {
+    "first_name": "Test",
+    "last_name": "Buyer",
+    "email": "test-buyer@shivworks.example",
+    "phone": "+15555550100"
+  },
+  "shipping": {
+    "first_name": "Test",
+    "last_name": "Buyer"
+  },
+  "line_items": [
+    {
+      "id": 1,
+      "name": "ShivWorks Network - Bronze Founding Member",
+      "product_id": 31517,
+      "variation_id": 0,
+      "quantity": 1,
+      "price": "249.00",
+      "total": "249.00"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+# Artillery load test — ramps to ~600+ concurrent virtual users.
+# Usage:
+#   pnpm load:full                                # local against http://localhost:4173
+#   LOAD_TARGET=https://network.shivworks.com pnpm load:full
+# See tests/load/README.md and .planning/architecture/LOAD-TEST-PLAN.md.
+
+config:
+  target: '{{ $processEnvironment.LOAD_TARGET || "http://localhost:4173" }}'
+  # arrivalRate = new virtual users per second; sustained 200/s with ~3s avg
+  # scenario duration ≈ 600 concurrent in-flight (the launch target).
+  phases:
+    - { name: 'Warm up', duration: 60, arrivalRate: 5 }
+    - { name: 'Ramp to 100/s', duration: 90, arrivalRate: 5, rampTo: 100 }
+    - { name: 'Ramp to 200/s', duration: 60, arrivalRate: 100, rampTo: 200 }
+    - { name: 'Sustained 200/s (~600 concurrent)', duration: 120, arrivalRate: 200 }
+    - { name: 'Cool down', duration: 30, arrivalRate: 200, rampTo: 5 }
+  defaults:
+    headers:
+      User-Agent: 'shivworks-artillery-load-test'
+  http:
+    timeout: 15
+    pool: 50
+  ensure:
+    # Pass/fail thresholds — if any of these fires, the run is a regression.
+    p95: 1500 # 95th-percentile end-to-end latency, ms
+    p99: 3000
+    maxErrorRate: 1 # percent
+
+scenarios:
+  # Weights approximate expected real-world traffic on launch day.
+  # Most visitors hit the landing + tracker; far fewer write progress.
+
+  - name: 'Public landing (cold visitor)'
+    weight: 35
+    flow:
+      - get: { url: '/' }
+      - think: 4
+      - get: { url: '/sitemap.xml' }
+
+  - name: 'Founding-member tracker poll'
+    weight: 25
+    flow:
+      - get: { url: '/api/members' }
+      - think: 2
+
+  - name: 'Browse library + see a course'
+    weight: 15
+    flow:
+      - get: { url: '/library' }
+      - think: 3
+      - get: { url: '/library/origin-story' }
+      - think: 5
+
+  - name: 'Open checkout page'
+    weight: 12
+    flow:
+      - get: { url: '/' }
+      - think: 2
+      - get: { url: '/checkout' }
+      - think: 6
+
+  - name: 'Open dashboard (auth-required, expects 200 or redirect)'
+    weight: 8
+    flow:
+      - get:
+          url: '/dashboard'
+          expect:
+            - statusCode: [200, 302, 303]
+
+  - name: 'Live tab + Community tab'
+    weight: 5
+    flow:
+      - get: { url: '/live' }
+      - think: 2
+      - get: { url: '/community' }

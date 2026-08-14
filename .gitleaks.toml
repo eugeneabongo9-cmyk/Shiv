@@ -1,0 +1,46 @@
+# Gitleaks configuration — ShivWorks Network
+# Run: gitleaks detect --source . --redact --verbose
+# CI uses scripts/verify-no-pii.mjs; gitleaks is optional for history/deep scans.
+
+title = "ShivWorks Network gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "member-imports-bulk-insert"
+description = "Bulk member_imports UPSERT with customer email"
+regex = '''INSERT\s+INTO\s+member_imports\s*\([^)]*\)\s*VALUES\s*\([^)]*'[^']+@[^']+''' 
+
+[[rules]]
+id = "wc-buyer-csv-export"
+description = "WooCommerce buyer CSV export header"
+regex = '''(?i)^email,first_name,last_name,name,tier,wc_order_id'''
+
+[[rules]]
+id = "founding-member-csv-source"
+description = "Reference to founding-member purchaser export filename"
+regex = '''founding-member-purchasers-\d{4}-\d{2}-\d{2}\.csv'''
+
+[allowlist]
+description = "Synthetic fixtures and schema migrations"
+paths = [
+  '''migrations/''',
+  '''tests/fixtures/''',
+  '''scripts/wc-build-sql\.ts''',
+  '''scripts/csv_to_member_imports\.py''',
+  '''src/lib/server/db/shivworks\.ts''',
+  '''\.test\.ts$''',
+  '''\.server\.test\.ts$'''
+]
+
+regexes = [
+  '''@example\.com''',
+  '''@shivworks\.example''',
+  '''@outerfields\.example''',
+  '''test-buyer@''',
+  '''member@example\.com''',
+  '''buyer@example\.com''',
+  '''alice@example\.com''',
+  '''bob@example\.com'''
+]

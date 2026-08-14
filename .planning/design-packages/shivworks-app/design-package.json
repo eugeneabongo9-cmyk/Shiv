@@ -1,0 +1,25 @@
+{
+	"name": "shivworks-app",
+	"version": "0.1.1",
+	"basedOn": "../Shivworks (4.1)",
+	"purpose": "SvelteKit preview harness for the ShivWorks 4.1 static design package.",
+	"role": "preview-harness",
+	"canonicalImportContract": "../Shivworks (4.1)/UI-IMPORT-CONTRACT.md",
+	"canonicalVideoPlaceholderMap": "../Shivworks (4.1)/VIDEO-PLACEHOLDER-MAP.md",
+	"canonicalVideoPlaceholderManifest": "../Shivworks (4.1)/video-placeholders.json",
+	"sourceDesignPackage": "../Shivworks (4.1)/design-package.json",
+	"entrypoints": {
+		"appReadme": "README.md",
+		"generator": "scripts/gen.mjs",
+		"scriptLoader": "src/lib/loadPageScripts.js",
+		"routes": "src/routes",
+		"staticPages": "src/lib/pages",
+		"pageCss": "static/pagecss",
+		"pageJs": "static/pagejs"
+	},
+	"notes": [
+		"This package preserves static HTML/CSS/JS for visual preview.",
+		"Do not import these routes directly into the production app.",
+		"Use the canonical 4.1 import contract when converting designs into app components."
+	]
+}

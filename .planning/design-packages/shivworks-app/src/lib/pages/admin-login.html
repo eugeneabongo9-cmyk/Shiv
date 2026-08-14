@@ -1,0 +1,26 @@
+<div class="login-wrap">
+    <div class="login-brand">
+      <img src="assets/cobra-logo.png" alt="ShivWorks Network" />
+      <span class="lb-name">The ShivWorks Network</span>
+    </div>
+    <form class="panel login-card" id="login-form" data-endpoint="POST /api/admin/session">
+      <span class="login-tag"><svg><use href="#i-shield"></use></svg> Staff access</span>
+      <h1>Admin sign-in</h1>
+      <p class="sub">Enter your staff credentials to open the admin console. Members don't have access to this area.</p>
+
+      <div class="fld"><label>Name</label><input id="login-name" type="text" placeholder="Craig Douglas" value="Craig Douglas" /></div>
+      <div class="fld"><label>Staff email</label><input id="login-email" type="email" placeholder="you@shivworks.com" value="craig@shivworks.com" /></div>
+      <div class="fld"><label>Access key</label><input id="login-key" type="password" placeholder="••••••••" value="shivworks" /></div>
+
+      <button class="btn btn-primary" type="submit"><svg><use href="#i-shield"></use></svg> Enter admin console</button>
+
+      <div class="login-demo">
+        <p>Prototype — any credentials grant access for the demo. Admin state is remembered on this browser.</p>
+      </div>
+    </form>
+    <div class="login-foot"><a href="dashboard.html">← Back to the member app</a></div>
+  </div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  </svg>

@@ -1,0 +1,3 @@
+node scripts/guard-no-pii.mjs
+pnpm check
+pnpm lint-staged

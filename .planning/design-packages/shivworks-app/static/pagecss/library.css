@@ -1,0 +1,39 @@
+.lib { padding: 2.4rem 0 4rem; }
+  .resume-panel { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.8rem; border-color: var(--color-accent-border); }
+  .resume-panel h2 { font-size: 1.4rem; text-transform: uppercase; }
+  .resume-panel p { color: var(--color-fg-muted); font-size: 0.92rem; margin-top: 0.3rem; }
+
+  .lib-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .filter-group { display: flex; gap: 0.4rem; background: var(--surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 0.3rem; }
+  .filter-chip { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-fg-muted); padding: 0.5rem 0.85rem; border-radius: 4px; transition: all 140ms ease; white-space: nowrap; }
+  .filter-chip:hover { color: var(--color-fg-primary); }
+  .filter-chip.active { color: var(--color-on-accent); background: var(--color-accent); }
+  .lib-admin-cta { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .lib-admin-cta[hidden] { display: none; }
+
+  /* section jump rail */
+  .lib-jump { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .lib-jump a { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-fg-muted); border: 1px solid var(--color-border); border-radius: 999px; padding: 0.45rem 0.85rem; transition: all 140ms ease; }
+  .lib-jump a:hover { color: #fff; border-color: var(--color-accent-border); }
+  .lib-jump a .n { color: var(--color-fg-faint); }
+  .lib-jump a svg { width: 0.85rem; height: 0.85rem; }
+
+  /* group */
+  .lib-group { margin-bottom: 2.8rem; scroll-margin-top: 1.5rem; }
+  .lib-group-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-bottom: 0.9rem; margin-bottom: 1.3rem; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
+  .lgh-left { display: flex; align-items: center; gap: 0.85rem; min-width: 0; }
+  .lgh-icon { width: 2.6rem; height: 2.6rem; flex: 0 0 auto; border-radius: 7px; display: grid; place-items: center; border: 1px solid var(--color-accent-border); background: var(--color-accent-soft); color: var(--color-accent); }
+  .lgh-icon svg { width: 1.2rem; height: 1.2rem; }
+  .lgh-titles h2 { font-size: 1.35rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.6rem; }
+  .lgh-titles h2 .count { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; color: var(--color-fg-faint); -webkit-text-fill-color: var(--color-fg-faint); }
+  .lgh-titles p { color: var(--color-fg-muted); font-size: 0.86rem; margin-top: 0.25rem; }
+  .lgh-add { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .lgh-add svg { width: 0.9rem; height: 0.9rem; }
+
+  .lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  /* .course-card + .cc-* live globally in shivworks.css (COMPONENT: course-card) */
+
+  .lib-empty { grid-column: 1 / -1; padding: 2.2rem 1rem; text-align: center; color: var(--color-fg-faint); font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; border: 1px dashed var(--color-border); border-radius: var(--radius-card); }
+
+  @media (max-width: 880px) { .lib-grid { grid-template-columns: repeat(2, 1fr); } .resume-panel { flex-direction: column; align-items: flex-start; } }
+  @media (max-width: 560px) { .lib-grid { grid-template-columns: 1fr; } }

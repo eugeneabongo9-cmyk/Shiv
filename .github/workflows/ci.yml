@@ -1,0 +1,180 @@
+# CI — every PR + every push to main.
+# Ledger entry: 2026-05-26 · INV-006.
+#
+# Design notes:
+# - install job builds the pnpm store cache once; all dependent jobs reuse it.
+# - check / lint / format / unit / build run in parallel after install.
+# - smoke is a no-op placeholder until INV-003 (Playwright) lands; reserved
+#   in the matrix now so branch-protection rules can be added in one go.
+# - PRs use concurrency-cancel so a force-push doesn't double-bill CI minutes.
+# - Dummy Clerk keys keep `pnpm build` passing without real secrets in CI.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # Dummy Clerk values — valid format, no real instance behind them.
+  # pk_test_<base64("clerk.example.dev$")>
+  PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5kZXYk
+  CLERK_SECRET_KEY: sk_test_ci_dummy_not_a_real_secret
+  PUBLIC_SITE_URL: https://network.shivworks.com
+
+jobs:
+  install:
+    name: install (cached)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+  check:
+    name: check (svelte-check)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+
+  lint:
+    name: lint (eslint)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+
+  format:
+    name: format (prettier --check)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+
+  unit:
+    name: unit (vitest)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  build:
+    name: build (vite + cloudflare adapter)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+  pii-scan:
+    name: pii-scan (tracked files)
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify:no-pii
+
+  smoke:
+    name: smoke (playwright public routes)
+    runs-on: ubuntu-latest
+    needs: install
+    env:
+      GITHUB_ACTIONS: true
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: Install chromium
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Install OS deps for cached chromium
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: pnpm exec playwright install-deps chromium
+      # Build before smoke — playwright.config.ts webServer starts `pnpm preview`
+      # which needs the build artifact + .svelte-kit/tsconfig.json. Without this
+      # the preview server fails to boot and every smoke test errors before running.
+      - run: pnpm build
+      - run: pnpm smoke
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

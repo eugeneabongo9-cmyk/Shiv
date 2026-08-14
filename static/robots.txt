@@ -1,0 +1,51 @@
+# ShivWorks Network - robots.txt
+# https://network.shivworks.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://network.shivworks.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Block admin and internal routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /settings/
+Disallow: /vip-calls/
+Disallow: /library/
+Disallow: /dashboard/
+Disallow: /community/
+Disallow: /live/
+
+# Allow important assets
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+Allow: /*.webp
+
+# AI/LLM Crawlers - Welcome for AEO
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
