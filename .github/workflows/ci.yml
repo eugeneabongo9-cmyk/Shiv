@@ -30,7 +30,7 @@ env:
 jobs:
   install:
     name: install (cached)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -44,7 +44,7 @@ jobs:
 
   check:
     name: check (svelte-check)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v7
@@ -60,7 +60,7 @@ jobs:
 
   lint:
     name: lint (eslint)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v7
@@ -76,7 +76,7 @@ jobs:
 
   format:
     name: format (prettier --check)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v7
@@ -92,7 +92,7 @@ jobs:
 
   unit:
     name: unit (vitest)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v7
@@ -108,7 +108,7 @@ jobs:
 
   build:
     name: build (vite + cloudflare adapter)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v7
@@ -124,7 +124,7 @@ jobs:
 
   pii-scan:
     name: pii-scan (tracked files)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v7
@@ -140,7 +140,7 @@ jobs:
 
   smoke:
     name: smoke (playwright public routes)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     env:
       GITHUB_ACTIONS: true
