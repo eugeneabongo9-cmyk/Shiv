@@ -55,7 +55,7 @@
 		"@clerk/backend": "^2.18.0",
 		"@clerk/clerk-js": "^5.57.1",
 		"@sentry/sveltekit": "^10.55.0",
-		"better-sqlite3": "^12.6.2",
+		"better-sqlite3": "^13.0.3",
 		"lucide-svelte": "^0.562.0",
 		"pg": "^8.18.0",
 		"resend": "^6.7.0",
