@@ -1,0 +1,18 @@
+{
+	"cohortSummary": "Upcoming content schedule for the ShivWorks Network. Dates and details are subject to change.",
+	"tierExpectations": {
+		"free": ["Roadmap previews", "Selected updates"],
+		"bronze": ["Full course access", "Livestreams", "Community"],
+		"vip": ["Everything in Bronze", "Priority access", "VIP calls"]
+	},
+	"drops": [
+		{
+			"id": "example-1",
+			"title": "Example Course Drop",
+			"detail": "Placeholder entry for the upcoming content tracker.",
+			"releaseAt": null,
+			"lane": "library",
+			"tierGate": "bronze"
+		}
+	]
+}
